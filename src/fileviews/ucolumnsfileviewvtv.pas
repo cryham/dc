@@ -1792,7 +1792,7 @@ var
 
     if AFile.RecentlyUpdatedPct <> 0 then
     begin
-      TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
+      //TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
       BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
     end;
 
