@@ -226,12 +226,12 @@ resourcestring
 
   //Hot Dir related
   rsMsgHotDirWhatToDelete = 'Do you want to delete all elements inside the sub-menu [%s]?'+#$0A+'Answering NO will delete only menu delimiters but will keep element inside sub-menu.';
-  rsMsgHotDirAddThisDirectory = 'Add current dir: ';
-  rsMsgHotDirAddSelectedDirectory = 'Add selected dir: ';
-  rsMsgHotDirReAddSelectedDirectory = 'Re-Add selected dir: ';
-  rsMsgHotDirReAddThisDirectory = 'Re-Add current dir: ';
-  rsMsgHotDirAddSelectedDirectories = 'Add %d selected dirs';
-  rsMsgHotDirConfigHotlist = 'Configuration of Directory Hotlist';
+  rsMsgHotDirAddThisDirectory = 'D Add: ';
+  rsMsgHotDirAddSelectedDirectory = '-Add sel.: ';
+  rsMsgHotDirReAddSelectedDirectory = '-Re-Add sel.: ';
+  rsMsgHotDirReAddThisDirectory = '-Re-Add: ';
+  rsMsgHotDirAddSelectedDirectories = '-Add %d sel.';
+  rsMsgHotDirConfigHotlist = '-Configuration';
   rsMsgHotDirDeleteAllEntries = 'Are you sure you want to remove all entries of your Directory Hotlist? (There is no "undo" to this action!)';
   rsMsgHotDirName = 'Hotdir name';
   rsMsgHotDirPath = 'Hotdir path';
@@ -285,7 +285,7 @@ resourcestring
   rsMsgSpecialDirAddNonActi = 'Add path from inactive frame';
   rsMsgSpecialDirBrowsSel = 'Browse and use selected path';
 
-  rsMsgSpecialDir = 'Special Dirs';
+  rsMsgSpecialDir = '-Special';
   rsMsgSpecialDirGotoDC = 'Go to Double Commander special path...';
   rsMsgSpecialDirGotoTC = 'Go to Windows special folder (TC)...';
   rsMsgSpecialDirGotoOther = 'Go to other Windows special folder...';

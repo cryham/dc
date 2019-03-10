@@ -393,7 +393,7 @@ var
         begin
           localmi := TMenuItem.Create(ParamMenuItem);
           localmi.Caption := HotDir[I - 1].HotDirName;
-          if gIconsInMenus then localmi.ImageIndex:=ICONINDEX_SUBMENU;
+          //if gIconsInMenus then localmi.ImageIndex:=ICONINDEX_SUBMENU;
           ParamMenuItem.Add(localmi);
           CompleteMenu(localmi);
           if localmi.Count <> 0 then
@@ -502,7 +502,7 @@ begin
         begin
           miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
           miMainTree.Caption := HotDir[I - 1].HotDirName;
-          if gIconsInMenus then miMainTree.ImageIndex := ICONINDEX_SUBMENU;
+          //if gIconsInMenus then miMainTree.ImageIndex := ICONINDEX_SUBMENU;
           if mncmpMenuComponentToPopulate.ClassType = TPopupMenu then
             TPopupMenu(mncmpMenuComponentToPopulate).Items.Add(miMainTree)
           else
@@ -583,13 +583,13 @@ begin
         else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);
 
         // now add configure item
-        miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
+        {miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
         miMainTree.Caption := rsMsgHotDirConfigHotlist;
         miMainTree.Tag := ACTION_CONFIGTOHOTLIST;
         miMainTree.ShortCut := frmMain.mnuCmdConfigDirHotlist.ShortCut;
         miMainTree.OnClick := ProcedureWhenHotDirAddOrConfigClicked;
         if mncmpMenuComponentToPopulate.ClassType = TPopupMenu then TPopupMenu(mncmpMenuComponentToPopulate).Items.Add(miMainTree)
-        else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);
+        else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);}
       end;
     end; //case KindHotDirMenuPopulation of
   finally
@@ -834,9 +834,9 @@ function TDirectoryHotlist.AddFromAnotherTTreeViewTheSelected(ParamWorkingTreeVi
           if ParamWorkingTreeView<>nil then
           begin
             NewTreeNode := ParamWorkingTreeView.Items.AddChildObject(InsertionNodePlace, WorkingHotDirEntry.HotDirName,HotDir[count-1]);
-            NewTreeNode.ImageIndex:=ICONINDEX_SUBMENU;
-            NewTreeNode.SelectedIndex:=ICONINDEX_SUBMENU;
-            NewTreeNode.StateIndex:=ICONINDEX_SUBMENU;
+            //NewTreeNode.ImageIndex:=ICONINDEX_SUBMENU;
+            //NewTreeNode.SelectedIndex:=ICONINDEX_SUBMENU;
+            //NewTreeNode.StateIndex:=ICONINDEX_SUBMENU;
           end;
           inc(result);
         end;
