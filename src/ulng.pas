@@ -226,11 +226,11 @@ resourcestring
 
   //Hot Dir related
   rsMsgHotDirWhatToDelete = 'Do you want to delete all elements inside the sub-menu [%s]?'+#$0A+'Answering NO will delete only menu delimiters but will keep element inside sub-menu.';
-  rsMsgHotDirAddThisDirectory = 'D Add: ';
-  rsMsgHotDirAddSelectedDirectory = '-Add sel.: ';
-  rsMsgHotDirReAddSelectedDirectory = '-Re-Add sel.: ';
-  rsMsgHotDirReAddThisDirectory = '-Re-Add: ';
-  rsMsgHotDirAddSelectedDirectories = '-Add %d sel.';
+  rsMsgHotDirAddThisDirectory = 'D Add dir';
+  rsMsgHotDirAddSelectedDirectory = '-Add sel.dir';
+  rsMsgHotDirReAddSelectedDirectory = '-Re-Add sel.dir';
+  rsMsgHotDirReAddThisDirectory = '-Re-Add dir';
+  rsMsgHotDirAddSelectedDirectories = '-Add sel.dirs';
   rsMsgHotDirConfigHotlist = '-Configuration';
   rsMsgHotDirDeleteAllEntries = 'Are you sure you want to remove all entries of your Directory Hotlist? (There is no "undo" to this action!)';
   rsMsgHotDirName = 'Hotdir name';

@@ -555,13 +555,13 @@ begin
         gSpecialDirList.PopulateMenuWithSpecialDir(mncmpMenuComponentToPopulate, mp_CHANGEDIR, ProcedureWhenHotDirItemClicked);
 
         // now add delimiter
-        miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
+        {miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
         miMainTree.Caption := '-';
         if mncmpMenuComponentToPopulate.ClassType = TPopupMenu then TPopupMenu(mncmpMenuComponentToPopulate).Items.Add(miMainTree)
-        else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);
+        else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);}
 
         //now add the "selected path", if any, if it's the case
-        if MaybeActiveOrSelectedDirectories.Count>0 then
+        (*if MaybeActiveOrSelectedDirectories.Count>0 then
         begin
           miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
           case MaybeActiveOrSelectedDirectories.Count of
@@ -572,11 +572,13 @@ begin
           miMainTree.OnClick := ProcedureWhenHotDirAddOrConfigClicked;
           if mncmpMenuComponentToPopulate.ClassType = TPopupMenu then TPopupMenu(mncmpMenuComponentToPopulate).Items.Add(miMainTree)
           else if mncmpMenuComponentToPopulate.ClassType = TMenuItem then TMenuItem(mncmpMenuComponentToPopulate).Add(miMainTree);
-        end;
+        end;*)
 
         // now allow to add or re-add the "current path"
         miMainTree := TMenuItem.Create(mncmpMenuComponentToPopulate);
-        with Application.MainForm as TForm do if not FlagCurrentPathAlreadyInMenu then miMainTree.Caption := rsMsgHotDirAddThisDirectory + MinimizeFilePath(frmMain.ActiveFrame.CurrentPath, Canvas, 250).Replace('&','&&') else miMainTree.Caption := rsMsgHotDirReAddThisDirectory + MinimizeFilePath(frmMain.ActiveFrame.CurrentPath, Canvas, 250).Replace('&','&&');
+        with Application.MainForm as TForm do
+          if not FlagCurrentPathAlreadyInMenu then miMainTree.Caption := rsMsgHotDirAddThisDirectory // + MinimizeFilePath(frmMain.ActiveFrame.CurrentPath, Canvas, 250)
+          else miMainTree.Caption := rsMsgHotDirReAddThisDirectory; // + MinimizeFilePath(frmMain.ActiveFrame.CurrentPath, Canvas, 250);
         miMainTree.Tag := ACTION_ADDTOHOTLIST;
         miMainTree.OnClick := ProcedureWhenHotDirAddOrConfigClicked;
         if mncmpMenuComponentToPopulate.ClassType = TPopupMenu then TPopupMenu(mncmpMenuComponentToPopulate).Items.Add(miMainTree)
