@@ -27,7 +27,7 @@ unit uMainCommands;
 interface
 
 uses
-  Classes, SysUtils, ActnList, uFileView, uFileViewNotebook, uFileSourceOperation,
+  Classes, SysUtils, ActnList, uFileView, uFileViewNotebook, uFileSourceOperation, uTypes,
   uGlobs, uFileFunctions, uFormCommands, uFileSorting, uShellContextMenu, Menus, ufavoritetabs,ufile;
 
 type
@@ -548,7 +548,9 @@ begin
     CalcStatisticsOperationStatistics := CalcStatisticsOperation.RetrieveStatistics;
     with CalcStatisticsOperationStatistics do
     begin
-      msgOK(Format(rsSpaceMsg, [Files, Directories, cnvFormatFileSize(Size), Numb2USA(IntToStr(Size))]));
+      //msgOK(Format(rsSpaceMsg, [Files, Directories, cnvFormatFileSize(Size), Numb2USA(IntToStr(Size))]));
+      msgOK(Format(rsSpaceMsg, [Files, Directories,
+              cnvFormatFileSize(Size, fsfFloat, 3), cnvFormatFileSize(Size, fsfByte, 0)] ));
     end;
   end;
 end;
