@@ -95,9 +95,9 @@ begin
   with FBitmap do
   begin
     SetSize(gThumbSize.cx, gThumbSize.cy);
-    Canvas.Brush.Color:= clWhite;
+    Canvas.Brush.Color:= clBlack;  // clWhite;
     Canvas.FillRect(Canvas.ClipRect);
-    Canvas.Font.Color:= clBlack;
+    Canvas.Font.Color:= clSilver;  // clGray; clBlack;
     Canvas.Font.Size := gThumbSize.cy div 16;
     tFile:= mbFileOpen(FFileName, fmOpenRead or fmShareDenyNone);
     if (tFile <> feInvalidHandle) then
