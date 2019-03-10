@@ -150,6 +150,7 @@ type
     FNotebookSide: TFilePanelSelect;
     FOnCloseTabClicked: TNotifyEvent;
     FPageControl: TFileViewPageControl;
+    FClosedPages: array of TFileViewPage;
 
     function GetActivePage: TFileViewPage;
     function GetActiveView: TFileView;
@@ -186,6 +187,7 @@ type
     function NewEmptyPage: TFileViewPage;
     function NewPage(CloneFromPage: TFileViewPage): TFileViewPage;
     function NewPage(CloneFromView: TFileView): TFileViewPage;
+    procedure UndoClosePage();
     procedure DeletePage(Index: Integer);
     procedure RemovePage(Index: Integer); reintroduce;
     procedure RemovePage(var APage: TFileViewPage);
@@ -877,8 +879,27 @@ var
   APage: TFileViewPage;
 begin
   APage:= GetPage(Index);
+  SetLength(FClosedPages, Length(FClosedPages) + 1);  // push
+  FClosedPages[High(FClosedPages)]:= APage;
+
   FPageControl.Pages[Index].Free;
-  APage.Free;
+  //APage.Free;
+end;
+
+procedure TFileViewNotebook.UndoClosePage();
+var
+  ANewPage: TFileViewPage;
+  Last: TFileViewPage;
+begin
+  if Length(FClosedPages) > 0 then
+  begin
+    ANewPage := NewEmptyPage();
+    Last := FClosedPages[High(FClosedPages)];
+    ANewPage.AssignPage(Last);
+    ANewPage.MakeActive;
+    SetLength(FClosedPages, Length(FClosedPages) - 1);  // pop
+    Last.Free;
+  end;
 end;
 
 procedure TFileViewNotebook.RemovePage(Index: Integer);

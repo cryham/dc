@@ -187,6 +187,7 @@ type
    procedure cm_QuickSearch(const Params: array of string);
    procedure cm_QuickFilter(const Params: array of string);
    procedure cm_SrcOpenDrives(const {%H-}Params: array of string);
+   procedure cm_UndoCloseTab(const {%H-}Params: array of string);
    procedure cm_LeftOpenDrives(const {%H-}Params: array of string);
    procedure cm_RightOpenDrives(const {%H-}Params: array of string);
    procedure cm_OpenBar(const {%H-}Params: array of string);
@@ -1363,6 +1364,11 @@ end;
 procedure TMainCommands.cm_SrcOpenDrives(const Params: array of string);
 begin
   frmMain.ShowDrivesList(frmMain.SelectedPanel);
+end;
+
+procedure TMainCommands.cm_UndoCloseTab(const Params: array of string);
+begin
+  frmMain.ActiveNotebook.UndoClosePage();
 end;
 
 procedure TMainCommands.cm_LeftOpenDrives(const Params: array of string);

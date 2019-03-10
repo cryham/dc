@@ -120,6 +120,7 @@ type
     actFocusTreeView: TAction;
     actToggleFullscreenConsole: TAction;
     actSrcOpenDrives: TAction;
+    actUndoCloseTab: TAction;
     actRightReverseOrder: TAction;
     actLeftReverseOrder: TAction;
     actRightFlatView: TAction;
@@ -334,6 +335,7 @@ type
     mnuTabOptionPathResets: TMenuItem;
     mnuCloseAllTabs: TMenuItem;
     mnuCloseTab: TMenuItem;
+    mnuUndoCloseTab: TMenuItem;
     miLine15: TMenuItem;
     mnuOpenDirInNewTab: TMenuItem;
     mnuNewTab: TMenuItem;

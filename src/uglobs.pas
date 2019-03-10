@@ -974,6 +974,7 @@ begin
       AddIfNotExists(['Ctrl+T'],[],'cm_NewTab');
       AddIfNotExists(['Ctrl+U'],[],'cm_Exchange');
       AddIfNotExists(['Ctrl+W'],[],'cm_CloseTab');
+      AddIfNotExists(['Ctrl+Shift+W'],[],'cm_UndoCloseTab');
       AddIfNotExists(['Ctrl+F1'],[],'cm_BriefView');
       AddIfNotExists(['Ctrl+F2'],[],'cm_ColumnsView');
       AddIfNotExists(['Ctrl+F3'],[],'cm_SortByName');

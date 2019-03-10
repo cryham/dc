@@ -1219,6 +1219,9 @@ object frmMain: TfrmMain
       object miLine15: TMenuItem
         Caption = '-'
       end
+      object mnuUndoCloseTab: TMenuItem
+        Action = actUndoCloseTab
+      end
       object mnuCloseTab: TMenuItem
         Action = actCloseTab
       end
@@ -1680,6 +1683,13 @@ object frmMain: TfrmMain
       Tag = 7
       Category = 'Miscellaneous'
       Caption = '&Benchmark'
+      OnExecute = actExecute
+    end
+    object actUndoCloseTab: TAction
+      Tag = 21
+      Category = 'Tabs'
+      Caption = '&Undo Close Tab'
+      HelpType = htKeyword
       OnExecute = actExecute
     end
     object actNewTab: TAction
