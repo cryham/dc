@@ -593,8 +593,16 @@ begin
   FontOptionsToFont(gFonts[dcfMain], memFolder.Font);
   memFolder.Color:= gBackColor;
 
-  ViewerControl.TabSpaces := gTabSpaces;
-  ViewerControl.MaxTextWidth := gMaxTextWidth;
+  with ViewerControl do
+    begin
+      TabSpaces := gTabSpaces;
+      MaxTextWidth := gMaxTextWidth;
+
+      Color:= gBookBackgroundColor;
+      Font.Color:= gBookFontColor;
+      //Font.Quality:= fqAntialiased;
+      Font.Quality:= fqCleartype;
+    end;
 end;
 
 constructor TfrmViewer.Create(TheOwner: TComponent);
@@ -1328,8 +1336,9 @@ begin
   else begin
     with ViewerControl do
       begin
-        Color:= clWindow;
-        Font.Color:= clWindowText;
+        Color:= gBookBackgroundColor; //clWindow;
+        Font.Color:= gBookFontColor; //clWindowText;
+        Font.Quality:= fqCleartype; //fqDefault;
         ColCount:= 1;
       end;
     FontOptionsToFont(gFonts[dcfViewer], ViewerControl.Font);
