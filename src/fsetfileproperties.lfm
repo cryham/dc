@@ -428,7 +428,7 @@ object frmSetFileProperties: TfrmSetFileProperties
       Width = 58
       AllowGrayed = True
       BorderSpacing.Bottom = 6
-      Caption = 'System'
+      Caption = '&System'
       OnClick = chkChangeAttrClick
       State = cbGrayed
       TabOrder = 3
@@ -441,7 +441,7 @@ object frmSetFileProperties: TfrmSetFileProperties
       Width = 59
       AllowGrayed = True
       Anchors = [akTop]
-      Caption = 'Hidden'
+      Caption = '&Hidden'
       OnClick = chkChangeAttrClick
       State = cbGrayed
       TabOrder = 2
@@ -456,7 +456,7 @@ object frmSetFileProperties: TfrmSetFileProperties
       AllowGrayed = True
       BorderSpacing.Left = 6
       BorderSpacing.Top = 6
-      Caption = 'Archive'
+      Caption = '&Archive'
       OnClick = chkChangeAttrClick
       State = cbGrayed
       TabOrder = 0
@@ -472,7 +472,7 @@ object frmSetFileProperties: TfrmSetFileProperties
       AllowGrayed = True
       BorderSpacing.Top = 6
       BorderSpacing.Bottom = 6
-      Caption = 'Read only'
+      Caption = '&Read only'
       OnClick = chkChangeAttrClick
       State = cbGrayed
       TabOrder = 1

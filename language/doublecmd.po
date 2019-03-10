@@ -177,6 +177,7 @@ msgid "Choose attributes"
 msgstr ""
 
 #: tfrmattributesedit.cbarchive.caption
+msgctxt "tfrmattributesedit.cbarchive.caption"
 msgid "&Archive"
 msgstr ""
 
@@ -193,6 +194,7 @@ msgid "&Encrypted"
 msgstr ""
 
 #: tfrmattributesedit.cbhidden.caption
+msgctxt "tfrmattributesedit.cbhidden.caption"
 msgid "&Hidden"
 msgstr ""
 
@@ -8146,6 +8148,7 @@ msgid "SUID"
 msgstr ""
 
 #: tfrmsetfileproperties.chkarchive.caption
+msgctxt "tfrmsetfileproperties.chkarchive.caption"
 msgid "Archive"
 msgstr ""
 
@@ -8154,6 +8157,7 @@ msgid "Created:"
 msgstr ""
 
 #: tfrmsetfileproperties.chkhidden.caption
+msgctxt "tfrmsetfileproperties.chkhidden.caption"
 msgid "Hidden"
 msgstr ""
 
