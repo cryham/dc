@@ -636,8 +636,7 @@ resourcestring
   rsMulRenWarningDuplicate = 'Warning, duplicate names!';
   rsMulRenAutoRename = 'Do auto-rename to "name (1).ext", "name (2).ext" etc.?';
   rsMulRenWrongLinesNumber = 'File contains wrong number of lines: %d, should be %d!';
-  rsMulRenFileNameStyleList = 'No change;UPPERCASE;lowercase;First char uppercase;' +
-                              'First Char Of Every Word Uppercase;';
+  rsMulRenFileNameStyleList = 'Nothing;lower;UPPER;First char;Every Word;';
   // CheckSumCalcVerify dialog
   rsCheckSumVerifyTitle = 'Verify checksum';
   rsCheckSumVerifyText = 'Enter checksum and select algorithm:';

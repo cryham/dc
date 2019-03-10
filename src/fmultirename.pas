@@ -46,13 +46,23 @@ type
 
   TfrmMultiRename = class(TAloneForm)
    btnEdit: TButton;
+   btnExtMenu: TButton;
     btnLoadPreset: TButton;
+    btnNameMenu: TButton;
     btnSavePreset: TButton;
     btnDeletePreset: TButton;
     cbRegExp: TCheckBox;
     cbUseSubs: TCheckBox;
-    cmbExtensionStyle: TComboBox;
     cbPresets: TComboBox;
+    edPresets: TEdit;
+    cmbExtensionStyle: TComboBox;
+    cmbNameStyle: TComboBox;
+    edExt: TEdit;
+    edPreset: TEdit;
+    edName: TEdit;
+    lbExt: TLabel;
+    lbName: TLabel;
+    lbPresets: TLabel;
     mnuEditNames: TMenuItem;
     mnuLoadFromFile: TMenuItem;
     miDay2: TMenuItem;
@@ -62,21 +72,10 @@ type
     pnlOptions: TPanel;
     pmEditDirect: TPopupMenu;
     StringGrid: TStringGrid;
-    gbPresets: TGroupBox;
-    gbMaska: TGroupBox;
-    lbName: TLabel;
-    lbExt: TLabel;
-    edName: TEdit;
-    edExt: TEdit;
-    btnNameMenu: TButton;
-    btnExtMenu: TButton;
-    gbFindReplace: TGroupBox;
     lbFind: TLabel;
     lbReplace: TLabel;
     edFind: TEdit;
     edReplace: TEdit;
-    cmbNameStyle: TComboBox;
-    gbCounter: TGroupBox;
     lbStNb: TLabel;
     lbInterval: TLabel;
     lbWidth: TLabel;
@@ -84,8 +83,6 @@ type
     edInterval: TEdit;
     cmbxWidth: TComboBox;
     btnRename: TButton;
-    btnClose: TButton;
-    gbLog: TGroupBox;
     edFile: TEdit;
     cbLog: TCheckBox;
     btnRestore: TButton;
@@ -124,9 +121,11 @@ type
     procedure btnDeletePresetClick(Sender: TObject);
     procedure cbRegExpChange(Sender: TObject);
     procedure cmbNameStyleChange(Sender: TObject);
+    procedure KeyDownHandler(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edFindChange(Sender: TObject);
     procedure mnuEditNamesClick(Sender: TObject);
     procedure mnuLoadFromFileClick(Sender: TObject);
+    procedure OnSelect(Sender: TObject);
     procedure StringGridKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure StringGridMouseDown(Sender: TObject; Button: TMouseButton;
@@ -304,6 +303,7 @@ begin
 
   // Set default values for controls.
   btnRestoreClick(nil);
+  KeyPreview := True;  // for KeyDownHandler
 
   // Initialize presets.
   LoadPresets;
@@ -481,6 +481,38 @@ begin
   StringGridTopLeftChanged(StringGrid);
 end;
 
+procedure TfrmMultiRename.KeyDownHandler(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case Key of
+    VK_F2:
+      begin
+        cbPresets.SetFocus;
+      end;
+    VK_ESCAPE:
+      begin
+        Close;
+      end;
+    VK_DOWN:
+      begin
+        if edName.Focused then
+          btnNameMenuClick(Sender)
+        else if edExt.Focused then
+          btnExtMenuClick(Sender)
+      end;
+    VK_NEXT:  // PGDN
+      begin
+        if edName.Focused then
+          cmbNameStyle.SetFocus
+        else if edExt.Focused then
+          cmbExtensionStyle.SetFocus
+      end;
+    {VK_RETURN, VK_SELECT:
+      begin
+      end;}
+  end;
+end;
+
 procedure TfrmMultiRename.LoadNamesFromFile(const AFileName: String);
 var
   AFileList: TStringListEx;
@@ -494,9 +526,6 @@ begin
     end
     else begin
       FNames.Assign(AFileList);
-      gbMaska.Enabled:= False;
-      gbPresets.Enabled:= False;
-      gbCounter.Enabled:= False;
       StringGridTopLeftChanged(StringGrid);
     end;
   except
@@ -540,6 +569,11 @@ begin
   dmComData.OpenDialog.Filter:= AllFilesMask;
   if dmComData.OpenDialog.Execute then
     LoadNamesFromFile(dmComData.OpenDialog.FileName);
+end;
+
+procedure TfrmMultiRename.OnSelect(Sender: TObject);
+begin
+  btnLoadPresetClick(Sender);
 end;
 
 procedure TfrmMultiRename.StringGridKeyDown(Sender: TObject; var Key: Word;
@@ -648,18 +682,18 @@ end;
 
 procedure TfrmMultiRename.btnSavePresetClick(Sender: TObject);
 begin
-  if cbPresets.Text <> '' then
+  if edPreset.Text <> '' then
   begin
-    if FPresets.Find(cbPresets.Text) <> -1 then
+    if FPresets.Find(edPreset.Text) <> -1 then
     begin
-      if msgYesNo(Format(rsMsgPresetAlreadyExists, [cbPresets.Text])) = False then
+      if msgYesNo(Format(rsMsgPresetAlreadyExists, [edPreset.Text])) = False then
         Exit;
     end;
 
-    SavePreset(cbPresets.Text);
+    SavePreset(edPreset.Text);
 
-    if cbPresets.Items.IndexOf(cbPresets.Text) = -1 then
-      cbPresets.Items.Add(cbPresets.Text);
+    if cbPresets.Items.IndexOf(edPreset.Text) = -1 then
+      cbPresets.Items.Add(edPreset.Text);
   end;
 end;
 
@@ -758,9 +792,6 @@ begin
   cbPresets.Text:='';
   FLastPreset:='';
   FNames.Clear;
-  gbMaska.Enabled:= True;
-  gbPresets.Enabled:= True;
-  gbCounter.Enabled:= True;
   StringGridTopLeftChanged(StringGrid);
 end;
 
@@ -798,7 +829,7 @@ begin
           Result := FormatFileFunction(UTF8Copy(sFormatStr, 2, UTF8Length(sFormatStr) - 1), FFiles.Items[ItemNr], FFileSource, True);
           for Index := 1 to Length(Result) - 1 do
           begin
-            if Result[Index] in ['\', '/', ':', '*', '?', '"', '<', '>', '|'] then
+            if Result[Index] in ['\', '/', '-', '*', '?', '"', '<', '>', '|'] then
               Result[Index] := '.';
           end;
         end;
@@ -851,7 +882,7 @@ begin
     Result := sOrig
   else
   begin
-    iSemiColon := Pos(':', sFormatStr);
+    iSemiColon := Pos('-', sFormatStr);
     if iSemiColon = 0 then
     begin
       iFrom := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 1);
@@ -903,7 +934,7 @@ var
 begin
   if ShowSelectTextRangeDlg(Self, Caption, FFiles[0].NameNoExt, ASelection) then
   begin
-    InsertMask('[N' + IntToStr(ASelection.X) + ':' + IntToStr(ASelection.Y) + ']', ppNameMenu.Tag);
+    InsertMask('[N' + IntToStr(ASelection.X) + '-' + IntToStr(ASelection.Y) + ']', ppNameMenu.Tag);
   end;
 end;
 
@@ -928,7 +959,7 @@ var
 begin
   if ShowSelectTextRangeDlg(Self, Caption, FFiles[0].Extension, ASelection) then
   begin
-    InsertMask('[E' + IntToStr(ASelection.X) + ':' + IntToStr(ASelection.Y) + ']', ppNameMenu.Tag);
+    InsertMask('[E' + IntToStr(ASelection.X) + '-' + IntToStr(ASelection.Y) + ']', ppNameMenu.Tag);
   end;
 end;
 
@@ -1143,8 +1174,8 @@ end;
 function TfrmMultiRename.ApplyStyle(InputString: String; Style: Integer): String;
 begin
   case Style of
-    1: Result := UTF8UpperCase(InputString);
-    2: Result := UTF8LowerCase(InputString);
+    1: Result := UTF8LowerCase(InputString);
+    2: Result := UTF8UpperCase(InputString);
     3: Result := FirstCharOfFirstWordToUppercaseUTF8(InputString);
     4: Result := FirstCharOfEveryWordToUppercaseUTF8(InputString);
     else
