@@ -1201,12 +1201,14 @@ object frmFindDlg: TfrmFindDlg
             ItemHeight = 0
             MultiSelect = True
             OnDblClick = lsFoundedFilesDblClick
+            OnDrawItem = lsFoundedFilesDrawItem
             OnKeyDown = lsFoundedFilesKeyDown
             OnMouseDown = lsFoundedFilesMouseDown
             OnMouseUp = lsFoundedFilesMouseUp
             OnMouseWheelDown = lsFoundedFilesMouseWheelDown
             OnMouseWheelUp = lsFoundedFilesMouseWheelUp
             ScrollWidth = 735
+            Style = lbOwnerDrawFixed
             TabOrder = 1
           end
           object pnlResultsBottom: TPanel

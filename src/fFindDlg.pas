@@ -234,6 +234,8 @@ type
     procedure lbSearchTemplatesDblClick(Sender: TObject);
     procedure lbSearchTemplatesSelectionChange(Sender: TObject; {%H-}User: boolean);
     procedure lsFoundedFilesDblClick(Sender: TObject);
+    procedure lsFoundedFilesDrawItem(Control: TWinControl; Index: Integer;
+      ARect: TRect; State: TOwnerDrawState);
     procedure lsFoundedFilesKeyDown(Sender: TObject;
       var Key: word; Shift: TShiftState);
     procedure lsFoundedFilesMouseDown(Sender: TObject; Button: TMouseButton;
@@ -628,6 +630,7 @@ begin
   FAtLeastOneSearchWasDone := False;
   FSearchWithDSXPluginInProgress := False;
   FSearchWithWDXPluginInProgress := False;
+  lsFoundedFiles.Color := gBackColor;
 
   // load language
   cmbNotOlderThanUnit.Items.Add(rsTimeUnitSecond);
@@ -689,8 +692,8 @@ begin
   CloneMainAction(frmMain.actConfigSearches, actList, miOptions, 0);
 
 {$IF DEFINED(FIX_DEFAULT)}
-  if (ListOffrmFindDlgInstance.Count = 0) then
-    Application.AddOnKeyDownBeforeHandler(@FormKeyDown);
+  //if (ListOffrmFindDlgInstance.Count = 0) then
+  Application.AddOnKeyDownBeforeHandler(@FormKeyDown);
 {$ENDIF}
 end;
 
@@ -1782,8 +1785,8 @@ end;
 procedure TfrmFindDlg.FormDestroy(Sender: TObject);
 begin
 {$IF DEFINED(FIX_DEFAULT)}
-  if ListOffrmFindDlgInstance.Count = 0 then
-    Application.RemoveOnKeyDownBeforeHandler(@FormKeyDown);
+  //if ListOffrmFindDlgInstance.Count = 0 then
+  Application.RemoveOnKeyDownBeforeHandler(@FormKeyDown);
 {$ENDIF}
   FreeAndNil(FoundedStringCopy);
   FreeAndNil(DsxPlugins);
@@ -2080,6 +2083,52 @@ procedure TfrmFindDlg.lsFoundedFilesDblClick(Sender: TObject);
 begin
   cm_GoToFile([]);
 end;
+
+procedure TfrmFindDlg.lsFoundedFilesDrawItem(Control: TWinControl;
+  Index: Integer; ARect: TRect; State: TOwnerDrawState);
+var
+  aColor: TColor;
+  path: String;
+  AFile: TFile = nil;
+  FileSource: IFileSource;
+begin
+  aColor:=gBookBackgroundColor; //gBackColor;
+  lsFoundedFiles.Canvas.Brush.Color:=aColor;
+  lsFoundedFiles.Canvas.FillRect(ARect);
+  if odSelected in State then aColor:=$404048;
+    lsFoundedFiles.Canvas.Pen.Color:=aColor;
+  lsFoundedFiles.Canvas.FrameRect(ARect);
+
+  path:=lsFoundedFiles.Items[Index];
+
+  aColor:=gBookFontColor; // ForeColor;
+  {
+  tf:=TFile.Create(path);  //tf.IsDirectory:=True;
+  tf.Name := path;
+  //if tf.IsDirectory then
+  if path.Contains('b') then
+    aColor:= gMarkColor
+  else
+    aColor:= gColorExt.GetColorBy(tf);
+  //aColor:= gColorExt.GetColorByExt(path);
+  }
+  //ArchiveFile := path; //ExtractWord(1, path, [ReversePathDelim]);
+  {AFile := TFileSystemFileSource.CreateFileFromFile(path);
+  try
+    FileSource:= GetArchiveFileSource(TFileSystemFileSource.GetFileSource, AFile, EmptyStr, False, False);
+  finally
+    AFile.Free;
+  end;
+  if Assigned(FileSource) then
+    aColor:= gColorExt.GetColorBy(AFile);
+  }
+
+  //if odSelected in State then aColor:=$F0F8FF;
+  lsFoundedFiles.Canvas.Font.Color:=aColor;
+  lsFoundedFiles.Canvas.Font.Bold:=True;
+  lsFoundedFiles.Canvas.TextRect(ARect, 2, ARect.Top, path);
+end;
+
 
 { TfrmFindDlg.lsFoundedFilesKeyDown }
 procedure TfrmFindDlg.lsFoundedFilesKeyDown(Sender: TObject;
