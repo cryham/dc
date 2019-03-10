@@ -892,6 +892,7 @@ msgid "Redo"
 msgstr "やり直し"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "置換(&R)"
 
@@ -3308,19 +3309,18 @@ msgstr "幅"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "閉じる(&C)"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "削除(&D)"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "編集(&E)"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3338,12 +3338,16 @@ msgid "..."
 msgstr "…"
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "名前の変更(&R)"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "全てリセット(&a)"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3357,8 +3361,10 @@ msgid "MultiRename"
 msgstr "複数リネーム"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "有効化(&b)"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3369,10 +3375,6 @@ msgstr "正規表現(&x)"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "置き換え(&U)"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3385,35 +3387,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] 拡張子"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "カウンタ"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "検索と置換"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "結果をログに記録"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "マスク"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "プリセット"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "拡張子(&E)"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "検索(&F)…"
 
 #: tfrmmultirename.lbinterval.caption
@@ -3421,15 +3410,28 @@ msgid "&Interval"
 msgstr "間隔(&I)"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "ファイル名(&N)"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "置き換え(&p)…"
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "開始番号(&t)"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3438,7 +3440,9 @@ msgid "&Width"
 msgstr "幅(&W)"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] カウンタ"
 
 #: tfrmmultirename.miday.caption
@@ -3498,8 +3502,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] 月の名前（完全形　例：”january”）"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] ファイル名"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10921,15 +10925,21 @@ msgid "Select the text format to import"
 msgstr "インポートするファイルフォーマットを選択"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "選択した %d 個のディレクトリを追加"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "選択したディレクトリを追加："
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "現在のディレクトリを追加："
 
 #: ulng.rsmsghotdircommandname
@@ -10941,8 +10951,10 @@ msgid "cm_somthing"
 msgstr "cm_somthing"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "「ディレクトリ・ホットリスト」の構成"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11025,11 +11037,15 @@ msgid "Hotdir path"
 msgstr "ホットディレクトリのパス"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "選択したディレクトリを再度追加："
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "現在のディレクトリを再度追加："
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11385,7 +11401,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "ファイルの拡張子＜%s＞をどのファイルタイプに追加するか選択"
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "選択済みファイル：%sバイト（%sバイト中）ファイル個数：%d個（%d個中）ディレクトリ個数：%d個（%d個中）"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11405,7 +11423,9 @@ msgid "Set volume label"
 msgstr "ボリュームラベルをセット"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "特別なディレクトリ"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11649,7 +11669,9 @@ msgstr ""
 
 # 文脈不明
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "変更無し;大文字;小文字;最初だけ大文字;各単語の頭を大文字"
 
 #: ulng.rsmulrenwarningduplicate
@@ -12838,7 +12860,13 @@ msgid "Terabytes"
 msgstr "Tバイト"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "ファイル：%d、ディレクトリ：%d、サイズ：%s (%s バイト)"
 
 #: ulng.rsspliterrdirectory

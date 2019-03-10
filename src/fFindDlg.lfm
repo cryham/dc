@@ -1469,7 +1469,7 @@ object frmFindDlg: TfrmFindDlg
       OnExecute = actExecute
     end
     object actFeedToListbox: TAction
-      Caption = 'Feed to &listbox'
+      Caption = 'Fee&d to listbox'
       OnExecute = actExecute
     end
     object actPageStandard: TAction

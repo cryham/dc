@@ -908,6 +908,7 @@ msgid "Redo"
 msgstr "Annuller fortryd"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Erstat..."
 
@@ -3358,20 +3359,18 @@ msgstr "Bredde"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Luk"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Slet maske"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Rediger"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3389,12 +3388,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Start!"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Nulstil alle"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3408,8 +3411,10 @@ msgid "MultiRename"
 msgstr "Multi-omdøbning"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "&Aktiver logning"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3420,10 +3425,6 @@ msgstr "Regulære &udtryk"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "Brug su&bstituter"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3436,35 +3437,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] &Type"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Definer tæller [C]"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Søg && erstat"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Log-resultat"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Omdøb maske"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Forvalg"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "Fil&type"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "Sø&g efter:"
 
 #: tfrmmultirename.lbinterval.caption
@@ -3472,15 +3460,28 @@ msgid "&Interval"
 msgstr "St&ep:"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "Fil&navn"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Erstat &med:"
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Start &ved:"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3489,7 +3490,9 @@ msgid "&Width"
 msgstr "&Cifre:"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] T&æller"
 
 #: tfrmmultirename.miday.caption
@@ -3549,8 +3552,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Månedsnavn (langt, f.eks. januar\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Navn"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -11171,15 +11174,21 @@ msgid "Select the text format to import"
 msgstr "Vælg tekstformatet som skal importeres"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Tilføj %d valgte mapper"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Tilføj valgte mapper: "
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Tilføj aktuel mappe: "
 
 #: ulng.rsmsghotdircommandname
@@ -11191,8 +11200,10 @@ msgid "cm_somthing"
 msgstr "cm_noget"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Konfiguration af Favoritmapper"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11275,11 +11286,15 @@ msgid "Hotdir path"
 msgstr "Favoritmappens sti"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Tilføj valgte mappe igen: "
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Tilføj aktuel mappe igen: "
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11680,7 +11695,9 @@ msgid "Set volume label"
 msgstr "Angiv volumen-etiket"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Særlige mapper"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11935,7 +11952,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr ""
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Uændret;STORE BOGSTAVER;små bogstaver;Første bogstav stort;Første Bogstav Stort I hvert Ord;"
 
 #: ulng.rsmulrenwarningduplicate

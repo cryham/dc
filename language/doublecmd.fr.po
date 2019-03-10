@@ -914,6 +914,7 @@ msgid "Redo"
 msgstr "Refaire"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "R&emplacer"
 
@@ -3327,19 +3328,18 @@ msgstr "Largeur"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Fermer"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Supprimer"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "Éditer"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3357,12 +3357,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Renommer"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Réinitialiser tout"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3376,8 +3380,10 @@ msgid "MultiRename"
 msgstr "Renommer par lot"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Activer"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3388,10 +3394,6 @@ msgstr "E&xpression régulière"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "&Utiliser la substitution"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3404,35 +3406,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Extension"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Compteur"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Chercher && Remplacer"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Journaliser le résultat"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Masque"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Présélections"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Extension"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "&Chercher..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3440,15 +3429,28 @@ msgid "&Interval"
 msgstr "Intervalle"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "&Nom de fichier"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Rem&placer"
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Nombre de départ"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3457,7 +3459,9 @@ msgid "&Width"
 msgstr "Largeur"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Compteur"
 
 #: tfrmmultirename.miday.caption
@@ -3517,8 +3521,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Nom du mois (long, ex : \"janvier\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Nom"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10934,15 +10938,21 @@ msgid "Select the text format to import"
 msgstr "Sélectionnez le format du texte à importer"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Ajoute les %d dossiers sélectionnés"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Ajoute le dossier sélectionné: "
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Ajoute le dossier courant: "
 
 #: ulng.rsmsghotdircommandname
@@ -10954,8 +10964,10 @@ msgid "cm_somthing"
 msgstr "cm_something"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Configuration des dossiers favoris"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11038,11 +11050,15 @@ msgid "Hotdir path"
 msgstr "Chemin du dossier"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Ajoute à nouveau le dossier sélectionné: "
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Ajoute à nouveau le dossier courant: "
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11397,7 +11413,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "Choisissez le type de fichier auquel ajouté une extension \"%s\""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Sélectionnés : %s de %s, fichiers : %d sur %d, dossiers : %d sur %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11417,7 +11435,9 @@ msgid "Set volume label"
 msgstr "Définir le nom du vomume"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Dossier spéciaux"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11654,7 +11674,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr "Renommage automatique sous forme de \"nom (1).ext\", \"nom (2).ext\", etc.?"
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Pas de changement;MAJUSCULE;minuscule;Premier caractère majuscule;Premier Caractère De Chaque Mot Majuscule;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -12837,7 +12859,13 @@ msgid "Terabytes"
 msgstr "Téraoctets"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Fichiers : %d, Dossiers : %d, Taille : %s (%s octets)"
 
 #: ulng.rsspliterrdirectory

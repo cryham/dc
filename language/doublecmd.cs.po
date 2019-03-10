@@ -881,6 +881,7 @@ msgid "Redo"
 msgstr "Krok vpřed"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Nahradit"
 
@@ -3245,19 +3246,18 @@ msgstr "Šířka"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Zavřít"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Smazat"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Upravit"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3275,12 +3275,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Přejmenovat"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Obnovit &vše"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3293,7 +3297,9 @@ msgid "MultiRename"
 msgstr "Hromadné přejmenování"
 
 #: tfrmmultirename.cblog.caption
-msgid "Ena&ble"
+#, fuzzy
+#| msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Povo&lit"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3303,10 +3309,6 @@ msgstr "&Regulární výrazy"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "Po&užít náhradu"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3319,35 +3321,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Přípona"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Počítadlo"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Vyhledat a Nahradit"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Výsledek protokolu"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Maska"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Předvolby"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Přípona"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "&Hledat..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3355,15 +3344,28 @@ msgid "&Interval"
 msgstr "&Interval"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "&Název souboru"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Nah&radit..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Č&íslovat od"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3371,7 +3373,9 @@ msgid "&Width"
 msgstr "&Šířka"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Počítadlo"
 
 #: tfrmmultirename.miday.caption
@@ -3431,8 +3435,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Název měsíce (dlouhé, např. \"leden\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Název"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10643,15 +10647,21 @@ msgid "Select the text format to import"
 msgstr "Vyberte formát textu pro import"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Přidat %d vybraných adresářů"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Přidat: "
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Přidat: "
 
 #: ulng.rsmsghotdircommandname
@@ -10664,8 +10674,10 @@ msgstr "cm_jakýkoliv"
 
 # Výstižnější a stručnější překlad vzhledem k místu použití.
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Nastavení..."
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -10748,11 +10760,15 @@ msgid "Hotdir path"
 msgstr "Cesta rychlého adresáře"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Znovu přidat: "
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Znovu přidat: "
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11128,7 +11144,9 @@ msgid "Set volume label"
 msgstr "Nastavit název disku"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Speciální složky"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11365,7 +11383,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr "Automaticky přejmenovat na \"název (1).ext\", \"název (2).ext\" atd.?"
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Neměnit;VELKÁ;malá;1. znak velkým;1. znak každého slova velkým;"
 
 #: ulng.rsmulrenwarningduplicate

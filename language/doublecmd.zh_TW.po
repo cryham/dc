@@ -958,6 +958,7 @@ msgid "Redo"
 msgstr "重做"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "取代 (&R)"
 
@@ -3494,21 +3495,18 @@ msgstr "寬度"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "關閉 (&C)"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "刪除 (&D)"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
 #| msgid "Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "編輯 (&E)"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3526,14 +3524,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "重新命名 (&R)"
 
 #: tfrmmultirename.btnrestore.caption
 #, fuzzy
 #| msgid "Reset all"
-msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "全部重置 (&A)"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3550,7 +3550,7 @@ msgstr "多重命名工具"
 #, fuzzy
 #| msgid "Enable"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "啟用 (&B)"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3564,10 +3564,6 @@ msgstr "使用規則運算式 (&X)"
 msgid "&Use substitution"
 msgstr "使用替代 (&U)"
 
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
-
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
 msgid "1"
@@ -3579,35 +3575,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] 副檔名"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "計數器"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "尋找 && 取代"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "記錄結果"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "名稱遮罩"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "預先配置"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "副檔名 (&E)"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "尋找 (&F)"
 
 #: tfrmmultirename.lbinterval.caption
@@ -3617,17 +3600,28 @@ msgid "&Interval"
 msgstr "間隔 (&I)"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "檔案名稱 (&N)"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "取代 (&P)"
 
 #: tfrmmultirename.lbstnb.caption
 #, fuzzy
 #| msgid "Start Number"
-msgid "S&tart Number"
+msgid "&Counter"
 msgstr "初始編號 (&T)"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3638,7 +3632,9 @@ msgid "&Width"
 msgstr "寬度 (&W)"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] 計數器"
 
 #: tfrmmultirename.miday.caption
@@ -3698,8 +3694,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] 月份名稱 (整字, 例: \"january\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] 名稱"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -11634,15 +11630,15 @@ msgid "Select the text format to import"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+msgid "D Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdircommandname
@@ -11655,7 +11651,7 @@ msgstr ""
 
 #: ulng.rsmsghotdirconfighotlist
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr ""
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11738,11 +11734,11 @@ msgid "Hotdir path"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdirrestorewhat
@@ -12086,7 +12082,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr ""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "選擇: %s / %sB  |  檔案: %d / %d  |  資料夾: %d / %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -12108,7 +12106,7 @@ msgid "Set volume label"
 msgstr "設置磁碟標籤"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+msgid "-Special"
 msgstr ""
 
 #: ulng.rsmsgspecialdiraddacti
@@ -12336,7 +12334,7 @@ msgstr ""
 #: ulng.rsmulrenfilenamestylelist
 #, fuzzy
 #| msgid "No change;UPPERCASE;lowercase;First Char Big;"
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "不變更;大寫;小寫;首字大寫;每個單字首字大寫;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -13531,7 +13529,13 @@ msgid "Terabytes"
 msgstr "Terabytes"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "檔案: %d, 資料夾: %d, 大小: %s (%s 位元組)"
 
 #: ulng.rsspliterrdirectory

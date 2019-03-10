@@ -878,6 +878,7 @@ msgid "Redo"
 msgstr "Паўтарыць"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Замяніць"
 
@@ -3242,19 +3243,18 @@ msgstr "Шырыня"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Закрыць"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Выдаліць"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "TFRMMULTIRENAME.BTNEDIT.CAPTION"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Рэдагаваць"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3272,12 +3272,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Змяніць назву"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Скінуць &усё"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3290,7 +3294,9 @@ msgid "MultiRename"
 msgstr "Змена назваў некалькіх файлаў"
 
 #: tfrmmultirename.cblog.caption
-msgid "Ena&ble"
+#, fuzzy
+#| msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Укл&ючыць"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3300,10 +3306,6 @@ msgstr "Рэгулярныя &выразы"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "&Выкарыстоўваць падстаноўку"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3316,35 +3318,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Пашырэнне"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Лічыльнік"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Знайсці і &замяніць"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Лог вынікаў"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Маска"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Профілі"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Пашырэнне"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "&Шукаць..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3352,15 +3341,28 @@ msgid "&Interval"
 msgstr "&Інтэрвал"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "&Назва файла"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Зам&яніць..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "&Пачатковы нумар"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3368,7 +3370,9 @@ msgid "&Width"
 msgstr "&Шырыня"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Лічыльнік"
 
 #: tfrmmultirename.miday.caption
@@ -3428,8 +3432,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Назва месяца (поўная,напрыклад, \"студзень\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Назва"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10665,15 +10669,21 @@ msgid "Select the text format to import"
 msgstr "Абраць фармат тэксту для імпарту"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Дадаць %d абраных каталогаў"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Дадаць абраны каталог: "
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Дадаць бягучы каталог: "
 
 #: ulng.rsmsghotdircommandname
@@ -10685,8 +10695,10 @@ msgid "cm_somthing"
 msgstr "cm_somthing"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Налады спіса выбраных каталогаў"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -10769,11 +10781,15 @@ msgid "Hotdir path"
 msgstr "Шлях да выбранага каталога"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Зноў дадаць выбраны каталог: "
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Зноў дадаць бягучы каталог: "
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11151,7 +11167,9 @@ msgid "Set volume label"
 msgstr "Прызначыць тому адмеціну"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Адмысловыя каталогі"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11386,7 +11404,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr "Аўтаматычна змяняць назву на \"name (1).ext\", \"name (2).ext\" и г.д.?"
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Без змен;ВЕРХНІ РЭГІСТР;ніжні рэгістр;З вялікай;Кожнае Слова З Вялікай;"
 
 #: ulng.rsmulrenwarningduplicate

@@ -894,6 +894,7 @@ msgid "Redo"
 msgstr "Refă ultima acțiune"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "Înlocui&re"
 
@@ -3310,19 +3311,18 @@ msgstr "Lățime"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "În&chide"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "Șterge (&d)"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Editează"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3340,12 +3340,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Redenumește"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Resetează to&ate"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3359,8 +3363,10 @@ msgid "MultiRename"
 msgstr "RedenumireMultiplă"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Activare (&b)"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3371,10 +3377,6 @@ msgstr "E&xpresii regulate"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "&Utilizează substituție"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3387,35 +3389,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Extensie"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Contor"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Găsește și Înlocuiește"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Jurnal Rezultate"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Mască"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Presetări"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Extensie"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "Găsește (&f)..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3423,15 +3412,28 @@ msgid "&Interval"
 msgstr "&Interval"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "&Numele Fișierului"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Înlocuiește (&p)..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Numărul de s&tart"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3440,7 +3442,9 @@ msgid "&Width"
 msgstr "Lățime (&w)"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Countor"
 
 #: tfrmmultirename.miday.caption
@@ -3500,8 +3504,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Nume lună (lung, ex., \"ianuarie\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Nume"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10889,15 +10893,15 @@ msgid "Select the text format to import"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+msgid "D Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdircommandname
@@ -10910,7 +10914,7 @@ msgstr ""
 
 #: ulng.rsmsghotdirconfighotlist
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr ""
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -10993,11 +10997,11 @@ msgid "Hotdir path"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11340,7 +11344,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr ""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Selectate: %s din %s, fișiere: %d din %d, dosare: %d din %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11360,7 +11366,7 @@ msgid "Set volume label"
 msgstr "Definește eticheta volumului"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+msgid "-Special"
 msgstr ""
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11585,7 +11591,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr ""
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Nicio schimbare: MAJUSCULE;minuscule;Majuscule primul char; Primul char din fiecare cuvânt Majusculă"
 
 #: ulng.rsmulrenwarningduplicate
@@ -12764,7 +12772,13 @@ msgid "Terabytes"
 msgstr "Teraocteți"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Fișiere: %d, Dosare: %d, Mărime: %s (%s octeți)"
 
 #: ulng.rsspliterrdirectory

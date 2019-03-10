@@ -886,6 +886,7 @@ msgid "Redo"
 msgstr "Ponovno uveljavi"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Zamenjaj"
 
@@ -3251,19 +3252,18 @@ msgstr "Širina"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Zapri"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Izbriši"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "TFRMMULTIRENAME.BTNEDIT.CAPTION"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&&Uredi"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3281,12 +3281,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Preimenuj"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Ponastavi &vse"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3299,7 +3303,9 @@ msgid "MultiRename"
 msgstr "Napredno preimenovanje"
 
 #: tfrmmultirename.cblog.caption
-msgid "Ena&ble"
+#, fuzzy
+#| msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "&Omogoči"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3309,10 +3315,6 @@ msgstr "Logični &izrazi"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "Uporabi &zamenjave"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3325,35 +3327,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Pripona"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Števec"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Najdi &in zamenjaj"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Rezultat beleženja"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Maska"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Shranjena preimenovanja"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Pripona"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "&Najdi ..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3361,15 +3350,28 @@ msgid "&Interval"
 msgstr "&Razmik"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "Ime &datoteke"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "&Zamenjaj ..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "&Začetna vrednost"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3377,7 +3379,9 @@ msgid "&Width"
 msgstr "&Širina"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Števec"
 
 #: tfrmmultirename.miday.caption
@@ -3437,8 +3441,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Ime meseca (dolgo, npr.: »januar«)"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Ime"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10679,15 +10683,21 @@ msgid "Select the text format to import"
 msgstr "Izbor vrste zapisa za uvoz"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Dodaj %d izbranih map"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Dodaj izbrano mapo:"
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Dodaj trenutno mapo:"
 
 #: ulng.rsmsghotdircommandname
@@ -10699,8 +10709,10 @@ msgid "cm_somthing"
 msgstr "cm_nek_ukaz"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Nastavitev seznama hitrih map"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -10783,11 +10795,15 @@ msgid "Hotdir path"
 msgstr "Pot do vroče mape"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Ponovno dodaj izbrano mapo:"
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Ponovno dodaj trenutno mapo:"
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11141,7 +11157,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "Izberite vrsto datoteke za dodajanje razširitve »%s«"
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Izbrano: %s od %s, datoteke: %d od %d, mape: %d od %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11161,7 +11179,9 @@ msgid "Set volume label"
 msgstr "Določi oznako dela arhiva"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Posebne mape"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11397,7 +11417,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr "Ali želite predmete samodejno preimenovati v »ime (1).pri«, »ime (2).pri« ... ?"
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Brez spremembe;VELIKE ČRKE;male črke;Prva črka je velika;Prva Črka Vsake Besede Je Velika;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -12559,7 +12581,13 @@ msgid "Terabytes"
 msgstr "Terabajti"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Datoteke: %d, Mape: %d, Velikost: %s (%s bajtov)"
 
 #: ulng.rsspliterrdirectory

@@ -896,6 +896,7 @@ msgid "Redo"
 msgstr "Επανάληψη"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "Αντικατάσταση"
 
@@ -3309,19 +3310,18 @@ msgstr "Πλάτος"
 msgid "456456465465465"
 msgstr "456456465465465"
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "Κλείσιμο"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "Διαγραφή"
 
 #: tfrmmultirename.btnedit.caption
+#, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "Επεξεργασία"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3339,12 +3339,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "Μετονομασία"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Επαναφορά όλων"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3358,8 +3362,10 @@ msgid "MultiRename"
 msgstr "Μετονομασία Πολλών"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Ενεργοποίηση"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3370,10 +3376,6 @@ msgstr "Συνήθεις φράσεις"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "Χρήση αντικατάστασης"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3386,35 +3388,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Επέκταση"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Μετρητής"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Αναζήτηση && Αντικατάσταση"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Αποτέλεσμα Καταγραφής"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Μάσκα"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Προρύθμιση"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "Επέκταση"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "Έυρεση..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3422,15 +3411,28 @@ msgid "&Interval"
 msgstr "Διάστημα"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "Όνομα Αρχείου"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Αντικατάσταση..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Αριθμός Εκκίνησης"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3439,7 +3441,9 @@ msgid "&Width"
 msgstr "Πλάτος"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Μετρητής"
 
 #: tfrmmultirename.miday.caption
@@ -3499,8 +3503,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[ΜΜΜΜ] Όνομα Μηνός (μακρύ, π.χ., \"ιανουάριος\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Όνομα"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -10905,15 +10909,21 @@ msgid "Select the text format to import"
 msgstr "Επιλέξτε τον τύπο κειμένου προς εισαγωγή"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "Προσθήκη %d επιλεγμένων καταλόγων"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "Προσθήκη του επιλεγμένου καταλόγου:"
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "Προσθήκη του τρέχοντος καταλόγου:"
 
 #: ulng.rsmsghotdircommandname
@@ -10925,8 +10935,10 @@ msgid "cm_somthing"
 msgstr "cm_somthing"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "Ρυθμίσεις του Καταλόγου Hotlist"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11009,11 +11021,15 @@ msgid "Hotdir path"
 msgstr "Διαδρομή Hotdir"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "Επαναπροσθήκη του επιλεγμένου καταλόγου:"
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "Επαναπροσθήκη του τρέχων καταλόγου:"
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11390,7 +11406,9 @@ msgid "Set volume label"
 msgstr "Καθορισμός ετικέτας τόμου"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "Ειδικοί Κατάλογοι"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11625,7 +11643,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr "Εκτέλεση αυτόματης μετονομασίας του \"name (1).ext\", \"name (2).ext\" κ.λ.π;"
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Χωρίς αλλαγή;ΚΕΦΑΛΑΙΟ;μικρό;Πρώτο γράμμα κεφαλαίο;Πρώτο Γράμμα κάθε Λέξης Κεφαλαίο;"
 
 #: ulng.rsmulrenwarningduplicate

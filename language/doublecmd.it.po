@@ -904,6 +904,7 @@ msgid "Redo"
 msgstr "Ripristina"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Sostituisci"
 
@@ -3344,20 +3345,18 @@ msgstr "Larghezza"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Chiudi"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Elimina"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Modifica"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3375,12 +3374,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Rinomina"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Reimposta &tutto"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3394,8 +3397,10 @@ msgid "MultiRename"
 msgstr "Strumento Multi-Rinomina"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "A&bilita"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3406,10 +3411,6 @@ msgstr "E&spressioni Regolari"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "&Usa la sostituzione"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3422,35 +3423,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Estensione"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Contatore"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Trova && Sostituisci"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Registra risultati"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Filtro"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Preset"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "&Estensione"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "&Trova..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3458,15 +3446,28 @@ msgid "&Interval"
 msgstr "&Intervallo"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "&Nome file"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "&Sostituisci"
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Numero di p&artenza"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3475,7 +3476,9 @@ msgid "&Width"
 msgstr "&Larghezza"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Contatore"
 
 #: tfrmmultirename.miday.caption
@@ -3535,8 +3538,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Nome del mese(lungo, es : \"gennaio\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] Nome"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -11068,15 +11071,15 @@ msgid "Select the text format to import"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+msgid "D Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdircommandname
@@ -11089,7 +11092,7 @@ msgstr ""
 
 #: ulng.rsmsghotdirconfighotlist
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr ""
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11174,11 +11177,11 @@ msgid "Hotdir path"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11524,7 +11527,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr ""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Selezione: %s di %s, file: %d di %d, cartelle: %d di %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11546,7 +11551,7 @@ msgid "Set volume label"
 msgstr "Imposta etichetta volume"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+msgid "-Special"
 msgstr ""
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11771,7 +11776,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr ""
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Nessuna modifica;MAIUSCOLE;minuscole;Primo carattere maiusc.;Primo caratt. di ogni parola maiusc.;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -12969,7 +12976,13 @@ msgid "Terabytes"
 msgstr "Terabyte"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "File: %d, Cartella: %d, Dimensione: %s (%s byte)"
 
 #: ulng.rsspliterrdirectory

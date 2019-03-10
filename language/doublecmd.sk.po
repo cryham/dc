@@ -972,6 +972,7 @@ msgid "Redo"
 msgstr "Opakovať"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Nahradiť"
 
@@ -3598,21 +3599,18 @@ msgstr "Šírka"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Zavrieť"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Vymazať"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
 #| msgid "Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "&Upraviť"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3630,14 +3628,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "P&remenovať"
 
 #: tfrmmultirename.btnrestore.caption
 #, fuzzy
 #| msgid "Reset all"
-msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Obnoviť všetko"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3655,7 +3655,7 @@ msgstr "Hromadné premenovanie"
 #, fuzzy
 #| msgid "Enable"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Log"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3671,10 +3671,6 @@ msgstr "&Regulárne výrazy"
 msgid "&Use substitution"
 msgstr "Po&užiť substitúciu"
 
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
-
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
 msgid "1"
@@ -3688,39 +3684,20 @@ msgstr "1"
 #: tfrmmultirename.extension.caption
 #, fuzzy
 #| msgid "[E]xtension"
-msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] Prípona"
-
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Počítadlo"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Vyhľadať && Nahradiť"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Log výsledku"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Maska"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Predvoľby"
 
 #: tfrmmultirename.lbext.caption
 #, fuzzy
 #| msgid "Extension"
-msgid "&Extension"
+msgid "&Ext"
 msgstr "Prípona"
 
 #: tfrmmultirename.lbfind.caption
 #, fuzzy
 #| msgid "Find..."
-msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "Hľadať..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3732,19 +3709,26 @@ msgstr "&Interval"
 #: tfrmmultirename.lbname.caption
 #, fuzzy
 #| msgid "File Name"
-msgid "File &Name"
+msgid "N&ame"
 msgstr "&Názov súboru"
+
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
 
 #: tfrmmultirename.lbreplace.caption
 #, fuzzy
 #| msgid "Replace..."
-msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Nahradiť..."
 
 #: tfrmmultirename.lbstnb.caption
 #, fuzzy
 #| msgid "Start Number"
-msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Číslovať od"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3757,7 +3741,7 @@ msgstr "Šírka"
 #: tfrmmultirename.micounter.caption
 #, fuzzy
 #| msgid "[C]ounter"
-msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] Počítadlo"
 
 #: tfrmmultirename.miday.caption
@@ -3831,10 +3815,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Meno mesiaca (celé, t.j. \"január\")"
 
 #: tfrmmultirename.miname.caption
-#, fuzzy
-#| msgid "[N]ame"
-msgid "[N] Name"
-msgstr "[N]Názov"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 #, fuzzy
@@ -11704,15 +11686,15 @@ msgid "Select the text format to import"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+msgid "D Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdircommandname
@@ -11725,7 +11707,7 @@ msgstr ""
 
 #: ulng.rsmsghotdirconfighotlist
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr ""
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11810,11 +11792,11 @@ msgid "Hotdir path"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdirrestorewhat
@@ -12159,7 +12141,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr ""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Vybrané: %s z %s, súbory: %d z %d, adresáre: %d of %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -12181,7 +12165,7 @@ msgid "Set volume label"
 msgstr "Nastaviť názov disku"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+msgid "-Special"
 msgstr ""
 
 #: ulng.rsmsgspecialdiraddacti
@@ -12410,7 +12394,7 @@ msgstr ""
 #: ulng.rsmulrenfilenamestylelist
 #, fuzzy
 #| msgid "No change;UPPERCASE;lowercase;First Char Big;"
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Nemeniť;VEĽKÝM;malým;Prvý znak veľkým;Prvý Znak Každého Slova Veľkým;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -13615,7 +13599,13 @@ msgid "Terabytes"
 msgstr "Terabajtov"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Súborov: %d, Zložiek: %d, Veľkosť: %s (%s bajtov)"
 
 #: ulng.rsspliterrdirectory

@@ -892,6 +892,7 @@ msgid "Redo"
 msgstr "재실행"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "바꾸기(&R)"
 
@@ -3332,20 +3333,18 @@ msgstr "폭"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "닫기(&C)"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "삭제(&D)"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
+#| msgid "&Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "편집(&E)"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3363,12 +3362,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "파일명 변경(&R)"
 
 #: tfrmmultirename.btnrestore.caption
-msgid "Reset &all"
+#, fuzzy
+#| msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "전체 재설정(&A)"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3382,8 +3385,10 @@ msgid "MultiRename"
 msgstr "여러개 파일명 바꾸기"
 
 #: tfrmmultirename.cblog.caption
+#, fuzzy
+#| msgid "Ena&ble"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "가능(&B)"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3394,10 +3399,6 @@ msgstr "정규표현식(&X)"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "치환 사용(&U)"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3410,35 +3411,22 @@ msgid "1"
 msgstr "1"
 
 #: tfrmmultirename.extension.caption
-msgid "[E] Extension"
+#, fuzzy
+#| msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E] 확장자"
 
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "일련 번호"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "찾기 && 바꾸기"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "로그 결과"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "마스크"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "프리셋"
-
 #: tfrmmultirename.lbext.caption
-msgid "&Extension"
+#, fuzzy
+#| msgid "&Extension"
+msgid "&Ext"
 msgstr "확장자(&E)"
 
 #: tfrmmultirename.lbfind.caption
-msgid "&Find..."
+#, fuzzy
+#| msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "찾기(&F)..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3446,15 +3434,28 @@ msgid "&Interval"
 msgstr "간격(&I)"
 
 #: tfrmmultirename.lbname.caption
-msgid "File &Name"
+#, fuzzy
+#| msgid "File &Name"
+msgid "N&ame"
 msgstr "파일명(&N)"
 
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
+
 #: tfrmmultirename.lbreplace.caption
-msgid "Re&place..."
+#, fuzzy
+#| msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "바꾸기(&P)..."
 
 #: tfrmmultirename.lbstnb.caption
-msgid "S&tart Number"
+#, fuzzy
+#| msgid "S&tart Number"
+msgid "&Counter"
 msgstr "시작 숫자(&T)"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3463,7 +3464,9 @@ msgid "&Width"
 msgstr "자릿수(&W)"
 
 #: tfrmmultirename.micounter.caption
-msgid "[C] Counter"
+#, fuzzy
+#| msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C] 일련 번호"
 
 #: tfrmmultirename.miday.caption
@@ -3523,8 +3526,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] 월 (길게, 예, \"january\")"
 
 #: tfrmmultirename.miname.caption
-msgid "[N] Name"
-msgstr "[N] 파일명"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 msgid "[Nx] Character at position x"
@@ -11095,15 +11098,21 @@ msgid "Select the text format to import"
 msgstr "가져오기하려는 다음 텍스트 형태 선택"
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+#, fuzzy,badformat
+#| msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr "%d 선택된 폴더(디렉토리)추가"
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+#, fuzzy
+#| msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr "선택된 폴더(디렉토리)추가: "
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+#, fuzzy
+#| msgid "Add current dir: "
+msgid "D Add dir"
 msgstr "현재 디렉토리(폴더)추가: "
 
 #: ulng.rsmsghotdircommandname
@@ -11115,8 +11124,10 @@ msgid "cm_somthing"
 msgstr "cm_somthing"
 
 #: ulng.rsmsghotdirconfighotlist
+#, fuzzy
+#| msgid "Configuration of Directory Hotlist"
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr "폴더 바로 가기 환경설정"
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11201,11 +11212,15 @@ msgid "Hotdir path"
 msgstr "바로 가기 경로"
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+#, fuzzy
+#| msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr "선택 폴더 다시 추가: "
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+#, fuzzy
+#| msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr "현재 폴더 추가: "
 
 #: ulng.rsmsghotdirrestorewhat
@@ -11564,7 +11579,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "추가하려는 \"%s\" 파일확장자를 선택하세요."
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "선택됨[용량:%s/%s, 파일: %d/%d, 폴더: %d/%d]"
 
 #: ulng.rsmsgselectexecutablefile
@@ -11584,7 +11601,9 @@ msgid "Set volume label"
 msgstr "볼륨 라벨 지정"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+#, fuzzy
+#| msgid "Special Dirs"
+msgid "-Special"
 msgstr "특별 디렉토리"
 
 #: ulng.rsmsgspecialdiraddacti
@@ -11819,7 +11838,9 @@ msgid "Do auto-rename to \"name (1).ext\", \"name (2).ext\" etc.?"
 msgstr ""
 
 #: ulng.rsmulrenfilenamestylelist
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+#, fuzzy
+#| msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "변화없음;대문자;소문자;첫번째 문자 대문자;모든 단어의 첫번째는 대문자;"
 
 #: ulng.rsmulrenwarningduplicate
@@ -13002,7 +13023,13 @@ msgid "Terabytes"
 msgstr "테라바이트"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "파일: %d, 폴더: %d, 크기: %s (%s 바이트)"
 
 #: ulng.rsspliterrdirectory

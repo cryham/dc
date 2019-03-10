@@ -972,6 +972,7 @@ msgid "Redo"
 msgstr "Refà"
 
 #: tfrmeditor.acteditrplc.caption
+msgctxt "tfrmeditor.acteditrplc.caption"
 msgid "&Replace"
 msgstr "&Reemplaça"
 
@@ -3566,21 +3567,18 @@ msgstr "Ample"
 msgid "456456465465465"
 msgstr ""
 
-#: tfrmmultirename.btnclose.caption
-msgctxt "TFRMMULTIRENAME.BTNCLOSE.CAPTION"
-msgid "&Close"
-msgstr "&Tanca"
-
 #: tfrmmultirename.btndeletepreset.caption
+#, fuzzy
+#| msgid "&Delete"
 msgctxt "TFRMMULTIRENAME.BTNDELETEPRESET.CAPTION"
-msgid "&Delete"
+msgid "Delete"
 msgstr "&Esborra"
 
 #: tfrmmultirename.btnedit.caption
 #, fuzzy
 #| msgid "Edit"
 msgctxt "tfrmmultirename.btnedit.caption"
-msgid "&Edit"
+msgid "Edi&t"
 msgstr "Edita"
 
 #: tfrmmultirename.btnextmenu.caption
@@ -3598,14 +3596,16 @@ msgid "..."
 msgstr "..."
 
 #: tfrmmultirename.btnrename.caption
+#, fuzzy
+#| msgid "&Rename"
 msgctxt "tfrmmultirename.btnrename.caption"
-msgid "&Rename"
+msgid "Rename &2"
 msgstr "&Reanomena"
 
 #: tfrmmultirename.btnrestore.caption
 #, fuzzy
 #| msgid "Reset all"
-msgid "Reset &all"
+msgid "Reset all &1"
 msgstr "Restaura"
 
 #: tfrmmultirename.btnsavepreset.caption
@@ -3622,7 +3622,7 @@ msgstr "Reanomenat múltiple"
 #, fuzzy
 #| msgid "Enable"
 msgctxt "TFRMMULTIRENAME.CBLOG.CAPTION"
-msgid "Ena&ble"
+msgid "Lo&g"
 msgstr "Permet"
 
 #: tfrmmultirename.cbregexp.caption
@@ -3633,10 +3633,6 @@ msgstr "Expressions regulars"
 #: tfrmmultirename.cbusesubs.caption
 msgid "&Use substitution"
 msgstr "Usa substitució"
-
-#: tfrmmultirename.cmbxwidth.text
-msgid "01"
-msgstr "01"
 
 #: tfrmmultirename.edinterval.text
 msgctxt "TFRMMULTIRENAME.EDINTERVAL.TEXT"
@@ -3651,39 +3647,20 @@ msgstr "1"
 #: tfrmmultirename.extension.caption
 #, fuzzy
 #| msgid "[E]xtension"
-msgid "[E] Extension"
+msgid "&3 [E] Extension"
 msgstr "[E]xtensió"
-
-#: tfrmmultirename.gbcounter.caption
-msgid "Counter"
-msgstr "Comptador"
-
-#: tfrmmultirename.gbfindreplace.caption
-msgid "Find && Replace"
-msgstr "Cerca i Reemplaçar"
-
-#: tfrmmultirename.gblog.caption
-msgid "Log Result"
-msgstr "Registre de resultat"
-
-#: tfrmmultirename.gbmaska.caption
-msgid "Mask"
-msgstr "Màscara"
-
-#: tfrmmultirename.gbpresets.caption
-msgid "Presets"
-msgstr "Configuració"
 
 #: tfrmmultirename.lbext.caption
 #, fuzzy
 #| msgid "Extension"
-msgid "&Extension"
+msgid "&Ext"
 msgstr "Extensió"
 
 #: tfrmmultirename.lbfind.caption
 #, fuzzy
 #| msgid "Find..."
-msgid "&Find..."
+msgctxt "tfrmmultirename.lbfind.caption"
+msgid "&Find"
 msgstr "Cerca..."
 
 #: tfrmmultirename.lbinterval.caption
@@ -3695,19 +3672,26 @@ msgstr "Interval"
 #: tfrmmultirename.lbname.caption
 #, fuzzy
 #| msgid "File Name"
-msgid "File &Name"
+msgid "N&ame"
 msgstr "Nom"
+
+#: tfrmmultirename.lbpresets.caption
+msgid ""
+"Presets\n"
+"F2\n"
+msgstr ""
 
 #: tfrmmultirename.lbreplace.caption
 #, fuzzy
 #| msgid "Replace..."
-msgid "Re&place..."
+msgctxt "tfrmmultirename.lbreplace.caption"
+msgid "&Replace"
 msgstr "Reemplaça..."
 
 #: tfrmmultirename.lbstnb.caption
 #, fuzzy
 #| msgid "Start Number"
-msgid "S&tart Number"
+msgid "&Counter"
 msgstr "Número inicial"
 
 #: tfrmmultirename.lbwidth.caption
@@ -3720,7 +3704,7 @@ msgstr "Amplada"
 #: tfrmmultirename.micounter.caption
 #, fuzzy
 #| msgid "[C]ounter"
-msgid "[C] Counter"
+msgid "&2 [C] Counter"
 msgstr "[C]omptador"
 
 #: tfrmmultirename.miday.caption
@@ -3792,10 +3776,8 @@ msgid "[MMMM] Month name (long, e.g., \"january\")"
 msgstr "[MMMM] Nom del mes (llarg, e.g., \"january\")"
 
 #: tfrmmultirename.miname.caption
-#, fuzzy
-#| msgid "[N]ame"
-msgid "[N] Name"
-msgstr "[N]om"
+msgid "&1 [N] Name"
+msgstr ""
 
 #: tfrmmultirename.minamex.caption
 #, fuzzy
@@ -11643,15 +11625,15 @@ msgid "Select the text format to import"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectories
-msgid "Add %d selected dirs"
+msgid "-Add sel.dirs"
 msgstr ""
 
 #: ulng.rsmsghotdiraddselecteddirectory
-msgid "Add selected dir: "
+msgid "-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdiraddthisdirectory
-msgid "Add current dir: "
+msgid "D Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdircommandname
@@ -11664,7 +11646,7 @@ msgstr ""
 
 #: ulng.rsmsghotdirconfighotlist
 msgctxt "ulng.rsmsghotdirconfighotlist"
-msgid "Configuration of Directory Hotlist"
+msgid "-Configuration"
 msgstr ""
 
 #: ulng.rsmsghotdirdeleteallentries
@@ -11747,11 +11729,11 @@ msgid "Hotdir path"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddselecteddirectory
-msgid "Re-Add selected dir: "
+msgid "-Re-Add sel.dir"
 msgstr ""
 
 #: ulng.rsmsghotdirreaddthisdirectory
-msgid "Re-Add current dir: "
+msgid "-Re-Add dir"
 msgstr ""
 
 #: ulng.rsmsghotdirrestorewhat
@@ -12119,7 +12101,7 @@ msgid "Set volume label"
 msgstr "Posa etiqueta al volum"
 
 #: ulng.rsmsgspecialdir
-msgid "Special Dirs"
+msgid "-Special"
 msgstr ""
 
 #: ulng.rsmsgspecialdiraddacti
@@ -12346,7 +12328,7 @@ msgstr ""
 #: ulng.rsmulrenfilenamestylelist
 #, fuzzy
 #| msgid "No change;UPPERCASE;lowercase;First Char Big;"
-msgid "No change;UPPERCASE;lowercase;First char uppercase;First Char Of Every Word Uppercase;"
+msgid "Nothing;lower;UPPER;First char;Every Word;"
 msgstr "Sense canvis;MAJÚSCULES;minúscules;Primera Majúscula;"
 
 #: ulng.rsmulrenwarningduplicate
