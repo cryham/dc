@@ -64,7 +64,7 @@ resourcestring
   rsMsgRenFlDr = 'Rename/move %d selected files/directories?';
   rsMsgRenSel = 'Rename/move selected "%s"?';
   rsMsgErrForceDir = 'Can not create directory %s!';
-  rsMsgSelectedInfo = 'Selected: %s of %s, files: %d of %d, folders: %d of %d';
+  rsMsgSelectedInfo = 'Sel: %s / %s  F: %d / %d  D: %d / %d';
   rsMsgCloseLockedTab = 'This tab (%s) is locked! Close anyway?';
   rsMsgTabForOpeningInNewTab = 'This tab (%s) is locked! Open directory in another tab?';
   rsSpaceMsg = 'Files: %d, Dirs: %d, Size: %s (%s bytes)';
