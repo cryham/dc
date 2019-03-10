@@ -329,25 +329,25 @@ end;
 
 function cnvFormatFileSize(iSize: int64; FSF: TFileSizeFormat; Number: integer): string;
 const
-  DIVISORS: array[LOW(TFileSizeFormat) .. HIGH(TFileSizeFormat)] of uint64 = (1, 1, 1024, (1024*1024), (1024*1024*1024), (1024*1024*1024*1024), 1, 1, 1024, (1024*1024), (1024*1024*1024), (1024*1024*1024*1024));
+  DIVISORS: array[LOW(TFileSizeFormat) .. HIGH(TFileSizeFormat)] of uint64 = (1, 1, 1000, (1000*1000), (1000*1000*1000), (1000*1000*1000*1000), 1, 1, 1000, (1000*1000), (1000*1000*1000), (1000*1000*1000*1000));
 var
   FloatSize: extended;
 begin
   FloatSize := iSize;
   if FSF = fsfPersonalizedFloat then
   begin
-    if iSize div (1024 * 1024 * 1024 * 1024) > 0 then FSF := fsfPersonalizedTera
-    else if iSize div (1024 * 1024 * 1024) > 0 then FSF := fsfPersonalizedGiga
-    else if iSize div (1024 * 1024) > 0 then FSF := fsfPersonalizedMega
-    else if iSize div 1024 > 0 then FSF := fsfPersonalizedKilo
+    if iSize div (1000 * 1000 * 1000 * 1000) > 0 then FSF := fsfPersonalizedTera
+    else if iSize div (1000 * 1000 * 1000) > 0 then FSF := fsfPersonalizedGiga
+    else if iSize div (1000 * 1000) > 0 then FSF := fsfPersonalizedMega
+    else if iSize div 1000 > 0 then FSF := fsfPersonalizedKilo
     else FSF := fsfPersonalizedByte;
   end
   else if FSF = fsfFloat then
   begin
-    if iSize div (1024 * 1024 * 1024 * 1024) > 0 then FSF := fsfTera
-    else if iSize div (1024 * 1024 * 1024) > 0 then FSF := fsfGiga
-    else if iSize div (1024 * 1024) > 0 then FSF := fsfMega
-    else if iSize div 1024 > 0 then FSF := fsfKilo
+    if iSize div (1000 * 1000 * 1000 * 1000) > 0 then FSF := fsfTera
+    else if iSize div (1000 * 1000 * 1000) > 0 then FSF := fsfGiga
+    else if iSize div (1000 * 1000) > 0 then FSF := fsfMega
+    else if iSize div 1000 > 0 then FSF := fsfKilo
     else FSF := fsfByte;
   end;
 
@@ -365,7 +365,7 @@ begin
       begin
         Result := cnvFormatFileSize(iSize, gOperationSizeFormat, gOperationSizeDigits);
         case gOperationSizeFormat of
-          fsfFloat: if iSize div 1024 > 0 then Result := Result + rsLegacyOperationByteSuffixLetter else Result := Result + ' ' + rsLegacyOperationByteSuffixLetter;
+          fsfFloat: if iSize div 1000 > 0 then Result := Result + rsLegacyOperationByteSuffixLetter else Result := Result + ' ' + rsLegacyOperationByteSuffixLetter;
           fsfByte: Result := Result + ' ' + rsLegacyOperationByteSuffixLetter;
           fsfKilo, fsfMega, fsfGiga, fsfTera: Result := Result + rsLegacyOperationByteSuffixLetter;
         end;
