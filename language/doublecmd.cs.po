@@ -11106,7 +11106,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "Zvolte ke kterému typu souboru přiřadit příponu \"%s\""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Vybráno: %s z %s, souborů: %d z %d, složek: %d z %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -12521,7 +12523,13 @@ msgid "Terabytes"
 msgstr "Terabajtů"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Souborů: %d, Adresářů: %d, Velikost: %s (%s bytů)"
 
 #: ulng.rsspliterrdirectory

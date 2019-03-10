@@ -11361,7 +11361,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "Bitte angeben welcher Dateityp die Endung \"%s\" bekommen soll"
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Ausgewählt: %s von %s, Dateien: %d von %d, Verzeichnisse: %d von %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -12794,7 +12796,13 @@ msgid "Terabytes"
 msgstr "Terabytes"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Dateien: %d, Verzeichnisse: %d, Grösse: %s (%s Bytes)"
 
 #: ulng.rsspliterrdirectory

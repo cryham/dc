@@ -1740,7 +1740,10 @@ begin
         case MarkApplyOnAllDispatcher of
           tmaoa_Mark: FFiles[Index].Selected := True;
           tmaoa_UnMark: FFiles[Index].Selected := False;
-          tmaoa_InvertMark: FFiles[Index].Selected := not FFiles[Index].Selected;
+          tmaoa_InvertMark: begin
+              if not (FFiles[Index].FSFile.IsDirectory or FFiles[Index].FSFile.IsLinkToDirectory) then
+                FFiles[Index].Selected := not FFiles[Index].Selected;
+            end;
         end;
         bSelected := bSelected OR (bInitialValue xor FFiles[Index].Selected);
       end;

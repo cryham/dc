@@ -11129,7 +11129,9 @@ msgid "Select to which file type to add extension \"%s\""
 msgstr "Абярыце тып файла, каб дадаць пашырэнне \"%s\""
 
 #: ulng.rsmsgselectedinfo
-msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+#, fuzzy
+#| msgid "Selected: %s of %s, files: %d of %d, folders: %d of %d"
+msgid "Sel: %s / %s  F: %d / %d  D: %d / %d"
 msgstr "Абрана: %s з %s, файлаў: %d з %d, каталогаў: %d з %d"
 
 #: ulng.rsmsgselectexecutablefile
@@ -12545,7 +12547,13 @@ msgid "Terabytes"
 msgstr "Тэрабайт"
 
 #: ulng.rsspacemsg
-msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+#, fuzzy
+#| msgid "Files: %d, Dirs: %d, Size: %s (%s bytes)"
+msgid ""
+"Files: %d\n"
+"Dirs: %d\n"
+"Size: %s\n"
+"%s B\n"
 msgstr "Файлаў: %d, Каталогаў: %d, Памер: %s (%s байтаў)"
 
 #: ulng.rsspliterrdirectory
