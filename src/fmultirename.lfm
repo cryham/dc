@@ -1,7 +1,7 @@
 object frmMultiRename: TfrmMultiRename
-  Left = 394
+  Left = 265
   Height = 442
-  Top = 532
+  Top = 511
   Width = 811
   Caption = 'MultiRename'
   ClientHeight = 442
@@ -214,7 +214,7 @@ object frmMultiRename: TfrmMultiRename
       AnchorSideLeft.Side = asrBottom
       AnchorSideBottom.Side = asrBottom
       Left = 248
-      Height = 26
+      Height = 24
       Top = 26
       Width = 20
       BorderSpacing.Left = 4
@@ -263,7 +263,7 @@ object frmMultiRename: TfrmMultiRename
     object btnLoadPreset: TButton
       AnchorSideTop.Side = asrBottom
       Left = 208
-      Height = 26
+      Height = 24
       Top = 56
       Width = 70
       BorderSpacing.Bottom = 6
@@ -276,7 +276,7 @@ object frmMultiRename: TfrmMultiRename
     object btnSavePreset: TButton
       AnchorSideLeft.Side = asrCenter
       Left = 208
-      Height = 26
+      Height = 24
       Top = 80
       Width = 70
       BorderSpacing.CellAlignHorizontal = ccaCenter
