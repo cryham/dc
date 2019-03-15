@@ -247,6 +247,7 @@ uses
 
 const
   sPresetsSection = 'MultiRenamePresets';
+  sLast = '[Last]';
 
 function ShowMultiRenameForm(aFileSource: IFileSource; var aFiles: TFiles):Boolean;
 begin
@@ -311,7 +312,8 @@ begin
   LoadPresets;
   FillPresetsList;
   cbPresets.Text := FLastPreset;
-  LoadPreset(FLastPreset);
+  //LoadPreset(FLastPreset);
+  LoadPreset(sLast);
 end;
 
 procedure TfrmMultiRename.RestoreProperties(Sender: TObject);
@@ -1300,7 +1302,33 @@ begin
 end;
 
 procedure TfrmMultiRename.SavePresets;
+var
+  I: Integer;
 begin
+  // save last
+  begin
+    I := FPresets.Find(sLast);
+    if I = -1 then
+      I := FPresets.Add(sLast, New(PMultiRenamePreset));
+
+    with PMultiRenamePreset(FPresets.List[I]^.Data)^ do
+    begin
+      FileName := edName.Text;
+      Extension := edExt.Text;
+      FileNameStyle := cmbNameStyle.ItemIndex;
+      ExtensionStyle := cmbExtensionStyle.ItemIndex;
+      Find := edFind.Text;
+      Replace := edReplace.Text;
+      RegExp := cbRegExp.Checked;
+      UseSubs := cbUseSubs.Checked;
+      Counter := edPoc.Text;
+      Interval := edInterval.Text;
+      Width := cmbxWidth.ItemIndex;
+      Log := cbLog.Checked;
+      LogFile := edFile.Text;
+    end;
+  end;
+
   SavePresetsXml(gConfig);
   gConfig.Save;
 end;
@@ -1346,8 +1374,8 @@ begin
   begin
     PresetIndex := FPresets.Find(PresetName);
     if PresetIndex = -1 then
-      PresetIndex := FPresets.Add(PresetName, New(PMultiRenamePreset));
-
+      PresetIndex := FPresets.Add(PresetName, New(PMultiRenamePreset))
+    else
     with PMultiRenamePreset(FPresets.List[PresetIndex]^.Data)^ do
     begin
       edName.Text := FileName;
