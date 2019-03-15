@@ -7,7 +7,7 @@ del /Q %REVISION_TXT% 2> nul
 del /Q %REVISION_INC% 2> nul
 copy ..\units\dcrevision.inc %REVISION_INC% > nul
 
-svnversion -n ..\ > %REVISION_TXT%
+rem svnversion -n ..\ > %REVISION_TXT%
 
 IF ERRORLEVEL 1 goto EXIT
 
