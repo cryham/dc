@@ -931,22 +931,28 @@ end;
 
 function TfrmMultiRename.sReplaceXX(const sFormatStr, sOrig: string): string;
 var
-  iFrom, iTo, iSemiColon: Integer;
+  iFrom, iTo, iDash: Integer;
 begin
   if Length(sFormatStr) = 1 then
     Result := sOrig
   else
   begin
-    iSemiColon := Pos('-', sFormatStr);
-    if iSemiColon = 0 then
+    iDash := Pos('-', sFormatStr);
+    if iDash = 2 then  // negative: N-1 etc. until end
+    begin
+      iTo   := sOrig.Length;
+      iFrom := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 0) + 1;
+      iFrom := Max(1, sOrig.Length + iFrom);
+    end
+    else if iDash = 0 then  // not found
     begin
       iFrom := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 1);
       iTo   := iFrom;
     end
-    else
+    else  // range e.g. N1-2
     begin
-      iFrom := StrToIntDef(Copy(sFormatStr, 2, iSemiColon - 2), 1);
-      iTo   := StrToIntDef(Copy(sFormatStr, iSemiColon + 1, MaxInt), MaxInt);
+      iFrom := StrToIntDef(Copy(sFormatStr, 2, iDash - 2), 1);
+      iTo   := StrToIntDef(Copy(sFormatStr, iDash + 1, MaxInt), MaxInt);
     end;
     Result := UTF8Copy(sOrig, iFrom, iTo - iFrom + 1);
   end;
