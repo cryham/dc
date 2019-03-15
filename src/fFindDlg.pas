@@ -1341,7 +1341,8 @@ end;
 procedure TfrmFindDlg.ThreadTerminate(Sender: TObject);
 begin
   FFindThread := TFindThread(Sender);
-  if FFindThread.TimeOfScan <> 0 then FTimeSearch := ' , ' + rsFindTimeOfScan + formatdatetime('hh:nn:ss.zzz', FFindThread.TimeOfScan);
+  if FFindThread.TimeOfScan <> 0 then
+    FTimeSearch := '    ' + rsFindTimeOfScan + formatdatetime('n:ss.zz', FFindThread.TimeOfScan);
   FUpdateTimer.OnTimer(FUpdateTimer);
   FUpdateTimer.Enabled := False;
   FFindThread := nil;
@@ -2089,43 +2090,32 @@ procedure TfrmFindDlg.lsFoundedFilesDrawItem(Control: TWinControl;
 var
   aColor: TColor;
   path: String;
-  AFile: TFile = nil;
+  AFile: TFile;
   FileSource: IFileSource;
 begin
-  aColor:=gBookBackgroundColor; //gBackColor;
-  lsFoundedFiles.Canvas.Brush.Color:=aColor;
+  aColor:= gBackColor;
+  lsFoundedFiles.Canvas.Brush.Color:= aColor;
   lsFoundedFiles.Canvas.FillRect(ARect);
-  if odSelected in State then aColor:=$404048;
-    lsFoundedFiles.Canvas.Pen.Color:=aColor;
+  //if odSelected in State then aColor:= gCursorColor;
+  lsFoundedFiles.Canvas.Pen.Color:= gCursorColor; //aColor;
+  lsFoundedFiles.Canvas.Pen.Style:= psSolid;
   lsFoundedFiles.Canvas.FrameRect(ARect);
 
-  path:=lsFoundedFiles.Items[Index];
+  path:= lsFoundedFiles.Items[Index];
 
-  aColor:=gBookFontColor; // ForeColor;
-  {
-  tf:=TFile.Create(path);  //tf.IsDirectory:=True;
-  tf.Name := path;
-  //if tf.IsDirectory then
-  if path.Contains('b') then
-    aColor:= gMarkColor
-  else
-    aColor:= gColorExt.GetColorBy(tf);
-  //aColor:= gColorExt.GetColorByExt(path);
-  }
-  //ArchiveFile := path; //ExtractWord(1, path, [ReversePathDelim]);
-  {AFile := TFileSystemFileSource.CreateFileFromFile(path);
-  try
-    FileSource:= GetArchiveFileSource(TFileSystemFileSource.GetFileSource, AFile, EmptyStr, False, False);
-  finally
-    AFile.Free;
-  end;
-  if Assigned(FileSource) then
-    aColor:= gColorExt.GetColorBy(AFile);
-  }
+  aColor:= gForeColor;
+
+  AFile:= TFile.Create(path);
+  AFile.FullPath:= path;
+  //AFile.ExtractName;
+
+  aColor:= gColorExt.GetColorBy(AFile);
+  if aColor = clDefault then  aColor:= gForeColor;
+  AFile.Free;
 
   //if odSelected in State then aColor:=$F0F8FF;
-  lsFoundedFiles.Canvas.Font.Color:=aColor;
-  lsFoundedFiles.Canvas.Font.Bold:=True;
+  lsFoundedFiles.Canvas.Font.Color:= aColor;
+  lsFoundedFiles.Canvas.Font.Bold:= True;
   lsFoundedFiles.Canvas.TextRect(ARect, 2, ARect.Top, path);
 end;
 
