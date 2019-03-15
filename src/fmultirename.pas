@@ -847,15 +847,15 @@ begin
         begin
           Result := sFormatStr;
         end;
-      'N':
+      'n','N':
         begin
           Result := sReplaceXX(sFormatStr, aFile.NameNoExt);
         end;
-      'E':
+      'e','E':
         begin
           Result := sReplaceXX(sFormatStr, aFile.Extension);
         end;
-      'C':
+      'c','C':
         begin
           // check for start value after C, e.g. C12
           if not TryStrToInt(Copy(sFormatStr, 2, MaxInt), Index) then
@@ -863,12 +863,12 @@ begin
           Counter := Index + StrToInt64Def(edInterval.Text, 1) * ItemNr;
           Result := Format('%.' + cmbxWidth.Items[cmbxWidth.ItemIndex] + 'd', [Counter]);
         end;
-      'A':  // full path
+      'a','A':  // full path
         begin
           Result := sReplaceXX(sFormatStr, aFile.FullPath);
           sReplaceBadChars(Result);
         end;
-      'P':  // sub path index
+      'p','P':  // sub path index
         begin
           Index := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 0);
           Dirs := TStringList.Create;
