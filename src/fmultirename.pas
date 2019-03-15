@@ -18,7 +18,7 @@ unit fMultiRename;
 interface
 
 uses
-  LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus,
+  LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus, math,
   Controls, LCLType, DCClassesUtf8, uClassesEx, uFile, uFileSource,
   StringHashList, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
   uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation;
@@ -419,6 +419,8 @@ function TfrmMultiRename.FreshText(ItemIndex: Integer): String;
 var
   bError: Boolean;
   sTmpName, sTmpExt: String;
+  slFind,slReplace: TStringList;
+  I: Integer;
 begin
   bError:= False;
 
@@ -436,15 +438,34 @@ begin
   end;
 
   // Find and replace
-  if cbRegExp.Checked and (edFind.Text <> '') then
-    try
-      Result:= UTF16ToUTF8(FRegExp.Replace(UTF8Decode(Result), UTF8Decode(edReplace.Text), cbUseSubs.Checked));
-    except
-      Result:= rsMsgErrRegExpSyntax;
-      bError:= True;
-    end
-  else
-    Result:=StringReplace(Result,edFind.Text,edReplace.Text,[rfReplaceAll,rfIgnoreCase]);
+  if edFind.Text <> '' then
+    if cbRegExp.Checked then
+      try
+        Result:= UTF16ToUTF8(FRegExp.Replace(UTF8Decode(Result), UTF8Decode(edReplace.Text), cbUseSubs.Checked));
+      except
+        Result:= rsMsgErrRegExpSyntax;
+        bError:= True;
+      end
+    else
+    begin
+      // many at once, split find and replace by |
+      slFind:= TStringList.Create;
+      slFind.Delimiter:= '|';
+      slFind.DelimitedText:= edFind.Text;
+      slReplace:= TStringList.Create;
+      if edReplace.Text = '' then
+        slReplace.Add('')
+      else
+      begin
+        slReplace.Delimiter:= '|';
+        slReplace.DelimitedText:= edReplace.Text;
+      end;
+      for I:= 0 to slFind.Count - 1 do
+          Result:= StringReplace(Result, slFind[I], slReplace[Min(I, slReplace.Count - 1)],
+            [rfReplaceAll,rfIgnoreCase]);
+      slReplace.Free;
+      slFind.Free;
+    end;
 
   // File name style
   sTmpExt  := ExtractFileExt(Result);
