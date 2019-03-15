@@ -452,6 +452,7 @@ begin
     begin
       // many at once, split find and replace by |
       slFind:= TStringList.Create;
+      slFind.StrictDelimiter:= True;
       slFind.Delimiter:= '|';
       slFind.DelimitedText:= edFind.Text;
       slReplace:= TStringList.Create;
@@ -834,6 +835,8 @@ var
   aFile: TFile;
   Index: Integer;
   Counter: Int64;
+  Dirs: TStringList;
+  Levels: Longint;
 begin
   Result := '';
   if Length(sFormatStr) > 0 then
@@ -857,6 +860,28 @@ begin
           Counter := StrToInt64Def(edPoc.Text, 1) +
                      StrToInt64Def(edInterval.Text, 1) * ItemNr;
           Result := Format('%.' + cmbxWidth.Items[cmbxWidth.ItemIndex] + 'd', [Counter]);
+        end;
+      'A':  // full path
+        begin
+          Result := sReplaceXX(sFormatStr, aFile.FullPath);
+          sReplaceBadChars(Result);
+        end;
+      'P':  // sub path index
+        begin
+          Index := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 0);
+          Dirs := TStringList.Create;
+          Dirs.StrictDelimiter := True;
+          {$IFDEF MSWINDOWS}
+          Dirs.Delimiter := '\';
+          {$ELSE}
+          Dirs.Delimiter := '/';
+          {$ENDIF}
+          Dirs.DelimitedText := aFile.FullPath;
+          if Index < 0 then
+            Result := Dirs[Max(0, Dirs.Count -1 + Index)]
+          else
+            Result := Dirs[Min(Index, Dirs.Count - 1)];
+          Dirs.Free;
         end;
       '=':
         begin
