@@ -156,11 +156,19 @@ begin
 end;
 
 procedure TOrderedFileView.cm_GoToFirstFile(const Params: array of string);
+var
+  I: Integer;
 begin
   if not (IsEmpty or IsLoadingFileList) then
   begin
     SetFocus;
-    SetActiveFile(0);
+    //SetActiveFile(0);
+    for I:= 0 to FFiles.Count - 1 do
+      if not (FFiles[I].FSFile.IsDirectory or FFiles[I].FSFile.IsLinkToDirectory) then
+      begin
+        SetActiveFile(I);
+        Exit;
+      end;
   end;
 end;
 
