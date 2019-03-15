@@ -182,6 +182,8 @@ type
     FLog: TStringListEx;
     FRegExp: TRegExprW;
 
+    {Replace bad path chars in string}
+    procedure sReplaceBadChars(var sPath: string);
     {Handles a single formatting string}
     function sHandleFormatString(const sFormatStr: string; ItemNr: Integer): string;
     {Function sReplace call sReplaceXX with parametres}
@@ -816,6 +818,17 @@ begin
   StringGridTopLeftChanged(StringGrid);
 end;
 
+procedure TfrmMultiRename.sReplaceBadChars(var sPath: string);
+var
+  Index: Integer;
+begin
+  for Index := 1 to Length(sPath) - 1 do
+  begin
+    if sPath[Index] in ['\', '/', ':', '*', '?', '"', '<', '>', '|'] then
+      sPath[Index] := '.';
+  end;
+end;
+
 function TfrmMultiRename.sHandleFormatString(const sFormatStr: string; ItemNr: Integer): string;
 var
   aFile: TFile;
@@ -848,11 +861,7 @@ begin
       '=':
         begin
           Result := FormatFileFunction(UTF8Copy(sFormatStr, 2, UTF8Length(sFormatStr) - 1), FFiles.Items[ItemNr], FFileSource, True);
-          for Index := 1 to Length(Result) - 1 do
-          begin
-            if Result[Index] in ['\', '/', '-', '*', '?', '"', '<', '>', '|'] then
-              Result[Index] := '.';
-          end;
+          sReplaceBadChars(Result);
         end;
       else
       begin
