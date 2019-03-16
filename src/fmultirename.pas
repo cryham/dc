@@ -21,7 +21,7 @@ uses
   LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus, math,
   Controls, LCLType, DCClassesUtf8, uClassesEx, uFile, uFileSource,
   StringHashList, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
-  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation;
+  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation, DCBasicTypes;
 
 type
 
@@ -47,13 +47,11 @@ type
   TfrmMultiRename = class(TAloneForm)
    btnEdit: TButton;
    btnExtMenu: TButton;
-    btnLoadPreset: TButton;
     btnNameMenu: TButton;
     btnSavePreset: TButton;
     btnDeletePreset: TButton;
     cbRegExp: TCheckBox;
     cbUseSubs: TCheckBox;
-    cbPresets: TComboBox;
     edPresets: TEdit;
     cmbExtensionStyle: TComboBox;
     cmbNameStyle: TComboBox;
@@ -63,6 +61,7 @@ type
     lbExt: TLabel;
     lbName: TLabel;
     lbPresets: TLabel;
+    lsPresets: TListBox;
     mnuEditNames: TMenuItem;
     mnuLoadFromFile: TMenuItem;
     miDay2: TMenuItem;
@@ -123,6 +122,7 @@ type
     procedure cmbNameStyleChange(Sender: TObject);
     procedure KeyDownHandler(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edFindChange(Sender: TObject);
+    procedure lsPresetsSelectionChange(Sender: TObject; User: boolean);
     procedure mnuEditNamesClick(Sender: TObject);
     procedure mnuLoadFromFileClick(Sender: TObject);
     procedure OnSelect(Sender: TObject);
@@ -311,7 +311,7 @@ begin
   // Initialize presets.
   LoadPresets;
   FillPresetsList;
-  cbPresets.Text := FLastPreset;
+  //edPresets.Text := FLastPreset;
   //LoadPreset(FLastPreset);
   LoadPreset(sLast);
 end;
@@ -507,13 +507,21 @@ begin
   StringGridTopLeftChanged(StringGrid);
 end;
 
+procedure TfrmMultiRename.lsPresetsSelectionChange(Sender: TObject;
+  User: boolean);
+begin
+  LoadPreset(lsPresets.GetSelectedText);
+  edPreset.Text:= lsPresets.GetSelectedText;
+  StringGridTopLeftChanged(StringGrid);
+end;
+
 procedure TfrmMultiRename.KeyDownHandler(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   case Key of
     VK_F2:
       begin
-        cbPresets.SetFocus;
+        lsPresets.SetFocus;
       end;
     VK_ESCAPE:
       begin
@@ -698,7 +706,7 @@ end;
 
 procedure TfrmMultiRename.btnLoadPresetClick(Sender: TObject);
 begin
-  LoadPreset(cbPresets.Text);
+  LoadPreset(lsPresets.GetSelectedText);
 end;
 
 procedure TfrmMultiRename.btnEditClick(Sender: TObject);
@@ -718,24 +726,21 @@ begin
 
     SavePreset(edPreset.Text);
 
-    if cbPresets.Items.IndexOf(edPreset.Text) = -1 then
-      cbPresets.Items.Add(edPreset.Text);
+    if lsPresets.Items.IndexOf(edPreset.Text) = -1 then
+      lsPresets.Items.Add(edPreset.Text);
   end;
 end;
 
 procedure TfrmMultiRename.btnDeletePresetClick(Sender: TObject);
 var
   Index: Integer;
+  Preset: string;
 begin
-  if cbPresets.Text <> '' then
+  Preset:= lsPresets.GetSelectedText;
+  if Preset <> '' then
   begin
-    DeletePreset(cbPresets.Text);
-
-    Index := cbPresets.Items.IndexOf(cbPresets.Text);
-    if Index <> -1 then
-      cbPresets.Items.Delete(Index);
-
-    cbPresets.Text := '';
+    DeletePreset(Preset);
+    lsPresets.DeleteSelected;
   end;
 end;
 
@@ -815,7 +820,7 @@ begin
   else
     edFile.Text:= 'default.log';
   edFile.SelStart:= UTF8Length(edFile.Text);
-  cbPresets.Text:='';
+  //edPresets.Text:='';
   FLastPreset:='';
   FNames.Clear;
   StringGridTopLeftChanged(StringGrid);
@@ -1453,13 +1458,13 @@ var
   i: Integer;
   PresetName: String;
 begin
-  cbPresets.Clear;
+  lsPresets.Clear;
 
   for i := 0 to FPresets.Count - 1 do
   begin
     PresetName := FPresets.List[i]^.Key;
-    if cbPresets.Items.IndexOf(PresetName) = -1 then
-      cbPresets.Items.Add(PresetName);
+    if lsPresets.Items.IndexOf(PresetName) = -1 then
+      lsPresets.Items.Add(PresetName);
   end;
 end;
 
