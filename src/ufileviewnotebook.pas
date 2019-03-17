@@ -877,11 +877,19 @@ end;
 procedure TFileViewNotebook.DeletePage(Index: Integer);
 var
   APage: TFileViewPage;
+  I: Integer;
 begin
   APage:= GetPage(Index);
-  SetLength(FClosedPages, Length(FClosedPages) + 1);  // push
-  FClosedPages[High(FClosedPages)]:= APage;
-
+  if Length(FClosedPages) >= 20 then  // max undo pages count
+  begin
+    FClosedPages[0].Free;  // pop first
+    for I:= 0 to Length(FClosedPages) - 2 do  // move all left
+      FClosedPages[I]:= FClosedPages[I+1];
+    FClosedPages[High(FClosedPages)]:= APage;  // put last
+  end else begin
+    SetLength(FClosedPages, Length(FClosedPages) + 1);  // push
+    FClosedPages[High(FClosedPages)]:= APage;
+  end;
   FPageControl.Pages[Index].Free;
   //APage.Free;
 end;
