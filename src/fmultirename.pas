@@ -812,7 +812,7 @@ begin
   cmbExtensionStyle.ItemIndex:=0;
   edPoc.Text:='1';
   edInterval.Text:='1';
-  cmbxWidth.ItemIndex:=0;
+  cmbxWidth.ItemIndex:=3;
   cbLog.Checked:=False;
   edFile.Enabled:=cbLog.Checked;
   if (FFiles.Count > 0) then
@@ -885,7 +885,7 @@ begin
           {$ELSE}
           Dirs.Delimiter := '/';
           {$ENDIF}
-          Dirs.DelimitedText := aFile.FullPath;
+          Dirs.DelimitedText := aFile.Path;
           if Index < 0 then
             Result := Dirs[Max(0, Dirs.Count -1 + Index)]
           else
