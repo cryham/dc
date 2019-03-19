@@ -71,10 +71,10 @@ type
     cbExtFilter: TComboBox;
     HeaderDG: TDrawGrid;
     lblProgress: TLabel;
+    LeftPanel3: TPanel;
     MainDrawGrid: TDrawGrid;
     edPath1: TEdit;
     edPath2: TEdit;
-    GroupBox1: TGroupBox;
     ImageList1: TImageList;
     Label1: TLabel;
     LeftPanel1: TPanel;
@@ -743,43 +743,55 @@ begin
   if (FVisibleItems = nil) or (aRow >= FVisibleItems.Count) then Exit;
   with MainDrawGrid.Canvas do
   begin
+    Pen.Color:= clWhite;
     r := TFileSyncRec(FVisibleItems.Objects[aRow]);
     if r = nil then
     begin
-      Brush.Color := clBtnFace;
+      Brush.Color := TColor($080A0C);  // B,G,R
       FillRect(aRect);
       Font.Bold := True;
-      Font.Color := clWindowText;
-      TextOut(aRect.Left + 2, aRect.Top + 2, FVisibleItems[aRow]);
+      Font.Color := TColor($C0C0F0);
+      TextOut(aRect.Left + 1, aRect.Top + 1, FVisibleItems[aRow]);
     end else begin
+      Brush.Color := TColor($060404);
+      FillRect(aRect);
       case r.FState of
-      srsNotEq:       Font.Color := clRed;
-      srsCopyLeft:    Font.Color := clBlue;
-      srsCopyRight:   Font.Color := clGreen;
-      srsDeleteRight: Font.Color := clBlue;
-      else Font.Color := clWindowText;
+        srsNotEq:       Font.Color := TColor($F0C090);  // cyan
+        srsCopyLeft:    Font.Color := TColor($60C8C8);  // yellow
+        srsCopyRight:   Font.Color := TColor($80F080);  // green
+        srsDeleteRight: Font.Color := TColor($60B0F0);  // orange
+        else Font.Color := TColor($C8C0C0);
       end;
+      // color by type
+      {if Assigned(r.FFileL) then
+        Font.Color := gColorExt.GetColorBy(r.FFileL)
+      else if Assigned(r.FFileR) then
+        Font.Color := gColorExt.GetColorBy(r.FFileR);
+      if Font.Color = clDefault then  Font.Color := gForeColor;}
+
       if Assigned(r.FFileL) then
       begin
-        TextOut(aRect.Left + 2, aRect.Top + 2, FVisibleItems[aRow]);
+        s := FVisibleItems[aRow];
+        TextOut(aRect.Left + 1, aRect.Top + 1, s);
         s := IntToStr(r.FFileL.Size);
-        x := hCols[1].Left + hCols[1].Width - 2 - TextWidth(s);
-        TextOut(x, aRect.Top + 2, s);
+        x := hCols[1].Left + hCols[1].Width - 10 - TextWidth(s);
+        TextOut(x, aRect.Top + 1, s);
         s := DateTimeToStr(r.FFileL.ModificationTime);
         with hCols[2] do
           TextRect(Rect(Left, aRect.Top, Left + Width, aRect.Bottom),
-            Left + 2, aRect.Top + 2, s)
+            Left + 1, aRect.Top + 1, s)
       end;
       if Assigned(r.FFileR) then
       begin
-        TextOut(hCols[6].Left + 2, aRect.Top + 2, FVisibleItems[aRow]);
+        s := FVisibleItems[aRow];
+        TextOut(hCols[6].Left + 1, aRect.Top + 1, s);
         s := IntToStr(r.FFileR.Size);
-        x := hCols[5].Left + hCols[5].Width - 2 - TextWidth(s);
-        TextOut(x, aRect.Top + 2, s);
+        x := hCols[5].Left + hCols[5].Width - 10 - TextWidth(s);
+        TextOut(x, aRect.Top + 1, s);
         s := DateTimeToStr(r.FFileR.ModificationTime);
         with hCols[4] do
           TextRect(Rect(Left, aRect.Top, Left + Width, aRect.Bottom),
-            Left + 2, aRect.Top + 2, s)
+            Left + 1, aRect.Top + 1, s)
       end;
       ImageList1.Draw(MainDrawGrid.Canvas,
         hCols[3].Left + (hCols[3].Width - ImageList1.Width) div 2 - 2,
