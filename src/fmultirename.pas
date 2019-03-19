@@ -191,6 +191,8 @@ type
     {sReplaceXX doing N, Nx, Nx:y and E, Ex, Ex:y}
     function sReplaceXX(const sFormatStr, sOrig: string): string;
     {InsertMask is for write key symbols from buttons}
+    procedure InsertMaskClear(const Mask:string;edChoose:Tedit);
+    procedure InsertMaskClear(const Mask:string;editNr:PtrInt);
     procedure InsertMask(const Mask:string;edChoose:Tedit);
     procedure InsertMask(const Mask:string;editNr:PtrInt);
     {Get new file name for file with ItemIndex}
@@ -772,7 +774,24 @@ begin
   StringGridTopLeftChanged(StringGrid);
 end;
 
-procedure TfrmMultiRename.InsertMask(const Mask:string;edChoose:Tedit);
+procedure TfrmMultiRename.InsertMaskClear(const Mask:string; edChoose:Tedit);
+var
+  I: Integer;
+begin
+  edChoose.Text:= Mask;
+  I:= UTF8Length(Mask);
+  edChoose.SelStart:= I - 1;
+end;
+
+procedure TfrmMultiRename.InsertMaskClear(const Mask:string; editNr:PtrInt);
+begin
+  if editNr = 0 then
+    InsertMaskClear(Mask, edName)
+  else
+    InsertMaskClear(Mask, edExt);
+end;
+
+procedure TfrmMultiRename.InsertMask(const Mask:string; edChoose:Tedit);
 var
   sTmp: String;
   I: Integer;
@@ -985,7 +1004,7 @@ end;
 
 procedure TfrmMultiRename.NameClick(Sender: TObject);
 begin
-  InsertMask('[N]',ppNameMenu.Tag);
+  InsertMaskClear('[N]', ppNameMenu.Tag);
 end;
 
 procedure TfrmMultiRename.NameXClick(Sender: TObject);
@@ -1010,7 +1029,7 @@ end;
 
 procedure TfrmMultiRename.ExtensionClick(Sender: TObject);
 begin
-  InsertMask('[E]',ppNameMenu.Tag);
+  InsertMaskClear('[E]', ppNameMenu.Tag);
 end;
 
 procedure TfrmMultiRename.ExtensionXClick(Sender: TObject);
@@ -1057,7 +1076,7 @@ end;
 
 procedure TfrmMultiRename.CounterClick(Sender: TObject);
 begin
-  InsertMask('[C]',ppNameMenu.Tag);
+  InsertMaskClear('[C]', ppNameMenu.Tag);
 end;
 
 procedure TfrmMultiRename.cbLogClick(Sender: TObject);
