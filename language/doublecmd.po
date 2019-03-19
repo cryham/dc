@@ -1387,7 +1387,7 @@ msgid "&Edit"
 msgstr ""
 
 #: tfrmfinddlg.actfeedtolistbox.caption
-msgid "Feed to &listbox"
+msgid "Fee&d to listbox"
 msgstr ""
 
 #: tfrmfinddlg.actfreefrommem.caption
@@ -1595,26 +1595,6 @@ msgstr ""
 msgid "Enter files names separated with \";\""
 msgstr ""
 
-#: tfrmfinddlg.frmcontentplugins.headercontrol.sections[0].text
-msgctxt "tfrmfinddlg.frmcontentplugins.headercontrol.sections[0].text"
-msgid "Plugin"
-msgstr ""
-
-#: tfrmfinddlg.frmcontentplugins.headercontrol.sections[1].text
-msgctxt "tfrmfinddlg.frmcontentplugins.headercontrol.sections[1].text"
-msgid "Field"
-msgstr ""
-
-#: tfrmfinddlg.frmcontentplugins.headercontrol.sections[2].text
-msgctxt "tfrmfinddlg.frmcontentplugins.headercontrol.sections[2].text"
-msgid "Operator"
-msgstr ""
-
-#: tfrmfinddlg.frmcontentplugins.headercontrol.sections[3].text
-msgctxt "tfrmfinddlg.frmcontentplugins.headercontrol.sections[3].text"
-msgid "Value"
-msgstr ""
-
 #: tfrmfinddlg.gbdirectories.caption
 msgctxt "tfrmfinddlg.gbdirectories.caption"
 msgid "Directories"
@@ -1632,6 +1612,10 @@ msgstr ""
 
 #: tfrmfinddlg.lblattributes.caption
 msgid "Attri&butes"
+msgstr ""
+
+#: tfrmfinddlg.lblcurrent.caption
+msgid "Current"
 msgstr ""
 
 #: tfrmfinddlg.lblencoding.caption
@@ -1654,8 +1638,16 @@ msgstr ""
 msgid "Start in &directory"
 msgstr ""
 
+#: tfrmfinddlg.lblfound.caption
+msgid "Found"
+msgstr ""
+
 #: tfrmfinddlg.lblsearchdepth.caption
 msgid "Search su&bdirectories:"
+msgstr ""
+
+#: tfrmfinddlg.lblstatus.caption
+msgid "Status"
 msgstr ""
 
 #: tfrmfinddlg.lbltemplateheader.caption
@@ -3252,10 +3244,6 @@ msgctxt "TFRMMULTIRENAME.BTNEXTMENU.CAPTION"
 msgid "..."
 msgstr ""
 
-#: tfrmmultirename.btnloadpreset.caption
-msgid "&Load"
-msgstr ""
-
 #: tfrmmultirename.btnnamemenu.caption
 msgctxt "TFRMMULTIRENAME.BTNNAMEMENU.CAPTION"
 msgid "..."
@@ -3323,9 +3311,7 @@ msgid "N&ame"
 msgstr ""
 
 #: tfrmmultirename.lbpresets.caption
-msgid ""
-"Presets\n"
-"F2\n"
+msgid "Presets F2"
 msgstr ""
 
 #: tfrmmultirename.lbreplace.caption
@@ -9845,7 +9831,7 @@ msgid "Find files"
 msgstr ""
 
 #: ulng.rsfindtimeofscan
-msgid "Time of scan: "
+msgid "Time: "
 msgstr ""
 
 #: ulng.rsfindwherebeg
