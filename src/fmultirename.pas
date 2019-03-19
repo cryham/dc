@@ -1097,10 +1097,11 @@ end;
 
 procedure TfrmMultiRename.RenameFiles;
 var
-  AFile: TFile;
+  AFile,OFile: TFile;
   NewName: String;
-  I, J, K: Integer;
+  I, J, K, L: Integer;
   OldFiles, NewFiles: TFiles;
+  OldNames: TStringHashList;
   AutoRename: Boolean = False;
   Operation: TFileSourceOperation;
   theNewProperties: TFileProperties;
@@ -1117,11 +1118,29 @@ begin
   NewFiles:= TFiles.Create(EmptyStr);
 
   try
+    // OldNames
+    OldNames:= TStringHashList.Create(True);
+    OldNames.Clear;
+    for I:= 0 to OldFiles.Count -1 do
+      OldNames.Add(OldFiles[I].Name);
+
     FNewNames.Clear;
     for I:= 0 to FFiles.Count - 1 do
     begin
       AFile:= TFile.Create(EmptyStr);
       AFile.Name:= FreshText(I);
+
+      // Avoid collisions with OldNames
+      L:= OldNames.Find(AFile.Name);
+      if L >= 0 then
+      begin
+        // Add @ at end of name
+        if AFile.Extension = '' then
+          AFile.Name:= AFile.NameNoExt + '@'
+        else
+          AFile.Name:= AFile.NameNoExt + '@.' + AFile.Extension;
+      end;
+
       // Checking duplicates
       NewName:= FFiles[I].Path + AFile.Name;
       J:= FNewNames.Find(NewName);
@@ -1149,6 +1168,7 @@ begin
       end;
       NewFiles.Add(AFile);
     end;
+
     FillChar({%H-}theNewProperties, SizeOf(TFileProperties), 0);
     Operation:= FFileSource.CreateSetFilePropertyOperation(OldFiles, theNewProperties);
     if Assigned(Operation) then
@@ -1172,6 +1192,30 @@ begin
     end;
     OldFiles.Free;
     NewFiles.Free;
+  end;
+
+  // Rename files back, remove @
+  for I:= 0 to FFiles.Count - 1 do
+  begin
+    AFile:= TFile.Create(EmptyStr);
+    AFile.Name:= FreshText(I);
+    OFile:= AFile.Clone;
+
+    L:= OldNames.Find(AFile.Name);
+    if L >= 0 then
+    begin
+      if AFile.Extension = '' then
+      begin
+        OFile.Name:= FFiles[I].Path + AFile.NameNoExt + '@';
+        RenameFile(FFileSource, OFile, AFile.NameNoExt, True);
+      end else begin
+        OFile.Name:= FFiles[I].Path + AFile.NameNoExt + '@.' + AFile.Extension;
+        RenameFile(FFileSource, OFile, AFile.NameNoExt + '.' + AFile.Extension, True);
+      end;
+      FFiles[I].Name := AFile.Name;
+    end;
+    AFile.Free;
+    OFile.Free;
   end;
 
   StringGridTopLeftChanged(StringGrid);
