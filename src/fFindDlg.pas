@@ -68,7 +68,6 @@ type
     Bevel2: TBevel;
     btnAddAttribute: TButton;
     btnAttrsHelp: TButton;
-    btnClose: TButton;
     btnGoToPath: TButton;
     btnNewSearch: TButton;
     btnLastSearch: TButton;
@@ -692,8 +691,8 @@ begin
   CloneMainAction(frmMain.actConfigSearches, actList, miOptions, 0);
 
 {$IF DEFINED(FIX_DEFAULT)}
-  //if (ListOffrmFindDlgInstance.Count = 0) then
-  Application.AddOnKeyDownBeforeHandler(@FormKeyDown);
+  if (ListOffrmFindDlgInstance.Count = 0) then
+    Application.AddOnKeyDownBeforeHandler(@FormKeyDown);
 {$ENDIF}
 end;
 
@@ -1786,8 +1785,8 @@ end;
 procedure TfrmFindDlg.FormDestroy(Sender: TObject);
 begin
 {$IF DEFINED(FIX_DEFAULT)}
-  //if ListOffrmFindDlgInstance.Count = 0 then
-  Application.RemoveOnKeyDownBeforeHandler(@FormKeyDown);
+  if ListOffrmFindDlgInstance.Count = 0 then
+    Application.RemoveOnKeyDownBeforeHandler(@FormKeyDown);
 {$ENDIF}
   FreeAndNil(FoundedStringCopy);
   FreeAndNil(DsxPlugins);
@@ -2102,9 +2101,6 @@ begin
   lsFoundedFiles.Canvas.FrameRect(ARect);
 
   path:= lsFoundedFiles.Items[Index];
-
-  aColor:= gForeColor;
-
   AFile:= TFile.Create(path);
   AFile.FullPath:= path;
   //AFile.ExtractName;
