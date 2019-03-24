@@ -1,7 +1,7 @@
 object frmMultiRename: TfrmMultiRename
-  Left = 484
+  Left = 465
   Height = 411
-  Top = 638
+  Top = 652
   Width = 765
   Caption = 'MultiRename'
   ClientHeight = 411
@@ -20,6 +20,7 @@ object frmMultiRename: TfrmMultiRename
     Width = 765
     Align = alClient
     AutoFillColumns = True
+    Color = clBlack
     ColCount = 3
     Columns = <    
       item
@@ -38,11 +39,13 @@ object frmMultiRename: TfrmMultiRename
       end>
     ExtendedSelect = False
     FixedCols = 0
+    Font.Color = 14266544
     MouseWheelOption = mwGrid
     Options = [goColSizing, goColMoving, goRowSelect, goDblClickAutoSize, goSmoothScroll, goFixedColSizing]
     RowCount = 1
     TabOrder = 0
     TabStop = False
+    TitleFont.Color = 14266544
     TitleStyle = tsNative
     OnKeyDown = StringGridKeyDown
     OnMouseDown = StringGridMouseDown
