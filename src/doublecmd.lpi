@@ -1905,10 +1905,25 @@ end;"/>
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="1">
+    <Exceptions Count="6">
       <Item1>
         <Name Value="EXmlConfigNotFound"/>
       </Item1>
+      <Item2>
+        <Name Value="EFileNotFound"/>
+      </Item2>
+      <Item3>
+        <Name Value="EReadError"/>
+      </Item3>
+      <Item4>
+        <Name Value="EModuleNotLoadedException"/>
+      </Item4>
+      <Item5>
+        <Name Value="RunError(211)"/>
+      </Item5>
+      <Item6>
+        <Name Value="EAbstractError"/>
+      </Item6>
     </Exceptions>
   </Debugging>
 </CONFIG>

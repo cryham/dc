@@ -2103,7 +2103,6 @@ begin
   path:= lsFoundedFiles.Items[Index];
   AFile:= TFile.Create(path);
   AFile.FullPath:= path;
-  //AFile.ExtractName;
 
   aColor:= gColorExt.GetColorBy(AFile);
   if aColor = clDefault then  aColor:= gForeColor;
