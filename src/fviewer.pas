@@ -2065,7 +2065,7 @@ begin
   dScaleFactor:= FZoomFactor;
 
   // Place and resize image
-  if (miStretch.Checked) then
+  if (miStretch.Checked or miStretchOnlyLarge.Checked) then
   begin
     dScaleFactor:= Min(sboxImage.ClientWidth / Image.Picture.Width ,sboxImage.ClientHeight / Image.Picture.Height);
     dScaleFactor:= IfThen((miStretchOnlyLarge.Checked) and (dScaleFactor > 1.0), 1.0, dScaleFactor);
@@ -2507,13 +2507,18 @@ end;
 procedure TfrmViewer.cm_StretchImage(const Params: array of string);
 begin
   miStretch.Checked:= not miStretch.Checked;
-  if miStretch.Checked then FZoomFactor:= 1.0;
+  if miStretch.Checked then
+  begin
+    FZoomFactor:= 1.0;
+    miStretchOnlyLarge.Checked:= False
+  end;
   UpdateImagePlacement;
 end;
 
 procedure TfrmViewer.cm_StretchOnlyLarge(const Params: array of string);
 begin
   miStretchOnlyLarge.Checked:= not miStretchOnlyLarge.Checked;
+  if miStretchOnlyLarge.Checked then miStretch.Checked:= False;
   UpdateImagePlacement;
 end;
 
@@ -2600,6 +2605,7 @@ begin
   end;
 
   miStretch.Checked := False;
+  miStretchOnlyLarge.Checked:= False;
   FZoomFactor := FZoomFactor * k;
   AdjustImageSize;
 end;
@@ -2647,7 +2653,8 @@ begin
       gboxPaint.Visible:= false;
       gboxHightlight.Visible:=false;
       PanelEditImage.Visible:= False;
-      miStretch.Checked:= miFullScreen.Checked;
+      miStretch.Checked:= True;
+      miStretchOnlyLarge.Checked:= False;
       if miPreview.Checked then cm_Preview(['']);
     end
   else

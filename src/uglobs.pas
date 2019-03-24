@@ -516,6 +516,7 @@ var
   gInplaceRename,
   gDblClickToParent,
   gGoToRoot: Boolean;
+  gActiveRight: Boolean;
   gShowToolTip: Boolean;
   gShowToolTipMode: TToolTipMode;
   gToolTipHideTimeOut: TToolTipHideTimeOut;
@@ -1866,6 +1867,7 @@ begin
   { - Other - }
   gGoToRoot := False;
   gLuaLib := LuaDLL;
+  gActiveRight := False;
   gNameSCFile := 'shortcuts.scf';
   gHotKeySortOrder := hksoByCommand;
   gUseEnterToCloseHotKeyEditor := True;
@@ -2285,6 +2287,7 @@ begin
     if Assigned(Node) then
     begin
       gGoToRoot := GetValue(Node, 'GoToRoot', gGoToRoot);
+      gActiveRight := GetValue(Node, 'ActiveRight', gActiveRight);
 
       //Trick to split initial legacy command for terminal
       //  Initial name in config was "RunInTerminal".
@@ -2999,6 +3002,7 @@ begin
     Node := FindNode(Root, 'Behaviours', True);
     ClearNode(Node);
     SetValue(Node, 'GoToRoot', gGoToRoot);
+    SetValue(Node, 'ActiveRight', gActiveRight);
     SetValue(Node, 'RunInTerminalStayOpenCmd', gRunInTermStayOpenCmd);
     SetValue(Node, 'RunInTerminalStayOpenParams', gRunInTermStayOpenParams);
     SetValue(Node, 'RunInTerminalCloseCmd', gRunInTermCloseCmd);

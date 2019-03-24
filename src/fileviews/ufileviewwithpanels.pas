@@ -104,7 +104,7 @@ begin
   pnlFooter.BevelOuter := bvNone;
   pnlFooter.AutoSize   := False;
   pnlFooter.Font.Style := [fsBold];
-  pnlFooter.DoubleBuffered := true;
+  pnlFooter.DoubleBuffered := True;
 
   {$IF DEFINED(LCLGTK2)}
   // Workaround: "Layout and line"
