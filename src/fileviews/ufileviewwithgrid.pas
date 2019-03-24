@@ -379,23 +379,31 @@ procedure TFileViewGrid.PrepareColors(aFile: TDisplayFile; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
   TextColor: TColor = clDefault;
-  BackgroundColor: TColor;
+  FrameColor, BackgroundColor: TColor;
   IsCursor: Boolean;
   IsCursorInactive: Boolean;
 begin
   Canvas.Font.Name   := gFonts[dcfMain].Name;
   Canvas.Font.Size   := gFonts[dcfMain].Size;
   Canvas.Font.Style  := gFonts[dcfMain].Style;
+  BackgroundColor := gBackColor;
+  FrameColor := gBackColor;
 
   IsCursor := (gdSelected in aState) and FFileView.Active and (not gUseFrameCursor);
   IsCursorInactive := (gdSelected in aState) and (not FFileView.Active) and (not gUseFrameCursor);
   // Set up default background color first.
   if IsCursor then
-    BackgroundColor := gCursorColor
+  begin
+    FrameColor := gCursorColor;
+    BackgroundColor := gInactiveCursorColor;
+  end
   else
     begin
       if IsCursorInactive AND gUseInactiveSelColor then
-        BackgroundColor := gInactiveCursorColor
+      begin
+        FrameColor := gInactiveCursorColor;
+        BackgroundColor := gBackColor;
+      end
       else
         // Alternate rows background color.
         if odd(ARow) then
@@ -417,14 +425,18 @@ begin
         if IsCursor OR (IsCursorInactive AND gUseInactiveSelColor) then
           begin
             TextColor := InvertColor(gCursorText);
+            FrameColor := clWhite;
+            BackgroundColor := gInactiveMarkColor; //gInactiveCursorColor;
           end
         else
           begin
             if FFileView.Active OR (not gUseInactiveSelColor) then
-              BackgroundColor := gMarkColor
-            else
+            begin
+              FrameColor := gMarkColor;
               BackgroundColor := gInactiveMarkColor;
-            TextColor := gBackColor;
+            end else
+              FrameColor := gInactiveMarkColor;
+            //TextColor := gBackColor;
           end;
         //------------------------------------------------------
       end
@@ -452,6 +464,9 @@ begin
   // Draw background.
   Canvas.Brush.Color := BackgroundColor;
   Canvas.FillRect(aRect);
+  //aRect.Inflate(-1,-1,-1,-1);
+  Canvas.Pen.Color := FrameColor;
+  Canvas.Rectangle(aRect);
   Canvas.Font.Color := TextColor;
 end;
 
@@ -782,7 +797,6 @@ begin
 end;
 
 procedure TFileViewWithGrid.UpdateInfoPanel;
-
 begin
   inherited UpdateInfoPanel;
   UpdateFooterDetails;
