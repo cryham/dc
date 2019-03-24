@@ -1,7 +1,7 @@
 object frmSyncDirsDlg: TfrmSyncDirsDlg
-  Left = 562
+  Left = 536
   Height = 438
-  Top = 162
+  Top = 168
   Width = 691
   Caption = 'Synchronize directories'
   ClientHeight = 438
@@ -348,8 +348,8 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 415
+    Height = 25
+    Top = 413
     Width = 691
     Panels = <    
       item
@@ -376,7 +376,7 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
       item
         SizePriority = 0
         Title.Caption = 'Name'
-        Width = 250
+        Width = 200
       end    
       item
         SizePriority = 0
@@ -386,7 +386,7 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
       item
         SizePriority = 0
         Title.Caption = 'Date'
-        Width = 170
+        Width = 150
       end    
       item
         SizePriority = 0
@@ -396,7 +396,7 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
       item
         SizePriority = 0
         Title.Caption = 'Date'
-        Width = 170
+        Width = 150
       end    
       item
         SizePriority = 0
@@ -419,11 +419,11 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     OnHeaderClick = HeaderDGHeaderClick
     OnHeaderSizing = HeaderDGHeaderSizing
     ColWidths = (
-      250
+      200
       150
-      170
+      150
       30
-      170
+      150
       120
       0
     )
@@ -436,7 +436,7 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = StatusBar1
     Left = 0
-    Height = 316
+    Height = 314
     Top = 99
     Width = 691
     Anchors = [akTop, akLeft, akRight, akBottom]
