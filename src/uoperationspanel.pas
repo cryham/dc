@@ -72,10 +72,10 @@ uses
   uFileSourceOperationMessageBoxesUI;
 
 const
-  MinimumHeight = 25;
-  MaximumItemWidth = 150;
+  MinimumHeight = 10;
+  MaximumItemWidth = 200;
   LeftRightTextMargin = 4;
-  TopBottomTextMargin = 2;
+  TopBottomTextMargin = 1;
   HorizontalSpaceBetween = 1;
   PanelBorderWidth = 1;
 
@@ -119,25 +119,25 @@ begin
     // Green if running
     fsosRunning:
       begin
-        ColorFrom:= RGB(203, 233, 171);
-        ColorTo:=  RGB(146, 208, 80);
+        ColorFrom:= RGB(73, 133, 71);
+        ColorTo:=  RGB(6, 38, 0);
       end;
     // Orange if in waiting
     fsosWaitingForFeedback, fsosWaitingForConnection:
       begin
-        ColorFrom:= RGB(255, 202, 100);
-        ColorTo:=  RGB(255, 153, 4);
+        ColorFrom:= RGB(155, 102, 00);
+        ColorTo:=  RGB(15, 33, 4);
       end;
     // Red if paused, stopped
     fsosPaused, fsosStopped:
       begin
-        ColorFrom:= RGB(255, 153, 149);
-        ColorTo:=  RGB(255, 110, 103);
+        ColorFrom:= RGB(125, 53, 49);
+        ColorTo:=  RGB(25, 10, 03);
       end;
     else
       begin
         ColorFrom:= RGB(0, 0, 0);
-        ColorTo:=  RGB(255, 255, 255);
+        ColorTo:=  RGB(125, 125, 125);
       end;
   end;
 end;
@@ -400,6 +400,8 @@ var
   begin
     // Draw output string
     Canvas.Brush.Style := bsClear;
+    Canvas.Pen.Color:= clWhite;
+    Canvas.Font.Color:= clWhite;
     ARect := ItemRect;
     InflateRect(ARect, -4, -2);
     DrawText(Canvas.Handle, PChar(s), Length(s), ARect, DT_LEFT or DT_VCENTER or DT_NOPREFIX);
@@ -431,7 +433,7 @@ begin
   Canvas.Rectangle(ItemRect);
 
   InflateRect(ItemRect, -PanelBorderWidth, -PanelBorderWidth);
-  Canvas.GradientFill(ItemRect, LightColor(clBtnHiLight, 20), clBtnFace, gdVertical);
+  Canvas.GradientFill(ItemRect, $100808, $302020, gdVertical);
 
   ItemRect.Right := ItemRect.Left - HorizontalSpaceBetween;
 
