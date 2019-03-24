@@ -272,24 +272,24 @@ resourcestring
   rsHotDirForceSortingOrderChoices = 'none;Name, a-z;Name, z-a;Ext, a-z;Ext, z-a;Size 9-0;Size 0-9;Date 9-0;Date 0-9';
 
   //Special dir related
-  rsMsgSpecialDirUseDC = 'Use Double Commander special path...';
-  rsMsgSpecialDirUseTC = 'Use Windows special folder (TC)...';
-  rsMsgSpecialDirUseOther = 'Use other Windows special folder...';
+  rsMsgSpecialDirUseDC = 'Use Double Commander...';
+  rsMsgSpecialDirUseTC = 'Use Windows TC...';
+  rsMsgSpecialDirUseOther = 'Use other Windows folder...';
   rsMsgSpecialDirEnvVar = 'Use environment variable...';
-  rsMsgSpecialDirMkDCRel = 'Make relative to Double Commander special path...';
-  rsMsgSpecialDirMkTCTel = 'Make relative to Windows special folder (TC)...';
-  rsMsgSpecialDirMkWnRel = 'Make relative to other Windows special folder...';
+  rsMsgSpecialDirMkDCRel = 'Make relative to Double Commander...';
+  rsMsgSpecialDirMkTCTel = 'Make relative to Windows TC...';
+  rsMsgSpecialDirMkWnRel = 'Make relative to other Windows folder...';
   rsMsgSpecialDirMkEnvRel = 'Make relative to environment variable...';
-  rsMsgSpecialDirMkAbso = 'Make path absolute';
-  rsMsgSpecialDirAddActi = 'Add path from active frame';
-  rsMsgSpecialDirAddNonActi = 'Add path from inactive frame';
-  rsMsgSpecialDirBrowsSel = 'Browse and use selected path';
+  rsMsgSpecialDirMkAbso = 'Make absolute';
+  rsMsgSpecialDirAddActi = 'Add from active frame';
+  rsMsgSpecialDirAddNonActi = 'Add from inactive frame';
+  rsMsgSpecialDirBrowsSel = 'Browse and use selected';
 
   rsMsgSpecialDir = '-Special';
-  rsMsgSpecialDirGotoDC = 'Go to Double Commander special path...';
-  rsMsgSpecialDirGotoTC = 'Go to Windows special folder (TC)...';
-  rsMsgSpecialDirGotoOther = 'Go to other Windows special folder...';
-  rsMsgSpecialDirGotoEnvVar = 'Go to environment variable...';
+  rsMsgSpecialDirGotoDC = 'DC path';
+  rsMsgSpecialDirGotoTC = 'Windows TC';
+  rsMsgSpecialDirGotoOther = 'Windows';
+  rsMsgSpecialDirGotoEnvVar = 'env var';
   rsMsgSpecialDirUseHotDir = 'Use hotdir path';
   rsMsgSpecialDirMakeRelToHotDir = 'Make relative to hotdir path';
 
