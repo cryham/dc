@@ -384,88 +384,159 @@ begin
   Canvas.Font.Name   := gFonts[dcfMain].Name;
   Canvas.Font.Size   := gFonts[dcfMain].Size;
   Canvas.Font.Style  := gFonts[dcfMain].Style;
-  BackgroundColor := gBackColor;
-  FrameColor := gBackColor;
 
-  IsCursor := (gdSelected in aState) and FFileView.Active and (not gUseFrameCursor);
-  IsCursorInactive := (gdSelected in aState) and (not FFileView.Active) and (not gUseFrameCursor);
-  // Set up default background color first.
-  if IsCursor then
+  //========================================================================
+  if not gUseGlowCurSel then  // default
   begin
-    FrameColor := gCursorColor;
-    BackgroundColor := gInactiveCursorColor;
-  end
-  else
-    begin
-      if IsCursorInactive AND gUseInactiveSelColor then
-      begin
-        FrameColor := gInactiveCursorColor;
-        BackgroundColor := gBackColor;
-      end
-      else
-        // Alternate rows background color.
-        if odd(ARow) then
-          BackgroundColor := gBackColor
-        else
-          BackgroundColor := gBackColor2;
-    end;
+    IsCursor := (gdSelected in aState) and FFileView.Active and (not gUseFrameCursor);
+    IsCursorInactive := (gdSelected in aState) and (not FFileView.Active) and (not gUseFrameCursor);
 
-  // Set text color.
-  TextColor := AFile.TextColor;
-  if (TextColor = clDefault) or (TextColor = clNone) then
-    TextColor := gForeColor;
-
-  if AFile.Selected then
-  begin
-    if gUseInvertedSelection then
-      begin
-        //------------------------------------------------------
-        if IsCursor OR (IsCursorInactive AND gUseInactiveSelColor) then
-          begin
-            TextColor := InvertColor(gCursorText);
-            FrameColor := clWhite;
-            BackgroundColor := gInactiveMarkColor; //gInactiveCursorColor;
-          end
-        else
-          begin
-            if FFileView.Active OR (not gUseInactiveSelColor) then
-            begin
-              FrameColor := gMarkColor;
-              BackgroundColor := gInactiveMarkColor;
-            end else
-              FrameColor := gInactiveMarkColor;
-            //TextColor := gBackColor;
-          end;
-        //------------------------------------------------------
-      end
+    // Set up default background color first.
+    if IsCursor then
+      BackgroundColor := gCursorColor
     else
       begin
-        if FFileView.Active OR (not gUseInactiveSelColor) then
-          TextColor := gMarkColor
+        if IsCursorInactive AND gUseInactiveSelColor then
+          BackgroundColor := gInactiveCursorColor
         else
-          TextColor := gInactiveMarkColor;
+          // Alternate rows background color.
+          if odd(ARow) then
+            BackgroundColor := gBackColor
+          else
+            BackgroundColor := gBackColor2;
       end;
-  end
-  else if IsCursor then
+
+    // Set text color.
+    TextColor := AFile.TextColor;
+    if (TextColor = clDefault) or (TextColor = clNone) then
+      TextColor := gForeColor;
+
+    if AFile.Selected then
     begin
-      TextColor := gCursorText;
+      if gUseInvertedSelection then
+        begin
+          //------------------------------------------------------
+          if IsCursor OR (IsCursorInactive AND gUseInactiveSelColor) then
+            begin
+              TextColor := InvertColor(gCursorText);
+            end
+          else
+            begin
+              if FFileView.Active OR (not gUseInactiveSelColor) then
+                BackgroundColor := gMarkColor
+              else
+                BackgroundColor := gInactiveMarkColor;
+              TextColor := gBackColor;
+            end;
+          //------------------------------------------------------
+        end
+      else
+        begin
+          if FFileView.Active OR (not gUseInactiveSelColor) then
+            TextColor := gMarkColor
+          else
+            TextColor := gInactiveMarkColor;
+        end;
+    end
+    else if IsCursor then
+      begin
+        TextColor := gCursorText;
+      end;
+
+    BackgroundColor := FFileView.DimColor(BackgroundColor);
+
+    if AFile.RecentlyUpdatedPct <> 0 then
+    begin
+      TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
+      BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
     end;
 
-  BackgroundColor := FFileView.DimColor(BackgroundColor);
+    // Draw background.
+    Canvas.Brush.Color := BackgroundColor;
+    Canvas.FillRect(aRect);
+    Canvas.Font.Color := TextColor;
 
-  if AFile.RecentlyUpdatedPct <> 0 then
-  begin
-    TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
-    BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
+  end else begin  // CH mod
+    //========================================================================
+
+    BackgroundColor := gBackColor;
+    FrameColor := BackgroundColor;
+
+    IsCursor := (gdSelected in aState) and FFileView.Active;
+    IsCursorInactive := (gdSelected in aState) and (not FFileView.Active);
+
+    // Set up default background color first.
+    if IsCursor then
+    begin
+      FrameColor := gCursorColor;
+      BackgroundColor := gInactiveCursorColor;
+    end
+    else
+      begin
+        if IsCursorInactive then
+        begin
+          FrameColor := gInactiveCursorColor;
+          BackgroundColor := gBackColor;
+        end
+        else
+          // Alternate rows background color.
+          if odd(ARow) then
+            BackgroundColor := gBackColor
+          else
+            BackgroundColor := gBackColor2;
+      end;
+
+    // Set text color.
+    TextColor := AFile.TextColor;
+    if (TextColor = clDefault) or (TextColor = clNone) then
+      TextColor := gForeColor;
+
+    if AFile.Selected then
+    begin
+      if FFileView.Active then
+      begin
+        FrameColor := gMarkColor;  // selected & visible
+        if IsCursor then
+          BackgroundColor := LightColor(gInactiveMarkColor, 20)
+        else
+          BackgroundColor := gInactiveMarkColor;
+      end else
+      begin
+        FrameColor := gInactiveMarkColor;
+        BackgroundColor := gInactiveMarkColor;
+      end;
+    end;
+
+    BackgroundColor := FFileView.DimColor(BackgroundColor);
+
+    if AFile.RecentlyUpdatedPct <> 0 then
+    begin
+      BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
+      //FrameColor := LightColor(FrameColor, AFile.RecentlyUpdatedPct);
+    end;
+
+    // Draw background.
+    if IsCursor then
+      if AFile.Selected then
+        Canvas.GradientFill(aRect, FrameColor, BackgroundColor, gdVertical)
+      else
+        Canvas.GradientFill(aRect, gBackColor, BackgroundColor, gdVertical)
+    else
+    if AFile.Selected or (AFile.RecentlyUpdatedPct <> 0) then
+      Canvas.GradientFill(aRect, BackgroundColor, FrameColor, gdVertical);
+
+    if not gUseInvertedSelection then
+    begin
+      Canvas.Pen.Color := FrameColor;
+      Canvas.Pen.Style := psSolid;
+      Canvas.Line(aRect.Left, aRect.Top, aRect.Right, aRect.Top);
+      Canvas.Line(aRect.Left, aRect.Bottom-1, aRect.Right, aRect.Bottom-1);
+    end;
+
+    Canvas.Font.Color := TextColor;
+    Canvas.Brush.Style := bsClear;
   end;
-
-  // Draw background.
-  Canvas.Brush.Color := BackgroundColor;
-  Canvas.FillRect(aRect);
-  //aRect.Inflate(-1,-1,-1,-1);
-  Canvas.Pen.Color := FrameColor;
-  Canvas.Rectangle(aRect);
-  Canvas.Font.Color := TextColor;
+  //========================================================================
 end;
 
 {$if lcl_fullversion >= 1070000}

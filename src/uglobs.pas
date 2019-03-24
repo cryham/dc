@@ -419,6 +419,7 @@ var
   gInactiveMarkColor: TColor; //Inactive Mark color
   gUseInvertedSelection: Boolean;
   gUseInactiveSelColor: Boolean;
+  gUseGlowCurSel: Boolean;
   gAllowOverColor: Boolean;
   gBorderFrameWidth :integer;
 
@@ -1577,6 +1578,7 @@ begin
   gInactiveMarkColor := clMaroon;
   gUseInvertedSelection := False;
   gUseInactiveSelColor := False;
+  gUseGlowCurSel := False;
   gAllowOverColor := True;
   gBorderFrameWidth:=1;
 
@@ -2442,6 +2444,7 @@ begin
       gInactiveCursorColor := GetValue(Node, 'InactiveCursor', gInactiveCursorColor);
       gInactiveMarkColor := GetValue(Node, 'InactiveMark', gInactiveMarkColor);
       gUseInvertedSelection := GetValue(Node, 'UseInvertedSelection', gUseInvertedSelection);
+      gUseGlowCurSel := GetValue(Node, 'UseGlowCurSel', gUseGlowCurSel);
       gUseInactiveSelColor := GetValue(Node, 'UseInactiveSelColor', gUseInactiveSelColor);
       gAllowOverColor   := GetValue(Node, 'AllowOverColor', gAllowOverColor);
       gBorderFrameWidth := GetValue(Node, 'gBorderFrameWidth', gBorderFrameWidth);
@@ -3089,6 +3092,7 @@ begin
     SetValue(Node, 'InactiveMark', gInactiveMarkColor);
     SetValue(Node, 'UseInvertedSelection', gUseInvertedSelection);
     SetValue(Node, 'UseInactiveSelColor', gUseInactiveSelColor);
+    SetValue(Node, 'UseGlowCurSel', gUseGlowCurSel);
     SetValue(Node, 'AllowOverColor', gAllowOverColor);
     SetValue(Node, 'gBorderFrameWidth', gBorderFrameWidth);
 

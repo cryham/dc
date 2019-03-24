@@ -1483,7 +1483,7 @@ var
   //------------------------------------------------------
   var
     TextColor: TColor = clDefault;
-    BackgroundColor: TColor;
+    FrameColor,BackgroundColor: TColor;
     IsCursor: Boolean;
     IsCursorInactive: Boolean;
   //---------------------
@@ -1493,77 +1493,161 @@ var
     Canvas.Font.Style   := ColumnsSet.GetColumnFontStyle(ACol);
     Canvas.Font.Quality := ColumnsSet.GetColumnFontQuality(ACol);
 
-    IsCursor := (gdSelected in aState) and ColumnsView.Active and (not ColumnsSet.UseFrameCursor);
-    IsCursorInactive := (gdSelected in aState) and (not ColumnsView.Active) and (not ColumnsSet.UseFrameCursor);
-    // Set up default background color first.
-    if IsCursor then
-      BackgroundColor := ColumnsSet.GetColumnCursorColor(ACol)
-    else
-      begin
-        if IsCursorInactive AND ColumnsSet.GetColumnUseInactiveSelColor(ACol) then
-          BackgroundColor := ColumnsSet.GetColumnInactiveCursorColor(ACol)
-        else
-          // Alternate rows background color.
-          if odd(ARow) then
-            BackgroundColor := ColumnsSet.GetColumnBackground(ACol)
-          else
-            BackgroundColor := ColumnsSet.GetColumnBackground2(ACol);
-      end;
-
-    // Set text color.
-    if ColumnsSet.GetColumnOvercolor(ACol) then
-      TextColor := AFile.TextColor;
-    if (TextColor = clDefault) or (TextColor = clNone) then
-      TextColor := ColumnsSet.GetColumnTextColor(ACol);
-
-    if AFile.Selected then
+    //========================================================================
+    if not gUseGlowCurSel then  // default
     begin
-      if ColumnsSet.GetColumnUseInvertedSelection(ACol) then
-        begin
-          //------------------------------------------------------
-          if IsCursor OR (IsCursorInactive AND ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
-            begin
-              TextColor := InvertColor(ColumnsSet.GetColumnCursorText(ACol));
-            end
-          else
-            begin
-              if ColumnsView.Active OR (not ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
-                BackgroundColor := ColumnsSet.GetColumnMarkColor(ACol)
-              else
-                BackgroundColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
-              //TextColor := ColumnsSet.GetColumnBackground(ACol);
-            end;
-          //------------------------------------------------------
-        end
+      IsCursor := (gdSelected in aState) and ColumnsView.Active and (not ColumnsSet.UseFrameCursor);
+      IsCursorInactive := (gdSelected in aState) and (not ColumnsView.Active) and (not ColumnsSet.UseFrameCursor);
+
+      // Set up default background color first.
+      if IsCursor then
+        BackgroundColor := ColumnsSet.GetColumnCursorColor(ACol)
       else
         begin
-          if ColumnsView.Active OR (not ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
-            TextColor := ColumnsSet.GetColumnMarkColor(ACol)
+          if IsCursorInactive AND ColumnsSet.GetColumnUseInactiveSelColor(ACol) then
+            BackgroundColor := ColumnsSet.GetColumnInactiveCursorColor(ACol)
           else
-            TextColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+            // Alternate rows background color.
+            if odd(ARow) then
+              BackgroundColor := ColumnsSet.GetColumnBackground(ACol)
+            else
+              BackgroundColor := ColumnsSet.GetColumnBackground2(ACol);
         end;
-    end
-    else if IsCursor then
+
+      // Set text color.
+      if ColumnsSet.GetColumnOvercolor(ACol) then
+        TextColor := AFile.TextColor;
+      if (TextColor = clDefault) or (TextColor = clNone) then
+        TextColor := ColumnsSet.GetColumnTextColor(ACol);
+
+      if AFile.Selected then
       begin
-        TextColor := ColumnsSet.GetColumnCursorText(ACol);
+        if ColumnsSet.GetColumnUseInvertedSelection(ACol) then
+          begin
+            //------------------------------------------------------
+            if IsCursor OR (IsCursorInactive AND ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
+              begin
+                TextColor := InvertColor(ColumnsSet.GetColumnCursorText(ACol));
+              end
+            else
+              begin
+                if ColumnsView.Active OR (not ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
+                  BackgroundColor := ColumnsSet.GetColumnMarkColor(ACol)
+                else
+                  BackgroundColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+                TextColor := ColumnsSet.GetColumnBackground(ACol);
+              end;
+            //------------------------------------------------------
+          end
+        else
+          begin
+            if ColumnsView.Active OR (not ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
+              TextColor := ColumnsSet.GetColumnMarkColor(ACol)
+            else
+              TextColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+          end;
+      end
+      else if IsCursor then
+        begin
+          TextColor := ColumnsSet.GetColumnCursorText(ACol);
+        end;
+
+      BackgroundColor := ColumnsOwnDim(BackgroundColor);
+
+      if AFile.RecentlyUpdatedPct <> 0 then
+      begin
+        TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
+        BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
       end;
 
-    BackgroundColor := ColumnsOwnDim(BackgroundColor);
+      // Draw background.
+      Canvas.Brush.Color := BackgroundColor;
+      Canvas.FillRect(aRect);
+      Canvas.Font.Color := TextColor;
+      Canvas.Brush.Style := bsClear;
 
-    if AFile.RecentlyUpdatedPct <> 0 then
-    begin
-      //TextColor := LightColor(TextColor, AFile.RecentlyUpdatedPct);
-      BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
+    end else begin  // CH mod
+      //========================================================================
+
+      BackgroundColor := ColumnsSet.GetColumnBackground(ACol);
+      FrameColor := BackgroundColor;
+
+      IsCursor := (gdSelected in aState) and ColumnsView.Active;
+      IsCursorInactive := (gdSelected in aState) and (not ColumnsView.Active);
+
+      // Set up default background color first.
+      if IsCursor then
+      begin
+        FrameColor := ColumnsSet.GetColumnCursorColor(ACol);
+        BackgroundColor := ColumnsSet.GetColumnInactiveCursorColor(ACol);
+      end
+      else
+        begin
+          if IsCursorInactive AND ColumnsSet.GetColumnUseInactiveSelColor(ACol) then
+          begin
+            FrameColor := ColumnsSet.GetColumnInactiveCursorColor(ACol);
+            BackgroundColor := ColumnsSet.GetColumnBackground(ACol);
+          end
+          else
+            // Alternate rows background color.
+            if odd(ARow) then
+              BackgroundColor := ColumnsSet.GetColumnBackground(ACol)
+            else
+              BackgroundColor := ColumnsSet.GetColumnBackground2(ACol);
+        end;
+
+      // Set text color.
+      if ColumnsSet.GetColumnOvercolor(ACol) then
+        TextColor := AFile.TextColor;
+      if (TextColor = clDefault) or (TextColor = clNone) then
+        TextColor := ColumnsSet.GetColumnTextColor(ACol);
+
+      if AFile.Selected then
+      begin
+        if ColumnsView.Active OR (not ColumnsSet.GetColumnUseInactiveSelColor(ACol)) then
+        begin
+          FrameColor := gMarkColor;  // selected & visible
+          if IsCursor then
+            BackgroundColor := LightColor(ColumnsSet.GetColumnInactiveMarkColor(ACol), 20)
+          else
+            BackgroundColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+        end else
+        begin
+          FrameColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+          BackgroundColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
+        end;
+      end;
+
+      BackgroundColor := ColumnsOwnDim(BackgroundColor);
+
+      if AFile.RecentlyUpdatedPct <> 0 then
+      begin
+        BackgroundColor := LightColor(BackgroundColor, AFile.RecentlyUpdatedPct);
+        //FrameColor := LightColor(FrameColor, AFile.RecentlyUpdatedPct);
+      end;
+
+      // Draw background.
+      if IsCursor then
+        if AFile.Selected then
+          Canvas.GradientFill(aRect, FrameColor, BackgroundColor, gdVertical)
+        else
+          Canvas.GradientFill(aRect, gBackColor, BackgroundColor, gdVertical)
+      else
+      if AFile.Selected or (AFile.RecentlyUpdatedPct <> 0) then
+        Canvas.GradientFill(aRect, BackgroundColor, FrameColor, gdVertical);
+
+      if not gUseInvertedSelection then
+      begin
+        Canvas.Pen.Color := FrameColor;
+        Canvas.Pen.Style := psSolid;
+        Canvas.Line(aRect.Left, aRect.Top, aRect.Right, aRect.Top);
+        Canvas.Line(aRect.Left, aRect.Bottom-1, aRect.Right, aRect.Bottom-1);
+      end;
+
+      Canvas.Font.Color := TextColor;
+      Canvas.Brush.Style := bsClear;
     end;
-
-    // Draw background.
-    Canvas.Brush.Color := BackgroundColor;
-    Canvas.FillRect(aRect);
-      //Canvas.Pen.Color := clYellow;
-      //Canvas.Pen.Style := psSolid;
-      //Canvas.Rectangle(aRect);
-    Canvas.Font.Color := TextColor;
-    Canvas.Brush.Style := bsClear;
+    //========================================================================
   end;// of PrepareColors;
 
   procedure DrawLines;

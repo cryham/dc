@@ -46,6 +46,7 @@ type
     btnCursorBorderColor: TButton;
     btnResetToDCDefault: TButton;
     cbAllowOverColor: TCheckBox;
+    cbbUseGlowCurSel: TCheckBox;
     cbUseCursorBorder: TCheckBox;
     cbCursorBorderColor: TColorBox;
     lblTextColor: TLabel;
@@ -179,6 +180,7 @@ begin
   cbAllowOverColor.Checked := gAllowOverColor;
   cbbUseInvertedSelection.Checked := gUseInvertedSelection;
   cbbUseInactiveSelColor.Checked := gUseInactiveSelColor;
+  cbbUseGlowCurSel.Checked := gUseGlowCurSel;
   cbbUseFrameCursor.Checked := gUseFrameCursor;
   cbUseCursorBorder.Checked := gUseCursorBorder;
   SetColorInColorBox(cbCursorBorderColor, gCursorBorderColor);
@@ -224,6 +226,7 @@ begin
   gUseInvertedSelection := cbbUseInvertedSelection.Checked;
   gAllowOverColor := cbAllowOverColor.Checked;
   gUseInactiveSelColor := cbbUseInactiveSelColor.Checked;
+  gUseGlowCurSel := cbbUseGlowCurSel.Checked;
   gUseFrameCursor := cbbUseFrameCursor.Checked;
   gUseCursorBorder := cbUseCursorBorder.Checked;
   gCursorBorderColor := cbCursorBorderColor.Selected;
@@ -264,6 +267,7 @@ begin
   cbAllowOverColor.Checked := True;
   cbbUseInvertedSelection.Checked := False;
   cbbUseInactiveSelColor.Checked := False;
+  cbbUseGlowCurSel.Checked := False;
   cbbUseFrameCursor.Checked := False;
   cbUseCursorBorder.Checked := False;
   SetColorInColorBox(cbCursorBorderColor, clHighlight);
