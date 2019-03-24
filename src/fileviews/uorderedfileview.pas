@@ -239,6 +239,7 @@ begin
     end;
     if FlatView and (FSelectedCount = 0) then UpdateFlatFileName;
   end;
+  UpdateFooterDetails;
 end;
 
 procedure TOrderedFileView.DoHandleKeyDown(var Key: Word; Shift: TShiftState);
