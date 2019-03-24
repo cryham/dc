@@ -1092,9 +1092,9 @@ begin
       if (Shift = []) then
       begin
         if gLynxLike then
-          ChooseFile(GetActiveDisplayFile, True)
-        else
-          dgPanel.ScrollHorizontally(True);
+          ChooseFile(GetActiveDisplayFile, True);
+        //else
+        //  dgPanel.ScrollHorizontally(True);
         Key := 0;
       end;
 
@@ -1531,7 +1531,7 @@ var
                 BackgroundColor := ColumnsSet.GetColumnMarkColor(ACol)
               else
                 BackgroundColor := ColumnsSet.GetColumnInactiveMarkColor(ACol);
-              TextColor := ColumnsSet.GetColumnBackground(ACol);
+              //TextColor := ColumnsSet.GetColumnBackground(ACol);
             end;
           //------------------------------------------------------
         end
@@ -1559,6 +1559,9 @@ var
     // Draw background.
     Canvas.Brush.Color := BackgroundColor;
     Canvas.FillRect(aRect);
+      //Canvas.Pen.Color := clYellow;
+      //Canvas.Pen.Style := psSolid;
+      //Canvas.Rectangle(aRect);
     Canvas.Font.Color := TextColor;
     Canvas.Brush.Style := bsClear;
   end;// of PrepareColors;
