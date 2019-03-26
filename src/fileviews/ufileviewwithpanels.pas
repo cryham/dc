@@ -104,7 +104,7 @@ begin
   pnlFooter.BevelOuter := bvNone;
   pnlFooter.AutoSize   := False;
   pnlFooter.Font.Style := [fsBold];
-  pnlFooter.DoubleBuffered := True;
+  //pnlFooter.DoubleBuffered := True;
 
   {$IF DEFINED(LCLGTK2)}
   // Workaround: "Layout and line"
@@ -262,8 +262,14 @@ var
   AFile: TFile;
   AFileName,s: String;
   x0,x1,x2,x3, x,w,h: Integer;
+  Bitmap: TBitmap;
 begin
-  with pnlFooter.Canvas do
+  //  draw on Bitmap
+  Bitmap := TBitmap.Create;
+  Bitmap.Height := Height;
+  Bitmap.Width := Width;
+
+  with Bitmap.Canvas do
   begin
     Brush.Style := bsClear;
     Font.Name := gFonts[dcfMain].Name;
@@ -364,6 +370,9 @@ begin
       end;
     end;
   end;
+
+  pnlFooter.Canvas.Draw(0, 0, Bitmap);
+  Bitmap.Free;
 end;
 
 end.
