@@ -70,6 +70,43 @@ implementation
 uses
   DCStrUtils, uFile, uGlobs, uLng, uFileProperty, uFileViewWorker, uDCUtils;
 
+type
+  TColorSize = record
+    b,g,r: byte;  size: Int64;
+  end;
+
+const
+  sClrSizes: array[0..13] of TColorSize=(
+    (b:$20;g:$20;r:$20; size:  0),  // -
+    (b:$08;g:$C0;r:$80; size:  1),  // B
+    (b:$10;g:$B0;r:$10; size: 10),
+    (b:$80;g:$A0;r:$10; size:100),
+    (b:$FF;g:$88;r:$28; size:  1 *1000),  // K
+    (b:$FF;g:$C0;r:$40; size: 10 *1000),
+    (b:$F0;g:$F0;r:$20; size:100 *1000),
+    (b:$FF;g:$A0;r:$A0; size:  1 *1000000),  // M
+    (b:$F0;g:$98;r:$C0; size: 10 *1000000),
+    (b:$FF;g:$80;r:$D8; size:100 *1000000),
+    (b:$80;g:$F8;r:$F8; size:  1 *1000000000),  // G
+    (b:$40;g:$80;r:$F0; size: 10 *1000000000),
+    (b:$50;g:$50;r:$FF; size:100 *1000000000),
+    (b:$90;g:$40;r:$E8; size:  1 *1000000000000)  // T
+  );
+  cSizeColors: array[0..12] of TColor=(
+    $08C080,  //1  // B,G,R
+    $10C010,  //10
+    $80A010,  //100
+    $FF8828,  //1 k
+    $FFC040,  //10 k
+    $F0F020,  //100 k
+    $FFC0C0,  //1 m
+    $F098C0,  //10 m
+    $FF80D8,  //100 m
+    $80F8F8,  //1 g
+    $4080F0,  //10 g
+    $5050FF,  //100 g
+    $9040E8); //1 t
+
 { TFileViewWithPanels }
 
 procedure TFileViewWithPanels.AddFileSource(aFileSource: IFileSource; aPath: String);
@@ -104,7 +141,7 @@ begin
   pnlFooter.BevelOuter := bvNone;
   pnlFooter.AutoSize   := False;
   pnlFooter.Font.Style := [fsBold];
-  //pnlFooter.DoubleBuffered := True;
+  pnlFooter.DoubleBuffered := True;
 
   {$IF DEFINED(LCLGTK2)}
   // Workaround: "Layout and line"
@@ -233,29 +270,36 @@ begin
 end;
 
 
-procedure TFileViewWithPanels.UpdateFooterDetails;
-const
-  cSizeColors: array[0..12] of TColor=(
-  $08C080,  //1  // B,G,R
-  $10C010,  //10
-  $80A010,  //100
-  $FF8828,  //1 k
-  $FFC040,  //10 k
-  $F0F020,  //100 k
-  $FFC0C0,  //1 m
-  $F098C0,  //10 m
-  $FF80D8,  //100 m
-  $80F8F8,  //1 g
-  $4080F0,  //10 g
-  $5050FF,  //100 g
-  $9040E8); //1 t
 
-  function GetSizeColor(Size: Int64): TColor;
+function BlendColor(R, G, B: Byte; R1, G1, B1: Byte; APercent: Byte): TColor;
+var
+  dR,dG,dB, iR,iG,iB: Integer;
+begin
+  dR:= R1 - R;
+  dG:= G1 - G;
+  dB:= B1 - B;
+  iR:= R + dR * APercent div 100;
+  iG:= G + dG * APercent div 100;
+  iB:= B + dB * APercent div 100;
+  Result:= RGBToColor(iR, iG, iB);
+end;
+
+procedure TFileViewWithPanels.UpdateFooterDetails;
+
+  function GetSizeColor(s: Int64): TColor;
   var
-    i: Integer;
+    r,g,b,i: Integer;
   begin
-    i:= Min(High(cSizeColors), trunc(log10(Size+1)));
-    Result:= cSizeColors[i];
+    // linear
+    i:= 0;
+    while (i < high(sClrSizes)) and (s >= sClrSizes[i+1].size) do  Inc(i);
+    Result:= BlendColor(
+      sClrSizes[i  ].r, sClrSizes[i  ].g, sClrSizes[i  ].b,
+      sClrSizes[i+1].r, sClrSizes[i+1].g, sClrSizes[i+1].b,
+      100 * (s - sClrSizes[i].size) div (sClrSizes[i+1].size - sClrSizes[i].size) );
+    //  old, step
+    //i:= Min(High(cSizeColors), trunc(log10(Size+1)));
+    //Result:= cSizeColors[i];
   end;
 
 var
