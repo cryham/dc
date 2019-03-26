@@ -523,7 +523,11 @@ begin
         Canvas.GradientFill(aRect, gBackColor, BackgroundColor, gdVertical)
     else
     if AFile.Selected or (AFile.RecentlyUpdatedPct <> 0) then
-      Canvas.GradientFill(aRect, BackgroundColor, FrameColor, gdVertical);
+      Canvas.GradientFill(aRect, BackgroundColor, FrameColor, gdVertical)
+    else begin
+      Canvas.Brush.Color := BackgroundColor;
+      Canvas.FillRect(aRect);
+    end;
 
     if not gUseInvertedSelection then
     begin
@@ -827,7 +831,6 @@ end;
 procedure TFileViewWithGrid.dgPanelSelection(Sender: TObject; aCol, aRow: Integer);
 begin
   DoFileIndexChanged(dgPanel.CellToIndex(aCol, aRow), dgPanel.TopRow);
-  UpdateFooterDetails;
 end;
 
 procedure TFileViewWithGrid.UpdateInfoPanel;
