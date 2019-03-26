@@ -525,8 +525,8 @@ begin
 
   SetFileFilter(AFilterText, AFilterOptions);
 
-  lblFilter.Caption := Format('(%s: %s)', [rsFilterStatus, AFilterText]);
-  lblFilter.Visible := Filtered;
+  //lblFilter.Caption := Format('(%s: %s)', [rsFilterStatus, AFilterText]);
+  //lblFilter.Visible := Filtered;
 end;
 
 procedure TOrderedFileView.quickSearchChangeSearch(Sender: TObject; ASearchText: String; const ASearchOptions: TQuickSearchOptions; InvertSelection: Boolean = False);
@@ -545,8 +545,8 @@ begin
   end
   else
   begin
-    lblFilter.Caption := Format('(%s: %s)', [rsSearchStatus, ASearchText]);
-    lblFilter.Visible := (ASearchText<>EmptyStr);
+    //lblFilter.Caption := Format('(%s: %s)', [rsSearchStatus, ASearchText]);
+    //lblFilter.Visible := (ASearchText<>EmptyStr);
   end;
 end;
 
