@@ -28,9 +28,17 @@ interface
 
 uses
   Classes, SysUtils, Controls, ExtCtrls, StdCtrls, Graphics, math,
-  uFileView, uFileViewHeader, uFileSource, uTypes, uFileFunctions;
+  uFileView, uFileViewHeader, uFileSource, uTypes, uFileFunctions, LCLType;
 
 type
+  TFileViewWithPanels = class;
+
+  TStatusPanel = class(TCustomControl)
+  public
+    FTFileView: TFileViewWithPanels;
+    procedure EraseBackground(DC: HDC); override;
+    procedure Paint; override;
+  end;
 
   { TFileViewWithPanels }
 
@@ -39,7 +47,7 @@ type
     FSelectedCount: Integer;
     FInfo: string;
 
-    pnlFooter: TPanel;
+    pnlFooter: TStatusPanel;
     pnlHeader: TFileViewHeader;
 
     FFilesInDir, FFilesSelected, FFolderInDir, FFolderSelected: Integer;
@@ -134,11 +142,10 @@ begin
 
   pnlHeader := TFileViewHeader.Create(Self, Self);
 
-  pnlFooter            := TPanel.Create(Self);
+  pnlFooter            := TStatusPanel.Create(Self);
+  pnlFooter.FTFileView := Self;
   pnlFooter.Parent     := Self;
   pnlFooter.Align      := alBottom;
-  pnlFooter.BevelInner := bvNone;
-  pnlFooter.BevelOuter := bvNone;
   pnlFooter.AutoSize   := False;
   pnlFooter.Font.Style := [fsBold];
   pnlFooter.DoubleBuffered := True;
@@ -269,6 +276,10 @@ begin
   UpdateFooterDetails;
 end;
 
+procedure TFileViewWithPanels.UpdateFooterDetails;
+begin
+  pnlFooter.Paint;
+end;
 
 
 function BlendColor(R, G, B: Byte; R1, G1, B1: Byte; APercent: Byte): TColor;
@@ -284,7 +295,12 @@ begin
   Result:= RGBToColor(iR, iG, iB);
 end;
 
-procedure TFileViewWithPanels.UpdateFooterDetails;
+procedure TStatusPanel.EraseBackground(DC: HDC);
+begin
+  //inherited EraseBackground(DC);
+end;
+
+procedure TStatusPanel.Paint;
 
   function GetSizeColor(s: Int64): TColor;
   var
@@ -308,11 +324,14 @@ var
   x0,x1,x2,x3, x,w,h: Integer;
   Bitmap: TBitmap;
 begin
+  if FTFileView = nil then Exit;
+
   //  draw on Bitmap
   Bitmap := TBitmap.Create;
   Bitmap.Height := Height;
   Bitmap.Width := Width;
 
+  with FTFileView do
   with Bitmap.Canvas do
   begin
     Brush.Style := bsClear;
@@ -392,7 +411,7 @@ begin
         //  name
         Font.Color := gColorExt.GetColorBy(AFile);
         TextOut(x0, 1, MinimizeFilePath(FormatFileFunction('DC().GETFILENAMENOEXT{}', AFile, FileSource),
-                   pnlFooter.Canvas, w));
+                   Canvas, w));
         //  ext
         TextOut(x0, h,  FormatFileFunction('DC().GETFILEEXT{}', AFile, FileSource));
         //if AFile.IsDirectory then TextOut(40, 10, 'DIR');  AFile.IsHidden;
@@ -415,7 +434,7 @@ begin
     end;
   end;
 
-  pnlFooter.Canvas.Draw(0, 0, Bitmap);
+  Canvas.Draw(0, 0, Bitmap);
   Bitmap.Free;
 end;
 
