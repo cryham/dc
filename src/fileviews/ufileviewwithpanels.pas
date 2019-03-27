@@ -410,6 +410,7 @@ begin
 
         //  name
         Font.Color := gColorExt.GetColorBy(AFile);
+        if Font.Color = clDefault then  Font.Color:= gForeColor;
         TextOut(x0, 1, MinimizeFilePath(FormatFileFunction('DC().GETFILENAMENOEXT{}', AFile, FileSource),
                    Canvas, w));
         //  ext
