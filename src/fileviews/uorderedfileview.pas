@@ -525,6 +525,11 @@ begin
 
   SetFileFilter(AFilterText, AFilterOptions);
 
+  if Filtered then
+    FFilterText := 'F'
+  else
+    FFilterText := '';
+  UpdateFooterDetails;
   //lblFilter.Caption := Format('(%s: %s)', [rsFilterStatus, AFilterText]);
   //lblFilter.Visible := Filtered;
 end;
@@ -545,6 +550,11 @@ begin
   end
   else
   begin
+    if ASearchText<>EmptyStr then
+      FFilterText := 'S'
+    else
+      FFilterText := '';
+    UpdateFooterDetails;
     //lblFilter.Caption := Format('(%s: %s)', [rsSearchStatus, ASearchText]);
     //lblFilter.Visible := (ASearchText<>EmptyStr);
   end;

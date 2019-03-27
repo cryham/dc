@@ -46,6 +46,7 @@ type
   protected
     FSelectedCount: Integer;
     FInfo: string;
+    FFilterText: string;
 
     pnlFooter: TStatusPanel;
     pnlHeader: TFileViewHeader;
@@ -432,6 +433,13 @@ begin
       finally
         AFile.Free;
       end;
+    end;
+
+    //  fiter
+    if FFilterText <> '' then
+    begin
+      Font.Color := $9080D0;
+      TextOut(x2 + 5, 1, '<'+FFilterText+'>');
     end;
   end;
 
