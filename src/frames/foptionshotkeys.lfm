@@ -12,9 +12,9 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideLeft.Control = lbxCategories
     AnchorSideTop.Control = Owner
     Left = 299
-    Height = 15
+    Height = 16
     Top = 6
-    Width = 59
+    Width = 66
     BorderSpacing.Top = 6
     Caption = 'C&ategories:'
     FocusControl = lbxCategories
@@ -26,9 +26,9 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = edtFilter
     Left = 6
-    Height = 15
-    Top = 50
-    Width = 26
+    Height = 16
+    Top = 52
+    Width = 29
     BorderSpacing.Top = 6
     Caption = '&Filter'
     FocusControl = edtFilter
@@ -42,13 +42,13 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 299
-    Height = 23
-    Top = 21
+    Height = 24
+    Top = 22
     Width = 503
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Right = 6
-    ItemHeight = 15
+    ItemHeight = 16
     OnChange = lbxCategoriesChange
     Style = csDropDownList
     TabOrder = 1
@@ -60,8 +60,8 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideRight.Control = btnFileAction
     AnchorSideRight.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 65
+    Height = 24
+    Top = 68
     Width = 283
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Bottom = 4
@@ -75,8 +75,8 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 6
-    Height = 261
-    Top = 107
+    Height = 256
+    Top = 112
     Width = 796
     Anchors = [akTop, akLeft, akRight, akBottom]
     AutoFillColumns = True
@@ -128,7 +128,7 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     Left = 6
     Height = 137
     Top = 372
-    Width = 682
+    Width = 677
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Top = 4
     BorderSpacing.Right = 8
@@ -172,10 +172,10 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = stgHotkeys
     AnchorSideBottom.Side = asrBottom
-    Left = 696
+    Left = 691
     Height = 137
     Top = 372
-    Width = 106
+    Width = 111
     Anchors = [akTop, akRight, akBottom]
     AutoSize = True
     BevelOuter = bvNone
@@ -187,14 +187,14 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 137
-    ClientWidth = 106
+    ClientWidth = 111
     TabOrder = 6
     object btnAddHotKey: TButton
       AnchorSideRight.Side = asrBottom
       Left = 0
       Height = 42
       Top = 0
-      Width = 106
+      Width = 111
       Action = actAddHotKey
       AutoSize = True
       BorderSpacing.InnerBorder = 4
@@ -204,7 +204,7 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
       Left = 0
       Height = 42
       Top = 48
-      Width = 106
+      Width = 111
       Action = actEditHotKey
       AutoSize = True
       BorderSpacing.InnerBorder = 4
@@ -215,7 +215,7 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
       Left = 0
       Height = 41
       Top = 96
-      Width = 106
+      Width = 111
       Action = actDeleteHotKey
       AutoSize = True
       BorderSpacing.InnerBorder = 4
@@ -227,11 +227,11 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideTop.Control = lblSCFiles
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 23
-    Top = 21
+    Height = 24
+    Top = 22
     Width = 258
     BorderSpacing.Left = 6
-    ItemHeight = 15
+    ItemHeight = 16
     OnChange = lbSCFilesListChange
     Style = csDropDownList
     TabOrder = 0
@@ -240,9 +240,9 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideLeft.Control = lbSCFilesList
     AnchorSideTop.Control = Owner
     Left = 6
-    Height = 15
+    Height = 16
     Top = 6
-    Width = 72
+    Width = 80
     BorderSpacing.Top = 6
     Caption = '&Shortcut files:'
     FocusControl = lbSCFilesList
@@ -257,7 +257,7 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideBottom.Side = asrBottom
     Left = 266
     Height = 23
-    Top = 21
+    Top = 23
     Width = 23
     Action = actPopupFileRelatedMenu
     BorderSpacing.Left = 2
@@ -303,9 +303,9 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideTop.Control = lbxCategories
     AnchorSideTop.Side = asrBottom
     Left = 299
-    Height = 15
-    Top = 50
-    Width = 55
+    Height = 16
+    Top = 52
+    Width = 64
     BorderSpacing.Top = 6
     Caption = 'So&rt order:'
     FocusControl = cbCommandSortOrder
@@ -316,10 +316,10 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideTop.Control = lblSortOrder
     AnchorSideTop.Side = asrBottom
     Left = 299
-    Height = 23
-    Top = 65
+    Height = 24
+    Top = 68
     Width = 208
-    ItemHeight = 15
+    ItemHeight = 16
     OnChange = cbCommandSortOrderChange
     Style = csDropDownList
     TabOrder = 3
@@ -329,9 +329,9 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     AnchorSideTop.Control = edtFilter
     AnchorSideTop.Side = asrBottom
     Left = 6
-    Height = 15
-    Top = 92
-    Width = 65
+    Height = 16
+    Top = 96
+    Width = 69
     Caption = 'Co&mmands:'
     FocusControl = stgCommands
     ParentColor = False
@@ -383,12 +383,12 @@ inherited frmOptionsHotkeys: TfrmOptionsHotkeys
     object actPreviousCategory: TAction
       Caption = 'Previous category'
       OnExecute = actPreviousCategoryExecute
-      ShortCut = 109
+      ShortCut = 33
     end
     object actNextCategory: TAction
       Caption = 'Next category'
       OnExecute = actNextCategoryExecute
-      ShortCut = 107
+      ShortCut = 34
     end
     object actSortByCommand: TAction
       Caption = 'Sort by command name'

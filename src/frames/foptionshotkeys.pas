@@ -622,7 +622,7 @@ var
   lstr: string;
   i, j: integer;
   HMForm: THMForm;
-  sForm: string;
+  sForm,sHotKeys: string;
   CommandsFormClass: TComponentClass;
   CommandsForm: TComponent = nil;
   CommandsFormCreated: boolean = False;
@@ -668,8 +668,23 @@ begin
   begin
     lstr := UTF8LowerCase(Filter);
     for i := pred(slAllCommands.Count) downto 0 do //Remove from our list the commands that does not meet our filter...
-      if (UTF8Pos(lstr, UTF8LowerCase(slAllCommands.Strings[i])) = 0) and (UTF8Pos(lstr, UTF8LowerCase(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong))) = 0) then
+    begin
+      // hotkeys string
+      sHotKeys:='';
+      if Assigned(HMForm) then
+      begin
+        slTmp.Clear;
+        GetHotKeyList(HMForm, slAllCommands.Strings[i], slTmp);
+        if (slTmp.Count > 0) then
+          for j := 0 to pred(slTmp.Count) do
+            sHotKeys:= sHotKeys + ShortcutsToText(slTmp[j].Shortcuts) + ';';
+      end;
+
+      if (UTF8Pos(lstr, UTF8LowerCase(sHotKeys)) = 0) and
+         (UTF8Pos(lstr, UTF8LowerCase(slAllCommands.Strings[i])) = 0) and
+         (UTF8Pos(lstr, UTF8LowerCase(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong))) = 0) then
         slAllCommands.Delete(i);
+    end;
   end;
 
   // 3. Based on all the commands we got, populate "equally" our three string list of commands, hotkeys and descrition used to fill our grid.
