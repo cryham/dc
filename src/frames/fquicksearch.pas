@@ -624,7 +624,8 @@ begin
     begin
       Key := 0;
 
-      CancelFilter;
+      DoHide;
+      //CancelFilter;
     end;
   end;
 end;
