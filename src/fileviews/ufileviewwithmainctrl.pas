@@ -1517,7 +1517,7 @@ begin
     FRenFile.CylceFinished:= False; // cycle of selection Name-FullName-Ext of FullName-Name-Ext, after finish this cycle will be part selection mechanism
     if FRenFile.LenExt = 0 then FRenFile.CylceFinished:= True;  // don't need cycle if no extension
 
-    if gRenameSelOnlyName and not (AFile.IsDirectory or AFile.IsLinkToDirectory) then
+    if gRenameSelOnlyName and not ({AFile.IsDirectory or} AFile.IsLinkToDirectory) then
        RenameSelectPart(rfatName)
     else begin
        RenameSelectPart(rfatFull);
