@@ -137,6 +137,10 @@ function RemoteSession: Boolean;
 }
 procedure CreateShortcut(const Target, Shortcut: String);
 {en
+   Extracts target full file path from windows shortcut file (.lnk)
+}
+function GetShortcutTarget(const ShortcutFilename: string): string;
+{en
    Extract file attributes from find data record.
    Removes reparse point attribute if a reparse point tag is not a name surrogate.
    @param(FindData Find data record from FindFirstFile/FindNextFile function.)
@@ -858,6 +862,26 @@ begin
 
   { Create the link }
   OleCheckUTF8(IPFile.Save(PWideChar(LinkName), False));
+end;
+
+function GetShortcutTarget(const ShortcutFilename: string): string;
+var
+  Psl: IShellLink;
+  Ppf: IPersistFile;
+  WideName: array[0..MAX_PATH] of WideChar;
+  pResult: array[0..MAX_PATH-1] of ansiChar;
+  Data: TWin32FindData;
+const
+  IID_IPersistFile: TGUID = (
+    D1:$0000010B; D2:$0000; D3:$0000; D4:($C0,$00,$00,$00,$00,$00,$00,$46));
+begin
+  CoCreateInstance(CLSID_ShellLink, nil, CLSCTX_INPROC_SERVER, IID_IShellLinkA, psl);
+  psl.QueryInterface(IID_IPersistFile, ppf);
+  MultiByteToWideChar(CP_ACP, 0, pAnsiChar(ShortcutFilename), -1, WideName, Max_Path);
+  ppf.Load(WideName, STGM_READ);
+  psl.Resolve(0, SLR_ANY_MATCH);
+  psl.GetPath(@pResult, MAX_PATH, Data, SLGP_UNCPRIORITY);
+  Result := StrPas(pResult);
 end;
 
 function ExtractFileAttributes(const FindData: TWin32FindDataW): DWORD; inline;
