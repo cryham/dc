@@ -152,7 +152,7 @@ var
   StrInfo: String;
 begin
   StrInfo := Format('Double Commander' + LineEnding +
-                    '- CryHam mod -' + LineEnding +
+                    '- CryHam fork -' + LineEnding +
                     'Version: %s' + LineEnding +
                     'Revision: %s' + LineEnding +
                     'Build date: %s' + LineEnding +
