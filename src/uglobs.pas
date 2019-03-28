@@ -1020,6 +1020,7 @@ begin
       AddIfNotExists(['Alt+Right'],[],'cm_ViewHistoryNext');
       AddIfNotExists(['Alt+Shift+Enter'],[],'cm_CountDirContent');
       AddIfNotExists(['Alt+Shift+F9'],[],'cm_TestArchive');
+      AddIfNotExists(['Ctrl+Shift+S'],[],'cm_CreateShortcut');
       AddIfNotExists([
          'Alt+1','','index=1','',
          'Alt+2','','index=2','',

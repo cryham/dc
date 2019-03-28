@@ -182,7 +182,7 @@ const
     (TCCommand: 'cm_RenameSingleFile';          TCIcon: 32; DCCommand: 'cm_RenameOnly';             DCParameters: ''          ), //Rename file under cursor
     (TCCommand: 'cm_MoveOnly';                  TCIcon: 63; DCCommand: '';                          DCParameters: ''          ), //Move (F6)
     (TCCommand: 'cm_Properties';                TCIcon: -1; DCCommand: 'cm_FileProperties';         DCParameters: ''          ), //Properties dialog
-    (TCCommand: 'cm_CreateShortcut';            TCIcon: 65; DCCommand: '';                          DCParameters: ''          ), //Create a shortcut
+    (TCCommand: 'cm_CreateShortcut';            TCIcon: 65; DCCommand: 'cm_CreateShortcut';         DCParameters: ''          ), //Create a shortcut
     (TCCommand: 'cm_Return';                    TCIcon: -1; DCCommand: 'cm_Open';                   DCParameters: ''          ), //Simulate: Return pressed
     (TCCommand: 'cm_OpenAsUser';                TCIcon: -1; DCCommand: '';                          DCParameters: ''          ), //Open program under cursor as different user
     (TCCommand: 'cm_Split';                     TCIcon: 68; DCCommand: 'cm_FileSpliter';            DCParameters: ''          ), //Split file into pieces

@@ -297,6 +297,7 @@ type
    procedure cm_RightSortBySize(const Params: array of string);
    procedure cm_RightSortByAttr(const Params: array of string);
    procedure cm_SymLink(const Params: array of string);
+   procedure cm_CreateShortcut(const {%H-}Params: array of string);
    procedure cm_CopySamePanel(const Params: array of string);
    procedure cm_DirHistory(const Params: array of string);
    procedure cm_ViewHistory(const Params: array of string);
@@ -3316,6 +3317,49 @@ begin
           ActiveFrame.Reload;
           if NotActiveFrame.FileSource.IsClass(TFileSystemFileSource) then
             NotActiveFrame.Reload;
+        end;
+      end;
+
+    finally
+      FreeAndNil(SelectedFiles);
+    end;
+  end;
+end;
+
+procedure TMainCommands.cm_CreateShortcut(const Params: array of string);
+var
+  sExistingFile, sLinkToCreate: String;
+  SelectedFiles: TFiles;
+begin
+  with frmMain do
+  begin
+    // Shortcut links work only for file system.
+    if not (ActiveFrame.FileSource.IsClass(TFileSystemFileSource)) then
+    begin
+      msgWarning(rsMsgErrNotSupported);
+      Exit;
+    end;
+
+    SelectedFiles := ActiveFrame.CloneSelectedOrActiveFiles;
+    try
+      if SelectedFiles.Count > 1 then
+        msgWarning(rsMsgTooManyFilesSelected)
+      else if SelectedFiles.Count = 0 then
+        msgWarning(rsMsgNoFilesSelected)
+      else
+      begin
+        sExistingFile := SelectedFiles[0].Path + SelectedFiles[0].Name;
+
+        if Length(Params) > 0 then
+          sLinkToCreate := Params[0]
+        else
+          sLinkToCreate := ActiveFrame.CurrentPath;
+
+        sLinkToCreate := sLinkToCreate + SelectedFiles[0].Name;
+        try
+          CreateShortcut(sExistingFile, sLinkToCreate);
+        finally
+          ActiveFrame.Reload;
         end;
       end;
 
