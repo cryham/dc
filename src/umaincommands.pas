@@ -28,7 +28,8 @@ interface
 
 uses
   Classes, SysUtils, ActnList, uFileView, uFileViewNotebook, uFileSourceOperation, uTypes,
-  uGlobs, uFileFunctions, uFormCommands, uFileSorting, uShellContextMenu, Menus, ufavoritetabs,ufile;
+  uGlobs, uFileFunctions, uFormCommands, uFileSorting,
+  uShellContextMenu, Menus, ufavoritetabs, ufile, uMyWindows;
 
 type
 
@@ -835,10 +836,24 @@ begin
       begin
         // Change file source, if the file under cursor can be opened as another file source.
         try
-          if not ChooseFileSource(TargetPage.FileView, SourcePage.FileView.FileSource, aFile) then
-            TargetPage.FileView.AddFileSource(SourcePage.FileView.FileSource,
-                                              SourcePage.FileView.CurrentPath);
-          TargetPage.FileView.SetActiveFile(aFile.Name);
+          if LowerCase(aFile.Extension) = 'lnk' then
+          begin
+            NewPath := GetShortcutTarget(aFile.FullPath);
+            if mbDirectoryExists(NewPath) then
+              ChooseFileSource(TargetPage.FileView, NewPath)
+            else  // file
+            begin
+              ChooseFileSource(TargetPage.FileView, ExtractFilePath(NewPath));
+              TargetPage.FileView.SetActiveFile(NewPath);
+            end;
+          end
+          else
+          begin
+            if not ChooseFileSource(TargetPage.FileView, SourcePage.FileView.FileSource, aFile) then
+              TargetPage.FileView.AddFileSource(SourcePage.FileView.FileSource,
+                                                SourcePage.FileView.CurrentPath);
+            TargetPage.FileView.SetActiveFile(aFile.Name);
+          end;
         except
           on e: EFileSourceException do
             MessageDlg('Error', e.Message, mtError, [mbOK], 0);
@@ -1161,6 +1176,7 @@ procedure TMainCommands.cm_OpenDirInNewTab(const Params: array of string);
 var
   aFile: TFile;
   NewPage: TFileViewPage;
+  NewPath: string;
 begin
   aFile := FrmMain.ActiveFrame.CloneActiveFile;
   if not Assigned(aFile) then
@@ -1173,6 +1189,17 @@ begin
     else if FileIsArchive(aFile.FullPath) then
       NewPage := OpenArchive(aFile)
     else
+    if LowerCase(aFile.Extension) = 'lnk' then
+    begin
+      NewPath := GetShortcutTarget(aFile.FullPath);
+      if mbDirectoryExists(NewPath) then
+        NewPage := OpenTab(NewPath)
+      else  // file
+      begin
+        NewPage := OpenTab(ExtractFilePath(NewPath));
+        NewPage.FileView.SetActiveFile(NewPath);
+      end;
+    end else
       NewPage := OpenTab(aFile.Path);
   finally
     FreeAndNil(aFile);
