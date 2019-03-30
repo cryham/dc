@@ -351,11 +351,13 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     Height = 25
     Top = 413
     Width = 691
+    Font.Style = [fsBold]
     Panels = <    
       item
         Text = 'Please press "Compare" to start'
         Width = 50
       end>
+    ParentFont = False
     SimplePanel = False
   end
   object HeaderDG: TDrawGrid
