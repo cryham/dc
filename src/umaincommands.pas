@@ -393,7 +393,7 @@ uses fOptionsPluginsBase, fOptionsPluginsDSX, fOptionsPluginsWCX,
      DCOSUtils, DCStrUtils, DCBasicTypes, uFileSourceCopyOperation, fSyncDirsDlg,
      uHotDir, DCXmlConfig, dmCommonData, fOptionsFrame, foptionsDirectoryHotlist,
      fMainCommandsDlg, uConnectionManager, fOptionsFavoriteTabs, fTreeViewMenu,
-     uArchiveFileSource, fOptionsHotKeys, fBenchmark
+     uArchiveFileSource, fOptionsHotKeys, fBenchmark, uShlObjAdditional
      {$IFDEF COLUMNSFILEVIEW_VTV}
      , uColumnsFileViewVtv
      {$ELSE}
@@ -839,7 +839,7 @@ begin
         try
           if LowerCase(aFile.Extension) = 'lnk' then
           begin
-            NewPath := GetShortcutTarget(aFile.FullPath);
+            SHFileLinkTarget(aFile.FullPath, NewPath);
             if mbDirectoryExists(NewPath) then
               ChooseFileSource(TargetPage.FileView, NewPath)
             else  // file
@@ -1192,7 +1192,7 @@ begin
     else
     if LowerCase(aFile.Extension) = 'lnk' then
     begin
-      NewPath := GetShortcutTarget(aFile.FullPath);
+      SHFileLinkTarget(aFile.FullPath, NewPath);
       if mbDirectoryExists(NewPath) then
         NewPage := OpenTab(NewPath)
       else  // file

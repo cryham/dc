@@ -81,6 +81,7 @@ function SHChangeIconDialog(hOwner: HWND; var FileName: String; var IconIndex: I
 function SHGetOverlayIconIndex(const sFilePath, sFileName: String): Integer;
 function SHGetInfoTip(const sFilePath, sFileName: String): String;
 function SHFileIsLinkToFolder(const FileName: String; out LinkTarget: String): Boolean;
+function SHFileLinkTarget(const FileName: String; out LinkTarget: String): Boolean;
 
 function PathIsUNCA(pszPath: LPCSTR): WINBOOL; stdcall; external 'shlwapi' name 'PathIsUNCA';
 function PathIsUNCW(pwszPath: LPCWSTR): WINBOOL; stdcall; external 'shlwapi' name 'PathIsUNCW';
@@ -273,6 +274,34 @@ begin
     LinkTarget := EmptyStr;
   end;
 end;
+
+function SHFileLinkTarget(const FileName: String; out LinkTarget: String): Boolean;
+var
+  Unknown: IUnknown;
+  ShellLink: IShellLinkW;
+  PersistFile: IPersistFile;
+  FindData: TWin32FindDataW;
+  pszFile:LPWSTR;
+begin
+  Result := False;
+  try
+    Unknown := CreateComObject(CLSID_ShellLink);
+    ShellLink := Unknown as IShellLinkW;
+    PersistFile := Unknown as IPersistFile;
+    if Failed(PersistFile.Load(PWideChar(UTF8Decode(FileName)), OF_READ)) then Exit;
+    pszFile:= GetMem(MAX_PATH * 2);
+    try
+      if Failed(ShellLink.GetPath(pszFile, MAX_PATH, @FindData, 0)) then Exit;
+      LinkTarget := UTF16ToUTF8(WideString(pszFile));
+      Result := (LinkTarget <> EmptyStr);
+    finally
+      FreeMem(pszFile);
+    end;
+  except
+    LinkTarget := EmptyStr;
+  end;
+end;
+
 
 procedure OleErrorUTF8(ErrorCode: HResult);
 begin
