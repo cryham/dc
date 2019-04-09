@@ -460,6 +460,7 @@ begin
       slFind.Delimiter:= '|';
       slFind.DelimitedText:= edFind.Text;
       slReplace:= TStringList.Create;
+      slReplace.StrictDelimiter:= True;
       if edReplace.Text = '' then
         slReplace.Add('')
       else
@@ -1151,7 +1152,7 @@ begin
 
       // Avoid collisions with OldNames
       L:= OldNames.Find(AFile.Name);
-      if L >= 0 then
+      if (L >= 0) and (OldFiles[I].Name <> AFile.Name) then
       begin
         // Add @ at end of name
         if AFile.Extension = '' then
@@ -1221,7 +1222,7 @@ begin
     OFile:= AFile.Clone;
 
     L:= OldNames.Find(AFile.Name);
-    if L >= 0 then
+    if (L >= 0) and (FFiles[I].Name <> AFile.Name) then
     begin
       if AFile.Extension = '' then
       begin
