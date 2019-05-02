@@ -183,6 +183,7 @@ begin
 
   if FileIsReadOnly(aFile.Attributes) then
   begin
+    FDeleteReadOnly := fsoogYes;  //dont ask
     case FDeleteReadOnly of
       fsoogNone:
         case AskQuestion(Format(rsMsgFileReadOnly, [WrapTextSimple(FileName)]), '',

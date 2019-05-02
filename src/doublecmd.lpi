@@ -1905,7 +1905,7 @@ end;"/>
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="6">
+    <Exceptions Count="7">
       <Item1>
         <Name Value="EXmlConfigNotFound"/>
       </Item1>
@@ -1924,6 +1924,9 @@ end;"/>
       <Item6>
         <Name Value="EAbstractError"/>
       </Item6>
+      <Item7>
+        <Name Value="EFileSourceOperationAborting"/>
+      </Item7>
     </Exceptions>
   </Debugging>
 </CONFIG>
