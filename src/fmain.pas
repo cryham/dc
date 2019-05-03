@@ -2506,7 +2506,7 @@ begin
 
   if gCmdLine and  // If command line is enabled
      (GetKeyTypingAction(ModifierKeys) = ktaCommandLine) and
-     not ((Key in ['-', '*', '+', #0..#32]) and (Trim(edtCommand.Text) = '')) then
+     not ((Key in ['-', '*', '+', #0..#32]) {and (Trim(edtCommand.Text) = '')}) then
   begin
     TypeInCommandLine(Key);
     Key := #0;
@@ -3744,13 +3744,19 @@ begin
       end;
 
     VK_ESCAPE:
+      if IsCommandLineVisible then
+      begin
+        pnlCommand.Hide;
+        pnlCmdLine.Hide;
+        Key := 0;
+      end;{
       if IsCommandLineVisible and
          (GetKeyTypingAction(ShiftEx) = ktaCommandLine) and
          (edtCommand.Text <> '') then
       begin
         edtCommand.Text := '';
         Key := 0;
-      end;
+      end;}
 
     VK_RETURN, VK_SELECT:
       if IsCommandLineVisible and
@@ -3762,12 +3768,12 @@ begin
         Key := 0;
       end;
 
-    VK_SPACE:
+    {VK_SPACE:
       if (GetKeyTypingAction(ShiftEx) = ktaCommandLine) and (edtCommand.Text <> '') then
       begin
         TypeInCommandLine(' ');
         Key := 0;
-      end;
+      end;}
 
     VK_TAB:
       begin
@@ -5000,9 +5006,11 @@ begin
     case Key of
       VK_ESCAPE:
         begin
-          if edtCommand.Text <> '' then
+          {if edtCommand.Text <> '' then
             edtCommand.Text := ''
-          else
+          else}
+            pnlCommand.Hide;
+            pnlCmdLine.Hide;
             ActiveFrame.SetFocus;
           Key := 0;
         end;
@@ -5198,7 +5206,7 @@ begin
 {$ENDIF}
       then
       begin
-        if (Key <> VK_SPACE) or (edtCommand.Text <> '') then
+        if (Key <> VK_SPACE) {or (edtCommand.Text <> '')} then
         begin
           UTF8Char := VirtualKeyToUTF8Char(Key, ShiftEx - ModifierKeys);
           if (UTF8Char <> '') and
