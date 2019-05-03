@@ -156,7 +156,7 @@ implementation
 uses
   uDebug, uOSUtils, DCStrUtils, FileUtil, uFindEx, DCClassesUtf8, uFileProcs, uLng,
   DCBasicTypes, uFileSource, uFileSystemFileSource, uFileProperty,
-  StrUtils, DCDateTimeUtils, uShowMsg, Forms, LazUTF8, uHash;
+  StrUtils, DCDateTimeUtils, uShowMsg, Forms, LazUTF8, uHash, DateUtils;
 
 const
   HASH_TYPE = HASH_BLAKE2S;
@@ -250,15 +250,43 @@ function FileExistsMessage(const TargetName, SourceName: String;
                            SourceSize: Int64; SourceTime: TDateTime): String;
 var
   TargetInfo: TSearchRec;
+  TargetTime: TDateTime;
 begin
-  Result:= rsMsgFileExistsOverwrite + LineEnding + WrapTextSimple(TargetName, 100) + LineEnding;
+  Result:= //rsMsgFileExistsOverwrite + LineEnding +
+           WrapTextSimple(TargetName, 100) + LineEnding;
   if mbFileGetAttr(TargetName, TargetInfo) then
   begin
+    TargetTime:= FileDateToDateTime(TargetInfo.Time);
     Result:= Result + Format(rsMsgFileExistsFileInfo, [Numb2USA(IntToStr(TargetInfo.Size)),
-                             DateTimeToStr(FileDateToDateTime(TargetInfo.Time))]) + LineEnding;
+                             DateTimeToStr(TargetTime)]) + LineEnding;
   end;
   Result:= Result + LineEnding + rsMsgFileExistsWithFile + LineEnding + WrapTextSimple(SourceName, 100) + LineEnding +
            Format(rsMsgFileExistsFileInfo, [Numb2USA(IntToStr(SourceSize)), DateTimeToStr(SourceTime)]);
+
+  Result:= Result + LineEnding + LineEnding;
+  //  checks
+  //Result:= Result + '    ';
+  if SourceSize > TargetInfo.Size then
+    Result:= Result + '+Bigger  '
+  else
+  if SourceSize = TargetInfo.Size then
+    Result:= Result + '=Same  '
+  else
+    Result:= Result + '-Smaller  ';
+
+  if SourceTime = TargetTime then
+    Result:= Result + '==Same'
+  else
+  if IncSecond(SourceTime,-5) > TargetTime then
+    Result:= Result + '+Newer'
+  else
+  if IncSecond(SourceTime,5) < TargetTime then
+    Result:= Result + '-Older'
+  else
+    Result:= Result + '=Same';  // +-5 sec
+
+  //Result:= Result + '    ' + TimeToStr(Abs(SourceTime - TargetTime));
+  //Result:= Result + LineEnding;
 end;
 
 // ----------------------------------------------------------------------------
