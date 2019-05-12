@@ -518,7 +518,7 @@ begin
         FCurrentFile := aFile;
         FCurrentTargetFilePath := AbsoluteTargetFileName;
         case AskQuestion(Message, '',
-                         PossibleResponses, fsourOverwrite, fsourSkip,
+                         PossibleResponses, fsourOverwriteAll, fsourSkip,
                          @QuestionActionHandler) of
           fsourOverwrite:
             Result := fsoofeOverwrite;

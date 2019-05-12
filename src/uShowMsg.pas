@@ -237,7 +237,7 @@ end;
 procedure SetMsgBoxParams(var frmMsg: TfrmMsg; const sMsg: String;
                           const Buttons: array of TMyMsgButton; ButDefault, ButEscape: TMyMsgButton);
 const
-  cButtonCount = 8;
+  cButtonCount = 18;
   cButtonSpace = 8;
 var
   iIndex: Integer;

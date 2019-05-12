@@ -737,7 +737,7 @@ begin
         FCurrentFile := aFile;
         FCurrentTargetFilePath := AbsoluteTargetFileName;
         case AskQuestion(Message, '',
-                         Responses, fsourOverwrite, fsourSkip,
+                         Responses, fsourOverwriteAll, fsourSkip,
                          @QuestionActionHandler) of
           fsourOverwrite:
             Result := fsoofeOverwrite;

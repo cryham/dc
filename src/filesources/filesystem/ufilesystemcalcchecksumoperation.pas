@@ -468,7 +468,7 @@ begin
         Message:= rsMsgFileExistsOverwrite + LineEnding +
                   WrapTextSimple(AbsoluteTargetFileName, 100) + LineEnding;
         case AskQuestion(Message, '',
-                         Responses, fsourOverwrite, fsourSkip) of
+                         Responses, fsourOverwriteAll, fsourSkip) of
           fsourOverwrite:
             Result := fsoofeOverwrite;
           fsourSkip:
