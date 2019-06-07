@@ -18,10 +18,10 @@ unit fMultiRename;
 interface
 
 uses
-  LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus, math,
+  LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus,
   Controls, LCLType, DCClassesUtf8, uClassesEx, uFile, uFileSource,
   StringHashList, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
-  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation, DCBasicTypes;
+  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation;
 
 type
 
@@ -176,11 +176,14 @@ type
     FFiles: TFiles;
     FPresets: TStringHashList; // of PMultiRenamePreset
     FNewNames: TStringHashList;
+    FOldNames: TStringHashList;
     FSourceRow: Integer;
     FMoveRow : Boolean;
     FNames: TStringList;
     FLog: TStringListEx;
     FRegExp: TRegExprW;
+    FFindText: TStringList;
+    FReplaceText: TStringList;
 
     {Replace bad path chars in string}
     procedure sReplaceBadChars(var sPath: string);
@@ -242,10 +245,9 @@ implementation
 {$R *.lfm}
 
 uses
-  uDebug, uLng, uGlobs, uFileProcs, DCOSUtils, DCStrUtils,
-  fSelectTextRange, uShowMsg, uFileSourceUtil, uFileFunctions,
-  dmCommonData, fMultiRenameWait, uOSUtils, uFileSourceOperation,
-  uOperationsManager, Dialogs;
+  Math, uDCUtils, uDebug, uLng, uGlobs, uFileProcs, DCOSUtils, DCStrUtils,
+  fSelectTextRange, uShowMsg, uFileFunctions, dmCommonData, fMultiRenameWait,
+  uOSUtils, uFileSourceOperation, uOperationsManager, Dialogs;
 
 const
   sPresetsSection = 'MultiRenamePresets';
@@ -268,8 +270,15 @@ constructor TfrmMultiRename.Create(TheOwner: TComponent; aFileSource: IFileSourc
 begin
   FRegExp := TRegExprW.Create;
   FNames := TStringList.Create;
+  FFindText := TStringList.Create;
+  FFindText.StrictDelimiter := True;
+  FFindText.Delimiter := '|';
+  FReplaceText:= TStringList.Create;
+  FReplaceText.StrictDelimiter := True;
+  FReplaceText.Delimiter := '|';
   FPresets := TStringHashList.Create(False);
   FNewNames:= TStringHashList.Create(FileNameCaseSensitive);
+  FOldNames:= TStringHashList.Create(FileNameCaseSensitive);
   FFileSource := aFileSource;
   FFiles := aFiles;
   aFiles := nil;
@@ -284,9 +293,12 @@ begin
   ClearPresetsList;
   FreeAndNil(FPresets);
   FreeAndNil(FNewNames);
+  FreeAndNil(FOldNames);
   FreeAndNil(FFiles);
   FreeAndNil(FNames);
   FreeAndNil(FRegExp);
+  FreeAndNil(FFindText);
+  FreeAndNil(FReplaceText);
 end;
 
 procedure TfrmMultiRename.FormCreate(Sender: TObject);
@@ -313,8 +325,6 @@ begin
   // Initialize presets.
   LoadPresets;
   FillPresetsList;
-  //edPresets.Text := FLastPreset;
-  //LoadPreset(FLastPreset);
   LoadPreset(sLast);
 end;
 
@@ -330,7 +340,7 @@ end;
 
 procedure TfrmMultiRename.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  SavePresets;
+  SavePreset(sLast);
 
   CloseAction:= caFree;
   with StringGrid.Columns do
@@ -423,10 +433,10 @@ end;
 
 function TfrmMultiRename.FreshText(ItemIndex: Integer): String;
 var
+  I: Integer;
   bError: Boolean;
   sTmpName, sTmpExt: String;
   slFind,slReplace: TStringList;
-  I: Integer;
 begin
   bError:= False;
 
@@ -714,6 +724,7 @@ end;
 
 procedure TfrmMultiRename.btnEditClick(Sender: TObject);
 begin
+  //DCPlaceCursorNearControlIfNecessary(btnEdit);
   pmEditDirect.PopUp;
 end;
 
@@ -721,11 +732,11 @@ procedure TfrmMultiRename.btnSavePresetClick(Sender: TObject);
 begin
   if edPreset.Text <> '' then
   begin
-    if FPresets.Find(edPreset.Text) <> -1 then
+    {if FPresets.Find(edPreset.Text) <> -1 then
     begin
       if msgYesNo(Format(rsMsgPresetAlreadyExists, [edPreset.Text])) = False then
         Exit;
-    end;
+    end;}
 
     SavePreset(edPreset.Text);
 
@@ -850,7 +861,7 @@ procedure TfrmMultiRename.sReplaceBadChars(var sPath: string);
 var
   Index: Integer;
 begin
-  for Index := 1 to Length(sPath) - 1 do
+  for Index := 1 to Length(sPath) do
   begin
     if sPath[Index] in ['\', '/', ':', '*', '?', '"', '<', '>', '|'] then
       sPath[Index] := '.';
@@ -860,9 +871,9 @@ end;
 function TfrmMultiRename.sHandleFormatString(const sFormatStr: string; ItemNr: Integer): string;
 var
   aFile: TFile;
-  Index: Integer;
+  Index: Int64;
   Counter: Int64;
-  Dirs: TStringList;
+  Dirs: TStringArray;
   Levels: Longint;
 begin
   Result := '';
@@ -885,7 +896,7 @@ begin
       'c','C':
         begin
           // check for start value after C, e.g. C12
-          if not TryStrToInt(Copy(sFormatStr, 2, MaxInt), Index) then
+          if not TryStrToInt64(Copy(sFormatStr, 2, MaxInt), Index) then
              Index := StrToInt64Def(edPoc.Text, 1);
           Counter := Index + StrToInt64Def(edInterval.Text, 1) * ItemNr;
           Result := Format('%.' + cmbxWidth.Items[cmbxWidth.ItemIndex] + 'd', [Counter]);
@@ -898,19 +909,12 @@ begin
       'p','P':  // sub path index
         begin
           Index := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 0);
-          Dirs := TStringList.Create;
-          Dirs.StrictDelimiter := True;
-          {$IFDEF MSWINDOWS}
-          Dirs.Delimiter := '\';
-          {$ELSE}
-          Dirs.Delimiter := '/';
-          {$ENDIF}
-          Dirs.DelimitedText := aFile.Path;
+          Dirs := (aFile.Path + ' ').Split([PathDelim]);
+          Dirs[High(Dirs)] := EmptyStr;
           if Index < 0 then
-            Result := Dirs[Max(0, Dirs.Count -1 + Index)]
+            Result := Dirs[Max(0, High(Dirs) + Index)]
           else
-            Result := Dirs[Min(Index, Dirs.Count - 1)];
-          Dirs.Free;
+            Result := Dirs[Min(Index, High(Dirs))];
         end;
       '=':
         begin
@@ -991,6 +995,7 @@ procedure TfrmMultiRename.btnNameMenuClick(Sender: TObject);
 begin
   ppNameMenu.AutoPopup:= False;
   FillContentFieldMenu(miPlugin, @miPluginClick);
+  //DCPlaceCursorNearControlIfNecessary(btnNameMenu);
   btnNameMenu.PopupMenu.PopUp;
   ppNameMenu.Tag:= 0;
 end;
@@ -999,6 +1004,7 @@ procedure TfrmMultiRename.btnExtMenuClick(Sender: TObject);
 begin
   ppNameMenu.AutoPopup:= False;
   FillContentFieldMenu(miPlugin, @miPluginClick);
+  //DCPlaceCursorNearControlIfNecessary(btnExtMenu);
   btnExtMenu.PopupMenu.PopUp;
   ppNameMenu.Tag:= 1;
 end;
@@ -1106,7 +1112,12 @@ begin
       sfprSuccess:
         begin
           S:= 'OK      ' + aFile.Name + ' -> ' + Value;
-          FFiles[Index].Name := Value; // Write new name to the file object
+          if Index < FFiles.Count then
+            FFiles[Index].Name := Value // Write new name to the file object
+          else begin
+            Index:= StrToInt(aFile.Extension);
+            FFiles[Index].Name := Value // Write new name to the file object
+          end;
         end;
       sfprError: S:= 'FAILED  ' + aFile.Name + ' -> ' + Value;
       sfprSkipped: S:= 'SKIPPED ' + aFile.Name + ' -> ' + Value;
@@ -1120,6 +1131,7 @@ var
   AFile,OFile: TFile;
   NewName: String;
   I, J, K, L: Integer;
+  TempFiles: TStringList;
   OldFiles, NewFiles: TFiles;
   OldNames: TStringHashList;
   AutoRename: Boolean = False;
@@ -1135,31 +1147,20 @@ begin
   end;
 
   OldFiles:= FFiles.Clone;
+  TempFiles:= TStringList.Create;
   NewFiles:= TFiles.Create(EmptyStr);
 
-  try
-    // OldNames
-    OldNames:= TStringHashList.Create(True);
-    OldNames.Clear;
-    for I:= 0 to OldFiles.Count -1 do
-      OldNames.Add(OldFiles[I].Name);
+  // OldNames
+  FOldNames.Clear;
+  for I:= 0 to OldFiles.Count -1 do
+    FOldNames.Add(OldFiles[I].Name);
 
+  try
     FNewNames.Clear;
     for I:= 0 to FFiles.Count - 1 do
     begin
       AFile:= TFile.Create(EmptyStr);
       AFile.Name:= FreshText(I);
-
-      // Avoid collisions with OldNames
-      L:= OldNames.Find(AFile.Name);
-      if (L >= 0) and (OldFiles[I].Name <> AFile.Name) then
-      begin
-        // Add @ at end of name
-        if AFile.Extension = '' then
-          AFile.Name:= AFile.NameNoExt + '@'
-        else
-          AFile.Name:= AFile.NameNoExt + '@.' + AFile.Extension;
-      end;
 
       // Checking duplicates
       NewName:= FFiles[I].Path + AFile.Name;
@@ -1186,9 +1187,35 @@ begin
         FNewNames.Add(NewName);
         AFile.Name:= ExtractFileName(NewName);
       end;
+
+      // Avoid collisions with OldNames
+      J:= FOldNames.Find(AFile.Name);
+      if (J >= 0) and (J <> I) then
+      begin
+        NewName:= AFile.Name;
+        // Generate temp file name, save file index as extension
+        AFile.FullPath:= GetTempName(FFiles[I].Path) + ExtensionSeparator + IntToStr(I);
+        TempFiles.AddObject(NewName, AFile.Clone);
+      end;
+
       NewFiles.Add(AFile);
     end;
 
+    // Rename temp files back
+    if TempFiles.Count > 0 then
+    begin
+      for I:= 0 to TempFiles.Count - 1 do
+      begin
+        // Temp file name
+        OldFiles.Add(TFile(TempFiles.Objects[I]));
+        // Real new file name
+        AFile:= TFile.Create(EmptyStr);
+        AFile.Name:= TempFiles[I];
+        NewFiles.Add(AFile);
+      end;
+    end;
+
+    // Rename files
     FillChar({%H-}theNewProperties, SizeOf(TFileProperties), 0);
     Operation:= FFileSource.CreateSetFilePropertyOperation(OldFiles, theNewProperties);
     if Assigned(Operation) then
@@ -1212,30 +1239,7 @@ begin
     end;
     OldFiles.Free;
     NewFiles.Free;
-  end;
-
-  // Rename files back, remove @
-  for I:= 0 to FFiles.Count - 1 do
-  begin
-    AFile:= TFile.Create(EmptyStr);
-    AFile.Name:= FreshText(I);
-    OFile:= AFile.Clone;
-
-    L:= OldNames.Find(AFile.Name);
-    if (L >= 0) and (FFiles[I].Name <> AFile.Name) then
-    begin
-      if AFile.Extension = '' then
-      begin
-        OFile.Name:= FFiles[I].Path + AFile.NameNoExt + '@';
-        RenameFile(FFileSource, OFile, AFile.NameNoExt, True);
-      end else begin
-        OFile.Name:= FFiles[I].Path + AFile.NameNoExt + '@.' + AFile.Extension;
-        RenameFile(FFileSource, OFile, AFile.NameNoExt + '.' + AFile.Extension, True);
-      end;
-      FFiles[I].Name := AFile.Name;
-    end;
-    AFile.Free;
-    OFile.Free;
+    TempFiles.Free;
   end;
 
   StringGridTopLeftChanged(StringGrid);
