@@ -1936,8 +1936,8 @@ begin
     Canvas.TextOut(x, y, sText);
 
   // Text before selection + selected text
-  Canvas.Brush.Color := clHighlight;
-  Canvas.Font.Color  := clHighlightText;
+  Canvas.Brush.Color := clHighlightText;
+  Canvas.Font.Color  := clHighlight;
 
   Canvas.TextOut(X, Y, GetText(StartPos, iEndDrawIndex - pBegLine, 0));
 
@@ -1996,8 +1996,8 @@ begin
 
   // Text before selection + selected text (hex part)
   sTmpText := Copy(sText, 1, FCustom.StartOfs + (iEndDrawIndex - pBegLine) * (FCustom.MaxValueDigits + FCustom.SpaceCount) - 1);
-  Canvas.Brush.Color := clHighlight;
-  Canvas.Font.Color  := clHighlightText;
+  Canvas.Brush.Color := clHighlightText;
+  Canvas.Font.Color  := clHighlight;
   Canvas.TextOut(x, y, sTmpText);
 
   // Restore previous canvas settings
@@ -2021,8 +2021,8 @@ begin
 
   // Text before selection + selected text (ascii part)
   sTmpText := Copy(sText, 1 + FCustom.StartAscii, iEndDrawIndex - pBegLine);
-  Canvas.Brush.Color := clHighlight;
-  Canvas.Font.Color  := clHighlightText;
+  Canvas.Brush.Color := clHighlightText;
+  Canvas.Font.Color  := clHighlight;
   Canvas.TextOut(x, y, sTmpText);
 
   // Restore background color
@@ -2071,8 +2071,8 @@ begin
     Canvas.TextOut(x, y, sText);
 
   // Text before selection + selected text
-  Canvas.Brush.Color := clHighlight;
-  Canvas.Font.Color  := clHighlightText;
+  Canvas.Brush.Color := clHighlightText;
+  Canvas.Font.Color  := clHighlight;
 
   Canvas.TextOut(X, Y, Copy(sText, 1, iEndDrawIndex - pBegLine));
 
