@@ -595,8 +595,8 @@ uses
   fMain, uSearchResultFileSource, uFileSourceProperty, uVfsModule, uFileViewWithPanels;
 
 const
-  MinimumReloadInterval  = 1000; // 1 second
-  UpdateFilelistInterval =  500;
+  MinimumReloadInterval  = 500;  // 1000
+  UpdateFilelistInterval = 250;  // 500
 
 constructor TFileView.Create(AOwner: TWinControl; AFileSource: IFileSource; APath: String; AFlags: TFileViewFlags = []);
 begin
