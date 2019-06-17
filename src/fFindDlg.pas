@@ -648,7 +648,7 @@ begin
   // fill search depth combobox
   cmbSearchDepth.Items.Add(rsFindDepthAll);
   cmbSearchDepth.Items.Add(rsFindDepthCurDir);
-  for I := 1 to 100 do
+  for I := 1 to 9 do
     cmbSearchDepth.Items.Add(Format(rsFindDepth, [IntToStr(I)]));
   cmbSearchDepth.ItemIndex := 0;
   // fill encoding combobox
@@ -820,7 +820,7 @@ begin
       cmbFindText.Text := glsSearchHistory[0];
   end;
 
-  cmbSearchDepth.ItemIndex := 0;
+  //cmbSearchDepth.ItemIndex := 0;
   cmbExcludeFiles.Text := '';
   cbPartialNameSearch.Checked := gPartialNameSearch;
   cbRegExp.Checked := False;
@@ -854,7 +854,7 @@ begin
   // find/replace text
   // do not clear search/replace text just clear checkbox
   chkHex.Checked := False;
-  cbFindText.Checked := False;
+  //cbFindText.Checked := False;
   cbReplaceText.Checked := False;
   cbCaseSens.Checked := False;
   cbNotContainingText.Checked := False;
