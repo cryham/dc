@@ -750,7 +750,7 @@ begin
       Brush.Color := TColor($080A0C);  // B,G,R
       FillRect(aRect);
       Font.Bold := True;
-      Font.Color := TColor($C0C0F0);
+      Font.Color := TColor($FFFFC0);  // dir
       TextOut(aRect.Left + 1, aRect.Top + 1, FVisibleItems[aRow]);
     end else begin
       Brush.Color := TColor($060404);
