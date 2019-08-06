@@ -1774,6 +1774,7 @@ begin
           for I := 0 to FFiles.Count - 1 do
             begin
               if FFiles[I].FSFile.Name = '..' then Continue;
+              if FFiles[I].FSFile.IsDirectory or FFiles[I].FSFile.IsLinkToDirectory then Continue;
               if SearchTemplate.CheckFile(FFiles[I].FSFile) then
                 begin
                   FFiles[I].Selected := bSelect;
@@ -1791,6 +1792,7 @@ begin
       for I := 0 to FFiles.Count - 1 do
       begin
         if FFiles[I].FSFile.Name = '..' then Continue;
+        if FFiles[I].FSFile.IsDirectory or FFiles[I].FSFile.IsLinkToDirectory then Continue;
         if CheckFileAttributes(LocalMarkFileChecks, FFiles[I].FSFile.Attributes) then
         begin
           if MatchesMaskList(FFiles[I].FSFile.Name, sMask, ';, ', bCaseSensitive, bIgnoreAccents, bWindowsInterpretation) then
@@ -1858,7 +1860,7 @@ begin
   if IsActiveItemValid then
   begin
     sGroup := GetActiveDisplayFile.FSFile.Extension;
-    if sGroup <> '' then
+    //if sGroup <> '' then  // marks all for no ext!
       sGroup := '.' + sGroup;
     MarkGroup('*' + sGroup, bSelect, @bCaseSensitive, @bIgnoreAccents, @bWindowsInterpretation);
   end;
