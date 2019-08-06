@@ -1882,7 +1882,7 @@ begin
   gbMarkMaskIgnoreAccents := False;
   gMarkMaskFilterWindows := False;
   gMarkShowWantedAttribute := False;
-  gMarkDefaultWantedAttribute := '';
+  gMarkDefaultWantedAttribute := '-*';
   gMarkLastWantedAttribute := '';
 
   { TotalCommander Import/Export }

@@ -68,6 +68,8 @@ uses
   LCLIntf, LCLType, Math,
   fViewOperations,
   uDCUtils,
+  uFileSourceCopyOperation,
+  uFileSourceOperationTypes,
   uFileSourceOperationMisc,
   uFileSourceOperationMessageBoxesUI;
 
@@ -116,10 +118,10 @@ end;
 procedure TOperationsPanel.GetStateColor(State: TFileSourceOperationState; out ColorFrom, ColorTo: TColor);
 begin
   case State of
-    // Green if running
+    // Blue if running
     fsosRunning:
       begin
-        ColorFrom:= RGB(73, 133, 71);
+        ColorFrom:= RGB(52, 103, 163);
         ColorTo:=  RGB(6, 38, 0);
       end;
     // Orange if in waiting
@@ -176,8 +178,8 @@ var
     DrawText(Canvas.Handle, PChar(OutString), Length(OutString), ItemRect,
       DT_NOPREFIX or DT_CALCRECT);
 
-    OperationItem^.Width  :=
-      Min(ItemRect.Right  + (LeftRightTextMargin + PanelBorderWidth) * 2, FMaximumItemWidth);
+    OperationItem^.Width  := FMaximumItemWidth;  // const
+      //Min(ItemRect.Right  + (LeftRightTextMargin + PanelBorderWidth) * 2, FMaximumItemWidth);
     OverallHeight :=
       Max(ItemRect.Bottom + (TopBottomTextMargin + PanelBorderWidth) * 2, OverallHeight);
     OverallWidth := OverallWidth + OperationItem^.Width + HorizontalSpaceBetween;
@@ -201,7 +203,7 @@ begin
             OperationItem^.QueueId := Queue.Identifier;
             OperationItem^.OperationHandle := OpManItem.Handle;
 
-            OutString := IntToStr(OpManItem.Handle) + ': ' +
+            OutString := //IntToStr(OpManItem.Handle) + ': ' +
               OpManItem.Operation.GetDescription(fsoddJob) + ' - ' + GetProgressString(100);
             SetSize;
 
@@ -395,6 +397,9 @@ var
   Item: POperationPanelItem;
   i: Integer;
   AProgress: Double;
+  Speed: String;
+  CopyOperation: TFileSourceCopyOperation;
+  CopyStatistics: TFileSourceCopyOperationStatistics;
 
   procedure DrawString(s: String);
   begin
@@ -493,9 +498,23 @@ begin
 
         AProgress := OpManItem.Operation.Progress;
         DrawProgress(OpManItem.Operation.State, AProgress);
-        DrawString(IntToStr(OpManItem.Handle) + ': ' +
+
+        speed := '';
+        case OpManItem.Operation.ID of
+          fsoCopy, fsoCopyIn, fsoCopyOut:
+            begin
+              CopyOperation := OpManItem.Operation as TFileSourceCopyOperation;
+              CopyStatistics := CopyOperation.RetrieveStatistics;
+
+              speed := cnvFormatFileSize(CopyStatistics.BytesPerSecond, uoscOperation) + ' ' +
+                       FormatDateTime('HH:MM:SS', CopyStatistics.RemainingTime);
+              //SetSpeedAndTime(Operation, RemainingTime, cnvFormatFileSize(BytesPerSecond, uoscOperation));
+            end;
+        end;
+
+        DrawString(//IntToStr(OpManItem.Handle) + ': ' +
                    OpManItem.Operation.GetDescription(fsoddJob) + ' - ' +
-                   GetProgressString(AProgress));
+                   GetProgressString(AProgress) + '  ' + speed);
         Inc(i);
       end
       else
