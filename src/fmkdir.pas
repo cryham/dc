@@ -49,6 +49,7 @@ Function TfrmMkDir.ShowMkDir(var sPath:string):Boolean; var Index: Integer;
 const
   MAX_LINES = 20;
 begin
+  cbMkDir.Items.Clear;
   ActiveControl := cbMkDir;
   if (sPath <> '..') then
     cbMkDir.Text := sPath
@@ -57,7 +58,7 @@ begin
   cbMkDir.SelectAll;
   Result := (ShowModal = mrOK);
   sPath := cbMkDir.Text;
-  If Result then
+  {If Result then
    begin
      Index := cbMkDir.Items.IndexOf(cbMkDir.Text);
      if (Index = -1) then
@@ -67,7 +68,7 @@ begin
 
      if (cbMkDir.Items.Count > MAX_LINES) then
        cbMkDir.Items.Delete(cbMkDir.Items.Count - 1);
-   end;
+   end;}
 end;
 
 end.
