@@ -1,7 +1,7 @@
 object frmViewOperations: TfrmViewOperations
-  Left = 18
+  Left = 726
   Height = 353
-  Top = 117
+  Top = 283
   Width = 507
   ActiveControl = tvOperations
   Caption = 'File operations'
@@ -12,18 +12,19 @@ object frmViewOperations: TfrmViewOperations
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
   Position = poScreenCenter
   SessionProperties = 'Height;Left;Top;Width;WindowState;cbAlwaysOnTop.Checked'
-  LCLVersion = '1.1'
+  LCLVersion = '2.0.0.4'
   object pnlHeader: TPanel
     Left = 0
-    Height = 64
+    Height = 62
     Top = 0
     Width = 507
     Align = alTop
     AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 64
+    ClientHeight = 62
     ClientWidth = 507
     TabOrder = 0
     object pnlTopHeader: TPanel
@@ -49,7 +50,7 @@ object frmViewOperations: TfrmViewOperations
         Left = 0
         Height = 40
         Top = 0
-        Width = 70
+        Width = 71
         Anchors = [akTop, akLeft, akBottom]
         AutoSize = True
         BorderSpacing.Right = 40
@@ -63,7 +64,7 @@ object frmViewOperations: TfrmViewOperations
         AnchorSideTop.Control = pnlTopHeader
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Side = asrBottom
-        Left = 110
+        Left = 111
         Height = 40
         Top = 0
         Width = 80
@@ -80,7 +81,7 @@ object frmViewOperations: TfrmViewOperations
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = pnlTopHeader
         AnchorSideBottom.Side = asrBottom
-        Left = 200
+        Left = 201
         Height = 40
         Top = 0
         Width = 80
@@ -101,7 +102,7 @@ object frmViewOperations: TfrmViewOperations
       AnchorSideRight.Control = pnlHeader
       AnchorSideRight.Side = asrBottom
       Left = 10
-      Height = 18
+      Height = 16
       Top = 43
       Width = 487
       Anchors = [akTop, akLeft, akRight]
@@ -118,10 +119,10 @@ object frmViewOperations: TfrmViewOperations
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = pnlTopHeader
       AnchorSideRight.Side = asrBottom
-      Left = 391
-      Height = 23
-      Top = 9
-      Width = 116
+      Left = 407
+      Height = 20
+      Top = 10
+      Width = 100
       Anchors = [akTop, akRight]
       Caption = 'Always on top'
       OnChange = cbAlwaysOnTopChange
@@ -137,8 +138,8 @@ object frmViewOperations: TfrmViewOperations
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 289
-    Top = 64
+    Height = 291
+    Top = 62
     Width = 507
     Anchors = [akTop, akLeft, akRight, akBottom]
     AutoExpand = True

@@ -119,6 +119,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure mnuCancelOperationClick(Sender: TObject);
     procedure mnuCancelQueueClick(Sender: TObject);
     procedure mnuNewQueueClick(Sender: TObject);
@@ -707,6 +708,13 @@ begin
     @UpdateView);
 end;
 
+procedure TfrmViewOperations.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_Escape) then
+    Close;
+end;
+
 procedure TfrmViewOperations.mnuNewQueueClick(Sender: TObject);
 var
   Item: TViewBaseItem;
@@ -994,9 +1002,14 @@ procedure TfrmViewOperations.tvOperationsKeyDown(Sender: TObject; var Key: Word;
 var
   Item: TViewBaseItem;
 begin
-  Item := GetFocusedItem;
-  if Assigned(Item) then
-    Item.KeyDown(Key, Shift);
+  if (Key = VK_Escape) then
+    Close
+  else
+  begin
+    Item := GetFocusedItem;
+    if Assigned(Item) then
+      Item.KeyDown(Key, Shift);
+  end;
 end;
 
 procedure TfrmViewOperations.tvOperationsMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
