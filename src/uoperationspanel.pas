@@ -29,7 +29,8 @@ interface
 uses
   Classes, SysUtils, Controls, Forms, Graphics, LCLVersion,
   fFileOpDlg,
-  uFileSourceOperation, uOperationsManager, uFileSourceOperationUI;
+  uFileSourceOperation, uOperationsManager, uFileSourceOperationUI,
+  uFileSourceOperationTypes;
 
 type
 
@@ -43,7 +44,8 @@ type
     FParentWidth: Integer;
     procedure ClearItems;
     procedure DeleteItem(List: TFPList; Index: Integer);
-    procedure GetStateColor(State: TFileSourceOperationState; out ColorFrom, ColorTo: TColor);
+    procedure GetStateColor(State: TFileSourceOperationState; ID: TFileSourceOperationType;
+                            out ColorFrom, ColorTo: TColor);
     procedure OperationsManagerEvent(Item: TOperationsManagerItem; Event: TOperationManagerEvent);
     procedure ProgressWindowEvent(OperationHandle: TOperationHandle;
                                   Event: TOperationProgressWindowEvent);
@@ -66,12 +68,9 @@ implementation
 
 uses
   LCLIntf, LCLType, Math,
-  fViewOperations,
-  uDCUtils,
-  uFileSourceCopyOperation,
-  uFileSourceOperationTypes,
-  uFileSourceOperationMisc,
-  uFileSourceOperationMessageBoxesUI;
+  fViewOperations, uDCUtils,
+  uFileSourceCopyOperation, uFileSourceMoveOperation, uFileSourceDeleteOperation,
+  uFileSourceOperationMisc, uFileSourceOperationMessageBoxesUI;
 
 const
   MinimumHeight = 10;
@@ -115,33 +114,26 @@ begin
   List.Delete(Index);
 end;
 
-procedure TOperationsPanel.GetStateColor(State: TFileSourceOperationState; out ColorFrom, ColorTo: TColor);
+procedure TOperationsPanel.GetStateColor(State: TFileSourceOperationState; ID: TFileSourceOperationType;
+                                         out ColorFrom, ColorTo: TColor);
 begin
-  case State of
-    // Blue if running
-    fsosRunning:
-      begin
-        ColorFrom:= RGB(52, 103, 163);
-        ColorTo:=  RGB(6, 38, 0);
+    case ID of
+      fsoCopy, fsoCopyIn, fsoCopyOut:  // copy
+        begin  ColorTo  := RGB( 42, 93,153);
+               ColorFrom:= RGB(  0, 31, 51);  end;
+      fsoMove:             // Move/rename
+        begin  ColorTo  := RGB( 22,143,143);
+               ColorFrom:= RGB(  0, 15, 31);  end;
+      fsoDelete, fsoWipe:  // del
+        begin  ColorTo  := RGB(152,103, 13);
+               ColorFrom:= RGB( 36,  8,  0);  end;
+      fsoCalcChecksum, fsoCalcStatistics:  // Ctrl-Q
+        begin  ColorTo  := RGB( 72, 52,102);
+               ColorFrom:= RGB( 18, 18,  0);  end;
+      else
+        begin  ColorTo  := RGB( 52, 53,143);
+               ColorFrom:= RGB(  8,  8, 42);  end;
       end;
-    // Orange if in waiting
-    fsosWaitingForFeedback, fsosWaitingForConnection:
-      begin
-        ColorFrom:= RGB(155, 102, 00);
-        ColorTo:=  RGB(15, 33, 4);
-      end;
-    // Red if paused, stopped
-    fsosPaused, fsosStopped:
-      begin
-        ColorFrom:= RGB(125, 53, 49);
-        ColorTo:=  RGB(25, 10, 03);
-      end;
-    else
-      begin
-        ColorFrom:= RGB(0, 0, 0);
-        ColorTo:=  RGB(125, 125, 125);
-      end;
-  end;
 end;
 
 procedure TOperationsPanel.OperationsManagerEvent(Item: TOperationsManagerItem; Event: TOperationManagerEvent);
@@ -388,6 +380,7 @@ begin
   end;
 end;
 
+
 procedure TOperationsPanel.Paint;
 var
   OpManItem: TOperationsManagerItem;
@@ -397,9 +390,57 @@ var
   Item: POperationPanelItem;
   i: Integer;
   AProgress: Double;
-  Speed: String;
-  CopyOperation: TFileSourceCopyOperation;
-  CopyStatistics: TFileSourceCopyOperationStatistics;
+
+  function StrTime(dt: TDateTime): string;
+  Var
+    H,M,S,MS : Word;
+  begin
+    DecodeTime(dt,H,M,S,MS);
+    if H > 0 then
+      Result := Format('%d:%2d:%2d h',[h,m,s])
+    else if M > 0 then
+      Result := Format('%d:%2d m',[m,s])
+    else
+      Result := Format('%d s',[s]);
+  end;
+
+  function GetSpeedText(OpManItem: TOperationsManagerItem) :string;
+  var
+    CopyOperation: TFileSourceCopyOperation;  CopyStat: TFileSourceCopyOperationStatistics;
+    MoveOperation: TFileSourceMoveOperation;  MoveStat: TFileSourceMoveOperationStatistics;
+    DeleteOperation: TFileSourceDeleteOperation;  DeleteStat: TFileSourceDeleteOperationStatistics;
+  begin
+    case OpManItem.Operation.ID of
+      fsoCopy, fsoCopyIn, fsoCopyOut:
+        begin
+          CopyOperation := OpManItem.Operation as TFileSourceCopyOperation;
+          CopyStat := CopyOperation.RetrieveStatistics;
+
+          Result := cnvFormatFileSize(CopyStat.BytesPerSecond, uoscOperation) + '/s  ' +
+                    StrTime(CopyStat.RemainingTime);
+        end;
+      fsoMove:
+        begin
+          MoveOperation := OpManItem.Operation as TFileSourceMoveOperation;
+          MoveStat := MoveOperation.RetrieveStatistics;
+
+          Result := cnvFormatFileSize(MoveStat.BytesPerSecond, uoscOperation) + '/s  ' +
+                    StrTime(MoveStat.RemainingTime);
+        end;
+      fsoDelete:
+        begin
+          DeleteOperation := OpManItem.Operation as TFileSourceDeleteOperation;
+          DeleteStat := DeleteOperation.RetrieveStatistics;
+
+          Result := IntToStr(DeleteStat.FilesPerSecond) + '/s  ' +
+                    StrTime(DeleteStat.RemainingTime);
+        end;
+      //fsoCalcChecksum:
+        //InitializeCalcChecksumOperation(OpManItem);
+      else
+        Result := '';
+    end;
+  end;
 
   procedure DrawString(s: String);
   begin
@@ -411,24 +452,36 @@ var
     InflateRect(ARect, -4, -2);
     DrawText(Canvas.Handle, PChar(s), Length(s), ARect, DT_LEFT or DT_VCENTER or DT_NOPREFIX);
   end;
-  procedure DrawProgress(State: TFileSourceOperationState; Progress: Double);
+
+  procedure DrawProgress(State: TFileSourceOperationState; ID: TFileSourceOperationType; Progress: Double);
+  var
+    x: integer;
   begin
-    // Draw progress bar
-    GetStateColor(State, ColorFrom, ColorTo);
+    // Draw background
+    GetStateColor(State, ID, ColorFrom, ColorTo);
     ARect := ItemRect;
     InflateRect(ARect, -1, -1);
-    ARect.Right := ARect.Left + Round((ARect.Right - ARect.Left) * Progress);
     Canvas.GradientFill(ARect, ColorFrom, ColorTo, gdVertical);
-    // Special indication if operation is paused/stopped
-    if State in [fsosPaused, fsosStopped, fsosWaitingForFeedback] then
+
+    // Draw progress line
+    x := ARect.Left + Round(ARect.Width * Min(1.0, Progress));
+    Canvas.GradientFill(Rect(x-1, ARect.Top, x+1, ARect.Bottom), $008080, $F0FFFF, gdHorizontal);
+
+    // Special indication
+    if State in [fsosWaitingForFeedback] then
     begin
-      Canvas.Brush.Color:= ColorFrom;
-      Canvas.Brush.Style:= bsDiagCross;
-      ARect.Left:= ARect.Right + 1;
-      ARect.Right:= ItemRect.Right - 1;
-      Canvas.FillRect(ARect);
+      ARect.Bottom := ARect.Top + 1;
+      Canvas.Pen.Color := $30C0FF;
+      Canvas.Rectangle(ARect);  // line top
+    end else
+    if State in [fsosPaused, fsosStopped] then
+    begin
+      Canvas.Pen.Color := clWhite;
+      ARect.Top := ARect.Bottom - 1;
+      Canvas.Rectangle(ARect);  // line bottom
     end;
   end;
+
 begin
   inherited Paint;
 
@@ -461,7 +514,7 @@ begin
         Canvas.Rectangle(ItemRect);
 
         AProgress := OpManItem.Operation.Progress;
-        DrawProgress(OpManItem.Operation.State, AProgress);
+        DrawProgress(OpManItem.Operation.State, OpManItem.Operation.ID, AProgress);
         DrawString(Queue.GetDescription(True) + LineEnding +
                    OpManItem.Operation.GetDescription(fsoddJob) + ' - ' +
                    GetProgressString(AProgress));
@@ -497,24 +550,11 @@ begin
         Canvas.Rectangle(ItemRect);
 
         AProgress := OpManItem.Operation.Progress;
-        DrawProgress(OpManItem.Operation.State, AProgress);
-
-        speed := '';
-        case OpManItem.Operation.ID of
-          fsoCopy, fsoCopyIn, fsoCopyOut:
-            begin
-              CopyOperation := OpManItem.Operation as TFileSourceCopyOperation;
-              CopyStatistics := CopyOperation.RetrieveStatistics;
-
-              speed := cnvFormatFileSize(CopyStatistics.BytesPerSecond, uoscOperation) + ' ' +
-                       FormatDateTime('HH:MM:SS', CopyStatistics.RemainingTime);
-              //SetSpeedAndTime(Operation, RemainingTime, cnvFormatFileSize(BytesPerSecond, uoscOperation));
-            end;
-        end;
+        DrawProgress(OpManItem.Operation.State, OpManItem.Operation.ID, AProgress);
 
         DrawString(//IntToStr(OpManItem.Handle) + ': ' +
-                   OpManItem.Operation.GetDescription(fsoddJob) + ' - ' +
-                   GetProgressString(AProgress) + '  ' + speed);
+                   OpManItem.Operation.GetDescription(fsoddJob) + ' ' +
+                   GetProgressString(AProgress) + '  ' + GetSpeedText(OpManItem));
         Inc(i);
       end
       else
