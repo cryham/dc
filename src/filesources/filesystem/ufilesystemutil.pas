@@ -249,7 +249,7 @@ end;
 function FileExistsMessage(const TargetName, SourceName: String;
                            SourceSize: Int64; SourceTime: TDateTime): String;
 var
-  TargetInfo: TSearchRec;
+  TargetInfo: TSearchRecEx;
   TargetTime: TDateTime;
 begin
   Result:= //rsMsgFileExistsOverwrite + LineEnding +

@@ -282,11 +282,11 @@ var
 
 function GetServerIdNameToCheck:string;
 begin
-  result:=ApplicationName+'-';
-  if IndexInstance>1 then result:=result+IntToStr(IndexInstance);
-  {$IF DEFINED(UNIX)}
-  result := result + '-' + IntToStr(fpGetUID);
-  {$ENDIF}
+  Result:= ApplicationName;
+  if IndexInstance > 1 then Result+= '-' + IntToStr(IndexInstance);
+{$IF DEFINED(UNIX)}
+  Result:= GetPipeFileName(Result, True);
+{$ENDIF}
 end;
 
 begin
@@ -312,11 +312,13 @@ end;
 
 constructor TUniqueInstance.Create(aInstanceName: String; aServernameByUser: String);
 begin
-  FServernameByUser := aServernameByUser;
-  FInstanceName:= aInstanceName + '-' + FServernameByUser;
-  {$IF DEFINED(UNIX)}
-  FInstanceName+= '-' + IntToStr(fpGetUID);
-  {$ENDIF}
+  FInstanceName:= aInstanceName;
+  FServernameByUser:= aServernameByUser;
+  if Length(FServernameByUser) > 0 then
+    FInstanceName+= '-' + FServernameByUser;
+{$IF DEFINED(UNIX)}
+  FInstanceName:= GetPipeFileName(FInstanceName, True);
+{$ENDIF}
 end;
 
 destructor TUniqueInstance.Destroy;

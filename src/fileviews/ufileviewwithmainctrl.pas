@@ -28,7 +28,8 @@ unit uFileViewWithMainCtrl;
 interface
 
 uses
-  Classes, SysUtils, Controls, ExtCtrls, StdCtrls, LCLType, LMessages,
+  Classes, SysUtils, Controls, ExtCtrls, StdCtrls, LCLType, LMessages, EditBtn,
+  Graphics,
   uFile,
   uFileViewWorker,
   uOrderedFileView,
@@ -48,6 +49,19 @@ type
     UserManualEdit:boolean; // true if user press a key or click/select part of filename, false - if pressed F2(or assigned key)
 
     LastAction:TRenameFileActionType;  // need for organize correct cycle Name-FullName-Ext (or FullName-Name-Ext)
+  end;
+
+  { TEditButtonEx }
+
+  TEditButtonEx = class(TEditButton)
+  private
+    function GetFont: TFont;
+    procedure SetFont(AValue: TFont);
+  protected
+    function CalcButtonVisible: Boolean; override;
+    function GetDefaultGlyphName: String; override;
+  public
+    property Font: TFont read GetFont write SetFont;
   end;
 
   { TFileViewWithMainCtrl }
@@ -77,11 +91,12 @@ type
 
     procedure edtRenameEnter(Sender: TObject);
     procedure edtRenameExit(Sender: TObject);
+    procedure edtRenameButtonClick(Sender: TObject);
     procedure edtRenameKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtRenameMouseDown(Sender: TObject; Button: TMouseButton;Shift: TShiftState; X, Y: Integer);
 
   protected
-    edtRename: TEdit;
+    edtRename: TEditButtonEx;
     FRenameFile: TFile;
     FRenFile:TRenameFileEditInfo;
     FRenTags:string;  // rename separators
@@ -209,7 +224,7 @@ uses
   Gtk2Proc,  // for ReleaseMouseCapture
   GTK2Globals,  // for DblClickTime
 {$ENDIF}
-  LCLIntf, LCLProc, LazUTF8, Forms, Dialogs, DCOSUtils,
+  LCLIntf, LCLProc, LazUTF8, Forms, Dialogs, Buttons, DCOSUtils,
   fMain, uShowMsg, uLng, uFileProperty, uFileSource, uFileSourceOperationTypes,
   uGlobs, uInfoToolTip, uDisplayFile, uFileSystemFileSource, uFileSourceUtil,
   uArchiveFileSourceUtil, uFormCommands, uKeyboard, uFileSourceSetFilePropertyOperation;
@@ -217,6 +232,28 @@ uses
 type
   TControlHandlersHack = class(TWinControl)
   end;
+
+{ TEditButtonEx }
+
+function TEditButtonEx.GetFont: TFont;
+begin
+  Result:= BaseEditor.Font;
+end;
+
+procedure TEditButtonEx.SetFont(AValue: TFont);
+begin
+  BaseEditor.Font:= AValue;
+end;
+
+function TEditButtonEx.GetDefaultGlyphName: String;
+begin
+  Result:= BitBtnResNames[idButtonOk];
+end;
+
+function TEditButtonEx.CalcButtonVisible: Boolean;
+begin
+  Result:= (inherited CalcButtonVisible) and gInplaceRenameButton;
+end;
 
 { TFileViewWithMainCtrl }
 
@@ -273,7 +310,7 @@ begin
 
   inherited CreateDefault(AOwner);
 
-  edtRename := TEdit.Create(Self);
+  edtRename := TEditButtonEx.Create(Self);
   edtRename.Visible := False;
   edtRename.TabStop := False;
   edtRename.AutoSize := False;
@@ -281,6 +318,7 @@ begin
   edtRename.OnMouseDown:=@edtRenameMouseDown;
   edtRename.OnEnter := @edtRenameEnter;
   edtRename.OnExit := @edtRenameExit;
+  edtRename.OnButtonClick := @edtRenameButtonClick;
 
   tmMouseScroll := TTimer.Create(Self);
   tmMouseScroll.Enabled  := False;
@@ -726,7 +764,7 @@ begin
       begin
         if gMouseSelectionEnabled then
         begin
-          if ssCtrl in Shift then
+          if ssModifier in Shift then
             begin
               // if there is no selected files then select also previous file
               if not HasSelectedFiles then
@@ -894,7 +932,7 @@ begin
 
   // A single click starts programs and opens files
   if (gMouseSingleClickStart in [1..3]) and (FMainControlMouseDown = False) and
-     (Shift * [ssShift, ssAlt, ssCtrl] = []) and (not MainControl.Dragging) then
+     (Shift * [ssShift, ssAlt, ssModifier] = []) and (not MainControl.Dragging) then
   begin
     FileIndex := GetFileIndexFromCursor(X, Y, AtFileList);
     if IsFileIndexInRange(FileIndex) and
@@ -949,7 +987,7 @@ begin
 
   // A single click is used to open items
   if (gMouseSingleClickStart > 0) and (Button = mbLeft) and
-     (Shift * [ssShift, ssAlt, ssCtrl, ssDouble] = []) and FMouseFocus then
+     (Shift * [ssShift, ssAlt, ssModifier, ssDouble] = []) and FMouseFocus then
   begin
     // A single click only opens folders. For files, a double click is needed.
     if (gMouseSingleClickStart and 2 <> 0) then
@@ -1169,6 +1207,12 @@ begin
   // CanFocus checks parent controls, but not parent form.
   if GetParentForm(Self).CanFocus and MainControl.CanFocus then
   begin
+    if FFocusQuickSearch then
+    begin
+      MainControl.SetFocus;
+      inherited SetFocus;
+      Exit;
+    end;
     inherited SetFocus;
     MainControl.SetFocus;
   end;
@@ -1354,6 +1398,13 @@ begin
   // OnEnter don't called automatically (bug?)
   // TODO: Check on which widgetset/OS this is needed.
   FMainControl.OnEnter(Self);
+end;
+
+procedure TFileViewWithMainCtrl.edtRenameButtonClick(Sender: TObject);
+var
+  Key: Word = VK_RETURN;
+begin
+  edtRenameKeyDown(Sender, Key, []);
 end;
 
 procedure TFileViewWithMainCtrl.edtRenameKeyDown(Sender: TObject;

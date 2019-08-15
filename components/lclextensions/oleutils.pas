@@ -104,7 +104,7 @@ begin
   //soFrom* constants are equal to STREAM_SEEK_* constants. Assume it here
   liOffset.LowPart:=Offset;
   liOffset.HighPart:=0;
-  Res:=FSrcStream.Seek(Int64(liOffset), Origin, Int64(liResult));
+  Res:=FSrcStream.Seek(Int64(liOffset), Origin, LargeUInt(liResult));
   Result:=liResult.LowPart;
   if Res <> S_OK then
     Raise Exception.Create('TOLEStream - Error while seeking: '+ErrorString(Res));

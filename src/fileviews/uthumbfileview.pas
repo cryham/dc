@@ -282,7 +282,10 @@ var
     Canvas.Font.Style := gFonts[dcfMain].Style;
     Canvas.Font.Size  := gFonts[dcfMain].Size;
 
-    Result := gThumbSize.cy + Canvas.GetTextHeight('Wg') + 6;
+    if gUseFrameCursor then
+      Result := gThumbSize.cy + Canvas.GetTextHeight('Wg') + gBorderFrameWidth*2 + 4
+    else
+      Result := gThumbSize.cy + Canvas.GetTextHeight('Wg') + 6;
 
     // Restore old font.
     Canvas.Font := OldFont;
@@ -360,7 +363,10 @@ end;
 
 procedure TThumbDrawGrid.CalculateColumnWidth;
 begin
-  DefaultColWidth:= gThumbSize.cx + 4;
+  if gUseFrameCursor then
+    DefaultColWidth := gThumbSize.cx + gBorderFrameWidth*2 + 2
+  else
+    DefaultColWidth := gThumbSize.cx + 4;
 end;
 
 procedure TThumbDrawGrid.DoMouseMoveScroll(Sender: TObject; X, Y: Integer);
@@ -443,8 +449,6 @@ procedure TThumbDrawGrid.DrawCell(aCol, aRow: Integer; aRect: TRect;
 var
   Idx: Integer;
   //shared variables
-  s:   string;
-  iTextTop: Integer;
   AFile: TDisplayFile;
   FileSourceDirectAccess: Boolean;
 
@@ -452,15 +456,19 @@ var
   //begin subprocedures
   //------------------------------------------------------
 
-  procedure DrawIconCell;
+  procedure DrawIconCell(aRect: TRect);
   var
+    iTextTop: Integer;
     X, Y: Integer;
+    s: string;
     IconID: PtrInt;
     Bitmap: TBitmap;
   begin
+    iTextTop := aRect.Bottom - Canvas.TextHeight('Wg');
+
     IconID := AFile.Tag;
 
-    if (AFile.FSFile.IsDirectory = False) and (IconID >= 0) and
+    if (AFile.FSFile.IsNameValid) and (IconID >= 0) and
        (IconID < FThumbView.FBitmapList.Count) then
       begin
         Bitmap:= FThumbView.FBitmapList[IconID];
@@ -495,8 +503,7 @@ var
     end;
 
     s:= AFile.DisplayStrings[0];
-    Y:= (ColWidths[ACol] - Canvas.TextWidth('W'));
-    s:= FitFileName(s, Canvas, AFile.FSFile, Y);
+    s:= FitFileName(s, Canvas, AFile.FSFile, aRect.Width - 4);
 
     Canvas.TextOut(aRect.Left + 2, iTextTop, s);
     //Canvas.Pen.Color:= InvertColor(gBackColor);  // no frame
@@ -518,9 +525,11 @@ begin
 
       PrepareColors(AFile, aCol, aRow, aRect, aState);
 
-      iTextTop := aRect.Top + (RowHeights[aRow] - Canvas.TextHeight('Wg'));
-
-      DrawIconCell;
+      if gUseFrameCursor then
+        DrawIconCell(Rect(aRect.Left + gBorderFrameWidth - 1, aRect.Top + gBorderFrameWidth - 1,
+                          aRect.Right - gBorderFrameWidth + 1, aRect.Bottom - gBorderFrameWidth + 1))
+      else
+        DrawIconCell(aRect);
     end
   else
     begin
@@ -588,7 +597,7 @@ begin
       begin
         AFile := FFiles[i];
 
-        if (AFile.Tag < 0) and (AFile.FSFile.IsDirectory = False) then
+        if (AFile.Tag < 0) and AFile.FSFile.IsNameValid then
         begin
           Bitmap:= FThumbnailManager.CreatePreview(AFile.FSFile);
           if Assigned(Bitmap) then
@@ -604,7 +613,7 @@ begin
         for i := VisibleFiles.First to VisibleFiles.Last do
         begin
           AFile := FFiles[i];
-          if (AFile.Tag < 0) and (AFile.FSFile.IsDirectory = False) then
+          if (AFile.Tag < 0) and AFile.FSFile.IsNameValid then
           begin
             if not Assigned(AFileList) then
               AFileList := TFVWorkerFileList.Create;
@@ -680,6 +689,9 @@ begin
 
   ARect := dgPanel.CellRect(dgPanel.Col, dgPanel.Row);
   ARect.Top := ARect.Bottom - dgPanel.Canvas.TextHeight('Wg') - 4;
+
+  if gInplaceRenameButton and (ARect.Right + edtRename.ButtonWidth < dgPanel.ClientWidth) then
+    Inc(ARect.Right, edtRename.ButtonWidth);
 
   edtRename.SetBounds(ARect.Left, ARect.Top, ARect.Right - ARect.Left, ARect.Bottom - ARect.Top);
 end;

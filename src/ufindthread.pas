@@ -130,11 +130,14 @@ begin
       end
       else if (CaseSensitive = False) then
       begin
+        if TextEncoding = EncodingDefault then begin
+          TextEncoding := GetDefaultTextEncoding;
+        end;
         if ((TextEncoding = EncodingUTF8) or (TextEncoding = EncodingUTF8BOM)) then
           FTextSearchType:= tsUtf8
-        else if (TextEncoding = EncodingUCS2LE) then
+        else if (TextEncoding = EncodingUTF16LE) then
           FTextSearchType:= tsUtf16le
-        else if (TextEncoding = EncodingUCS2BE) then
+        else if (TextEncoding = EncodingUTF16BE) then
           FTextSearchType:= tsUtf16be
         else
           FTextSearchType:= tsOther;

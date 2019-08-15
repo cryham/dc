@@ -285,6 +285,16 @@ begin
     StrPLCopyW(ArcName, UTF8Decode(sArcName), MAX_PATH);
 end;
 
+function ProcessDataProcAG(FileName: PAnsiChar; Size: LongInt): LongInt; dcpcall;
+begin
+  Result:= 1;
+end;
+
+function ProcessDataProcWG(FileName: PWideChar; Size: LongInt): LongInt; dcpcall;
+begin
+  Result:= 1;
+end;
+
 //--------------------------------------------------------------------------------------------------
 
 class function TWcxArchiveFileSource.CreateByArchiveSign(
@@ -415,7 +425,7 @@ begin
   if mbFileExists(anArchiveFileName) then
   begin
     if not ReadArchive then
-      raise EFileSourceException.Create(GetErrorMsg(FOpenResult));
+      raise EWcxModuleException.Create(FOpenResult);
   end;
 
   CreateConnections;
@@ -439,7 +449,7 @@ begin
   if mbFileExists(anArchiveFileName) then
   begin
     if not ReadArchive(anArchiveHandle) then
-      raise Exception.Create(GetErrorMsg(FOpenResult));
+      raise EWcxModuleException.Create(FOpenResult);
   end;
 
   CreateConnections;
@@ -682,7 +692,7 @@ begin
   end;
 
   Self.SetChangeVolProc(ArcHandle);
-  WcxModule.WcxSetProcessDataProc(ArcHandle, nil, nil);
+  WcxModule.WcxSetProcessDataProc(ArcHandle, @ProcessDataProcAG, @ProcessDataProcWG);
 
   DCDebug('Get File List');
   (*Get File List*)

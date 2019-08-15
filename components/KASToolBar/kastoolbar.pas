@@ -3,7 +3,7 @@
    -------------------------------------------------------------------------
    Toolbar panel class
 
-   Copyright (C) 2006-2016  Koblov Alexander (Alexx2000@mail.ru)
+   Copyright (C) 2006-2019 Alexander Koblov (alexx2000@mail.ru)
    
    contributors:
      2012 Przemyslaw Nagay (cobines@gmail.com)
@@ -55,13 +55,18 @@ type
 
   TKASToolButton = class(TSpeedButton)
   private
+    FOverlay: TBitmap;
     FToolItem: TKASToolItem;
     function GetToolBar: TKASToolBar;
   protected
     procedure CalculatePreferredSize(var PreferredWidth,
       PreferredHeight: integer; WithThemeSpace: Boolean); override;
+    function DrawGlyph(ACanvas: TCanvas; const AClient: TRect; const AOffset: TPoint;
+      AState: TButtonState; ATransparent: Boolean; BiDiFlags: Longint): TRect; override;
   public
     constructor Create(AOwner: TComponent; Item: TKASToolItem); reintroduce;
+    destructor Destroy; override;
+  public
     property ToolBar: TKASToolBar read GetToolBar;
     property ToolItem: TKASToolItem read FToolItem;
   end;
@@ -84,7 +89,7 @@ type
     FFlat: Boolean;
     FGlyphSize: Integer;
     FRadioToolBar: Boolean;
-    FRowHeight: Integer;
+    FRowHeight, FRowWidth: Integer;
     FShowDividerAsButton: Boolean;
     FToolItemExecutors: TFPList;
     FToolItems: TKASToolBarItems;
@@ -101,6 +106,7 @@ type
     FOnToolButtonDragDrop: TOnToolButtonDragDrop;
     FOnToolButtonEndDrag: TOnToolButtonEndDrag;
     FOnLoadButtonGlyph: TOnLoadButtonGlyph;
+    FOnLoadButtonOverlay: TOnLoadButtonGlyph;
     FOnToolItemExecute: TOnToolItemExecute;
     FOnToolItemShortcutsHint: TOnToolItemShortcutsHint;
     FKASToolBarFlags: TToolBarFlags;
@@ -110,11 +116,8 @@ type
     function CreateButton(Item: TKASToolItem): TKASToolButton;
     function ExecuteToolItem(Item: TKASToolItem): Boolean;
     function FindButton(Button: TKASToolButton): Integer;
-    function GetChangePath: String;
-    function GetEnvVar: String;
     function GetToolItemShortcutsHint(Item: TKASToolItem): String;
     function LoadBtnIcon(IconPath: String): TBitMap;
-    procedure DrawLinkIcon(Image: TBitMap);
     function GetButton(Index: Integer): TKASToolButton;
     procedure InsertButton(InsertAt: Integer; ToolButton: TKASToolButton);
     procedure SetButtonHeight(const AValue: Integer);
@@ -172,11 +175,11 @@ type
     function PublicExecuteToolItem(Item: TKASToolItem): Boolean;
 
     property Buttons[Index: Integer]: TKASToolButton read GetButton;
-    property RowHeight: Integer read FRowHeight;
 
   published
     property OnLoadButtonGlyph : TOnLoadButtonGlyph read FOnLoadButtonGlyph write FOnLoadButtonGlyph;
     property OnToolButtonClick: TOnToolButtonClick read FOnToolButtonClick write FOnToolButtonClick;
+    property OnLoadButtonOverlay: TOnLoadButtonGlyph read FOnLoadButtonOverlay write FOnLoadButtonOverlay;
     property OnToolButtonMouseDown: TOnToolButtonMouseUpDown read FOnToolButtonMouseDown write FOnToolButtonMouseDown;
     property OnToolButtonMouseUp: TOnToolButtonMouseUpDown read FOnToolButtonMouseUp write FOnToolButtonMouseUp;
     property OnToolButtonMouseMove: TOnToolButtonMouseMove read FOnToolButtonMouseMove write FOnToolButtonMouseMove;
@@ -191,9 +194,6 @@ type
     property ButtonHeight: Integer read FButtonHeight write SetButtonHeight default 22;
     property ButtonWidth: Integer read FButtonWidth write SetButtonWidth default 23;
     property ShowDividerAsButton: Boolean read FShowDividerAsButton write FShowDividerAsButton default False;
-
-    property ChangePath: String read GetChangePath write SetChangePath;
-    property EnvVar: String read GetEnvVar write SetEnvVar;
   end;
 
 procedure Register;
@@ -256,7 +256,10 @@ begin
   DisableAlign;
   try
     AdjustClientRect(RemainingClientRect);
-    WrapButtons(Width, NewWidth, NewHeight, False);
+    if IsVertical then
+      WrapButtons(Height, NewWidth, NewHeight, False)
+    else
+      WrapButtons(Width, NewWidth, NewHeight, False);
   finally
     Exclude(FKASToolBarFlags, tbfPlacingControls);
     EnableAlign;
@@ -276,30 +279,53 @@ var
   x: Integer;
   y: Integer;
   CurControl: TControl;
-  StartX: Integer;
+  StartX, StartY: Integer;
 
   procedure CalculatePosition;
   var
     NewBounds: TRect;
   begin
-    NewBounds := Bounds(x, y, CurControl.Width, RowHeight);
-    repeat
-      if (not Wrapable) or
-         (NewBounds.Right <= ARect.Right) or
-         (NewBounds.Left = StartX) then
-      begin
-        // control fits into the row
-        x := NewBounds.Left;
-        y := NewBounds.Top;
-        break;
-      end;
+    if IsVertical then
+    begin
+      NewBounds := Bounds(x, y, FRowWidth, CurControl.Height);
+      repeat
+        if (not Wrapable) or
+           (NewBounds.Bottom <= ARect.Bottom) or
+           (NewBounds.Top = StartY) then
+        begin
+          // control fits into the column
+          x := NewBounds.Left;
+          y := NewBounds.Top;
+          break;
+        end;
 
-      // try next row
-      NewBounds.Left := StartX;
-      NewBounds.Right := NewBounds.Left + CurControl.Width;
-      inc(NewBounds.Top, RowHeight);
-      inc(NewBounds.Bottom, RowHeight);
-    until false;
+        // try next column
+        NewBounds.Top := StartY;
+        NewBounds.Bottom := NewBounds.Top + CurControl.Height;
+        inc(NewBounds.Left, FRowWidth);
+        inc(NewBounds.Right, FRowWidth);
+      until false;
+    end
+    else begin
+      NewBounds := Bounds(x, y, CurControl.Width, FRowHeight);
+      repeat
+        if (not Wrapable) or
+           (NewBounds.Right <= ARect.Right) or
+           (NewBounds.Left = StartX) then
+        begin
+          // control fits into the row
+          x := NewBounds.Left;
+          y := NewBounds.Top;
+          break;
+        end;
+
+        // try next row
+        NewBounds.Left := StartX;
+        NewBounds.Right := NewBounds.Left + CurControl.Width;
+        inc(NewBounds.Top, FRowHeight);
+        inc(NewBounds.Bottom, FRowHeight);
+      until false;
+    end;
   end;
 
 var
@@ -326,8 +352,9 @@ begin
     // important: top, left button must start in the AdjustClientRect top, left
     // otherwise Toolbar.AutoSize=true will create an endless loop
     StartX := ARect.Left;
+    StartY := ARect.Top;
     x := StartX;
-    y := ARect.Top;
+    y := StartY;
     for i := 0 to ButtonList.Count - 1 do
     begin
       CurControl := TControl(ButtonList[i]);
@@ -348,7 +375,10 @@ begin
       NewHeight := Max(NewHeight, y + h + AdjustClientFrame.Bottom);
 
       // step to next position
-      inc(x,w);
+      if IsVertical then
+        Inc(y, h)
+      else
+        Inc(x, w);
     end;
   finally
     EndUpdate;
@@ -369,15 +399,18 @@ begin
   end;
 
   InvalidatePreferredChildSizes;
+  FRowWidth := ButtonWidth;
   FRowHeight := ButtonHeight;  // Row height is at least initial button height
 
-  // First recalculate RowHeight.
+  // First recalculate RowWidth & RowHeight
   for i := 0 to ButtonList.Count - 1 do
   begin
     CurControl := TControl(ButtonList[i]);
     w := ButtonWidth;
     h := ButtonHeight;
     CurControl.GetPreferredSize(w, h);
+    if FRowWidth < w then
+      FRowWidth := w;
     if FRowHeight < h then
       FRowHeight := h;
   end;
@@ -391,8 +424,15 @@ begin
     for i := 0 to ButtonList.Count - 1 do
     begin
       CurControl := TControl(ButtonList[i]);
-      w := ButtonWidth;
-      h := RowHeight;
+      if IsVertical then
+      begin
+        w := FRowWidth;
+        h := ButtonHeight;
+      end
+      else begin
+        w := ButtonWidth;
+        h := FRowHeight;
+      end;
       CurControl.GetPreferredSize(w, h);
       if (CurControl.Width <> w) or (CurControl.Height <> h) then
         CurControl.SetBounds(CurControl.Left, CurControl.Top, w, h);
@@ -419,40 +459,6 @@ begin
       Item := TKASToolButton(Buttons[i]).ToolItem;
       Item.Save(Config, Node);
     end;
-  end;
-end;
-
-procedure TKASToolBar.DrawLinkIcon(Image: TBitMap);
-var
-  sizeLink : Integer;
-  bmLinkIcon : TBitmap;
-{$IFDEF LCLGTK2}
-  bmTempIcon : TBitmap;
-{$ENDIF}
-  ToolItem: TKASNormalItem;
-begin
-  if (Image = nil) or (FOnLoadButtonGlyph = nil) then Exit;
-  sizeLink := FGlyphSize div 2;
-  ToolItem := TKASNormalItem.Create;
-  ToolItem.Icon := 'emblem-symbolic-link';
-  bmLinkIcon:= FOnLoadButtonGlyph(ToolItem, sizeLink, clBtnFace);
-  ToolItem.Free;
-  if Assigned(bmLinkIcon) then
-  begin
-{$IFDEF LCLGTK2} // Under GTK2 can not draw over alpha transparent pixels
-    bmTempIcon := TBitmap.Create;
-    bmTempIcon.Assign(Image);
-    Image.FreeImage;
-    Image.SetSize(FGlyphSize, FGlyphSize);
-    Image.Canvas.Brush.Color := clBtnFace;
-    Image.Canvas.FillRect(0, 0, FGlyphSize, FGlyphSize);
-    Image.Canvas.Draw(0, 0, bmTempIcon);
-    bmTempIcon.Free;
-{$ENDIF}
-    Image.Canvas.Draw(FGlyphSize-sizeLink+2,FGlyphSize-sizeLink+2, bmLinkIcon);
-    Image.TransparentColor:= clBtnFace;
-    Image.Transparent:= True;
-    bmLinkIcon.Free;
   end;
 end;
 
@@ -500,14 +506,6 @@ begin
   ToolButton.OnDragDrop:= @ToolButtonDragDrop;
   ToolButton.OnDragOver:= @ToolButtonDragOver;
   ToolButton.OnEndDrag:= @ToolButtonEndDrag;
-end;
-
-function TKASToolBar.GetChangePath: String;
-begin
-end;
-
-function TKASToolBar.GetEnvVar: String;
-begin
 end;
 
 function TKASToolBar.GetToolItemShortcutsHint(Item: TKASToolItem): String;
@@ -722,8 +720,11 @@ begin
       Bitmap := LoadBtnIcon(TKASNormalItem(ToolButton.ToolItem).Icon);
 
     try
-      if (ToolButton.ToolItem is TKASMenuItem) and Assigned(Bitmap) then
-        DrawLinkIcon(Bitmap);
+      if Assigned(Bitmap) and Assigned(FOnLoadButtonOverlay) and (not (ToolButton.ToolItem is TKASSeparatorItem)) then
+      begin
+        FreeAndNil(ToolButton.FOverlay);
+        ToolButton.FOverlay := FOnLoadButtonOverlay(ToolButton.ToolItem, FGlyphSize div 2, clBtnFace);
+      end;
 
       ToolButton.Glyph.Assign(Bitmap);
     finally
@@ -1024,30 +1025,55 @@ procedure TKASToolButton.CalculatePreferredSize(var PreferredWidth,
 var
   TextSize: TSize;
 begin
-  if Assigned(Parent) then
-  begin
+  if (Parent = nil) then
+    inherited
+  else begin
+    if ToolBar.IsVertical then
+    begin
+      PreferredWidth  := ToolBar.FRowWidth;
+      PreferredHeight := ToolBar.ButtonHeight;
+    end
+    else begin
+      PreferredWidth  := ToolBar.ButtonWidth;
+      PreferredHeight := ToolBar.FRowHeight;
+    end;
     if ShowCaption and (Caption <> EmptyStr) then
     begin
       // Size to extent of the icon + caption.
-      // Minimum size is the ButtonWidth x RowHeight of the toolbar.
       TextSize := Canvas.TextExtent(Caption);
-      PreferredWidth  := Max(TextSize.cx + Glyph.Width + 16, ToolBar.ButtonWidth);
-      PreferredHeight := Max(TextSize.cy + 4, ToolBar.RowHeight);
-    end
-    else
-    begin
-      PreferredWidth  := ToolBar.ButtonWidth;
-      PreferredHeight := ToolBar.RowHeight;
+      PreferredWidth  := Max(TextSize.cx + Glyph.Width + 16, PreferredWidth);
+      PreferredHeight := Max(TextSize.cy + 4, PreferredHeight);
     end;
-  end
-  else
-    inherited;
+  end;
+end;
+
+function TKASToolButton.DrawGlyph(ACanvas: TCanvas; const AClient: TRect;
+  const AOffset: TPoint; AState: TButtonState; ATransparent: Boolean;
+  BiDiFlags: Longint): TRect;
+var
+  X, Y: Integer;
+  AWidth : Integer;
+begin
+  Result := inherited DrawGlyph(ACanvas, AClient, AOffset, AState, ATransparent, BiDiFlags);
+  if Assigned(FOverlay) then
+  begin
+    AWidth := FOverlay.Width;
+    X := AClient.Left + AOffset.X + ToolBar.FGlyphSize - AWidth;
+    Y := AClient.Top + AOffset.Y + ToolBar.FGlyphSize - AWidth;
+    Canvas.Draw(X, Y, FOverlay);
+  end;
 end;
 
 constructor TKASToolButton.Create(AOwner: TComponent; Item: TKASToolItem);
 begin
   inherited Create(AOwner);
   FToolItem := Item;
+end;
+
+destructor TKASToolButton.Destroy;
+begin
+  inherited Destroy;
+  FOverlay.Free;
 end;
 
 function TKASToolButton.GetToolBar: TKASToolBar;
@@ -1063,8 +1089,15 @@ begin
   if Assigned(Parent) and (Parent is TKASToolBar) and
      not TKASToolBar(Parent).FShowDividerAsButton then
   begin
-    PreferredWidth  := 5;
-    PreferredHeight := TKASToolBar(Parent).RowHeight;
+    if ToolBar.IsVertical then
+    begin
+      PreferredHeight := 5;
+      PreferredWidth  := ToolBar.FRowWidth;
+    end
+    else begin
+      PreferredWidth  := 5;
+      PreferredHeight := ToolBar.FRowHeight;
+    end;
   end
   else
     inherited;
@@ -1079,14 +1112,29 @@ begin
      not TKASToolBar(Parent).FShowDividerAsButton then
   begin
     DividerRect:= ClientRect;
-    Details:= ThemeServices.GetElementDetails(ttbSeparatorNormal);
-    // Theme services have no strict rule to draw divider in the center,
-    // so we should calculate rectangle here
-    // on windows 7 divider can't be less than 4 pixels
-    if (DividerRect.Right - DividerRect.Left) > 5 then
+
+    if ToolBar.IsVertical then
     begin
-      DividerRect.Left := (DividerRect.Left + DividerRect.Right) div 2 - 3;
-      DividerRect.Right := DividerRect.Left + 5;
+      Details:= ThemeServices.GetElementDetails(ttbSeparatorVertNormal);
+      // Theme services have no strict rule to draw divider in the center,
+      // so we should calculate rectangle here
+      // on windows 7 divider can't be less than 4 pixels
+      if (DividerRect.Bottom - DividerRect.Top) > 5 then
+      begin
+        DividerRect.Top := (DividerRect.Top + DividerRect.Bottom) div 2 - 3;
+        DividerRect.Bottom := DividerRect.Top + 5;
+      end;
+    end
+    else begin
+      Details:= ThemeServices.GetElementDetails(ttbSeparatorNormal);
+      // Theme services have no strict rule to draw divider in the center,
+      // so we should calculate rectangle here
+      // on windows 7 divider can't be less than 4 pixels
+      if (DividerRect.Right - DividerRect.Left) > 5 then
+      begin
+        DividerRect.Left := (DividerRect.Left + DividerRect.Right) div 2 - 3;
+        DividerRect.Right := DividerRect.Left + 5;
+      end;
     end;
     ThemeServices.DrawElement(Canvas.GetUpdatedHandle([csBrushValid, csPenValid]), Details, DividerRect);
   end

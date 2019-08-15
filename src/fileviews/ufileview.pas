@@ -753,7 +753,6 @@ begin
     AFileView.OnAfterChangePath := Self.OnAfterChangePath;
     AFileView.OnActivate := Self.OnActivate;
     AFileView.OnFileListChanged := Self.OnFileListChanged;
-    AFileView.FOnChangeActiveFile := Self.FOnChangeActiveFile;
 
     for I := 0 to FSavedSelection.Count - 1 do
       AFileView.FSavedSelection.Add(FSavedSelection.Strings[I]);
@@ -772,8 +771,12 @@ begin
       AFileView.Request([fvrqHashFileList]);
     end;
 
+    AFileView.FFileFilter := Self.FFileFilter;
+    AFileView.FFilterOptions := Self.FFilterOptions;
+
     // FFiles need to be recreated because the filter is not cloned.
     // This is done in AFileView.UpdateView.
+    // UPDATE: Added filter cloning, is the aforementioned statement relevant now?
   end;
 end;
 

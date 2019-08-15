@@ -3,7 +3,7 @@
     -------------------------------------------------------------------------
     This unit contains platform dependent functions dealing with operating system.
 
-    Copyright (C) 2006-2018 Alexander Koblov (alexx2000@mail.ru)
+    Copyright (C) 2006-2019 Alexander Koblov (alexx2000@mail.ru)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -142,7 +142,6 @@ function mbFileExists(const FileName: String): Boolean;
 function mbFileAccess(const FileName: String; Mode: Word): Boolean;
 function mbFileGetAttr(const FileName: String): TFileAttrs; overload;
 function mbFileSetAttr(const FileName: String; Attr: TFileAttrs) : LongInt;
-function mbFileGetAttr(const FileName: String; out Attr: TSearchRec): Boolean; overload;
 {en
    If any operation in Options is performed and does not succeed it is included
    in the result set. If all performed operations succeed the function returns empty set.
@@ -156,6 +155,7 @@ function mbDeleteFile(const FileName: String): Boolean;
 
 function mbRenameFile(const OldName: String; NewName: String): Boolean;
 function mbFileSize(const FileName: String): Int64;
+function FileGetSize(Handle: System.THandle): Int64;
 function FileFlush(Handle: System.THandle): Boolean;
 function FileAllocate(Handle: System.THandle; Size: Int64): Boolean;
 { Directory handling functions}
@@ -908,35 +908,6 @@ begin
 end;
 {$ENDIF}
 
-function mbFileGetAttr(const FileName: String; out Attr: TSearchRec): Boolean;
-{$IFDEF MSWINDOWS}
-var
-  FileInfo: Windows.TWin32FileAttributeData;
-begin
-  Result:= GetFileAttributesExW(PWideChar(UTF16LongName(FileName)),
-                                GetFileExInfoStandard, @FileInfo);
-  if Result then
-  begin
-    WinToDosTime(FileInfo.ftLastWriteTime, Attr.Time);
-    Int64Rec(Attr.Size).Lo:= FileInfo.nFileSizeLow;
-    Int64Rec(Attr.Size).Hi:= FileInfo.nFileSizeHigh;
-    Attr.Attr:= FileInfo.dwFileAttributes;
-  end;
-end;
-{$ELSE}
-var
-  StatInfo: BaseUnix.Stat;
-begin
-  Result:= fpLStat(UTF8ToSys(FileName), StatInfo) >= 0;
-  if Result then
-  begin
-    Attr.Time:= StatInfo.st_mtime;
-    Attr.Size:= StatInfo.st_size;
-    Attr.Attr:= StatInfo.st_mode;
-  end;
-end;
-{$ENDIF}
-
 {$IFDEF uOSUtilsRangeCheckOn}
 {$R+}
 {$UNDEF uOSUtilsRangeCheckOn}
@@ -1097,6 +1068,22 @@ begin
   Result:= 0;
   if fpStat(UTF8ToSys(FileName), Info) >= 0 then
     Result:= Info.st_size;
+end;
+{$ENDIF}
+
+function FileGetSize(Handle: System.THandle): Int64;
+{$IFDEF MSWINDOWS}
+begin
+  Int64Rec(Result).Lo := GetFileSize(Handle, @Int64Rec(Result).Hi);
+end;
+{$ELSE}
+var
+  Info: BaseUnix.Stat;
+begin
+  if fpFStat(Handle, Info) < 0 then
+    Result := 0
+  else
+    Result := Info.st_size;
 end;
 {$ENDIF}
 

@@ -163,7 +163,7 @@ type
 
 const
   { Default hotkey list version number }
-  hkVersion = 47;
+  hkVersion = 49;
   // 47 - In "Copy/Move Dialog" context, add the shortcuts "F5" and "F6" for "cm_ToggleSelectionInName".
   // 40 - In "Main" context, added the "Ctrl+Shift+F7" for "cm_AddNewSearch".
   //      In "Find Files" context, changed "cm_Start" that was "Enter" for "F9".
@@ -258,6 +258,7 @@ var
   gMainMenu,
   gButtonBar,
   gToolBarFlat,
+  gMiddleToolBar,
   gDriveBar1,
   gDriveBar2,
   gDriveBarFlat,
@@ -281,6 +282,11 @@ var
   gSeparateTree: Boolean;
 
   { Toolbar }
+  gMiddleToolBarFlat,
+  gMiddleToolBarShowCaptions,
+  gMiddleToolbarReportErrorWithCommands: Boolean;
+  gMiddleToolBarButtonSize,
+  gMiddleToolBarIconSize,
   gToolBarButtonSize,
   gToolBarIconSize: Integer;
   gToolBarShowCaptions: Boolean;
@@ -515,6 +521,7 @@ var
   gShowWarningMessages,
   gDirBrackets,
   gInplaceRename,
+  gInplaceRenameButton,
   gDblClickToParent,
   gGoToRoot: Boolean;
   gActiveRight: Boolean;
@@ -559,6 +566,9 @@ var
   gOperationOptionCopyPermissions: Boolean;
   gOperationOptionExcludeEmptyDirectories: Boolean;
 
+  {Extract dialog options}
+  gExtractOverwrite: Boolean;
+
   {Error file}
   gErrorFile: String;
 
@@ -583,17 +593,21 @@ var
   gBookBackgroundColor,
   gBookFontColor: TColor;
   gTextPosition:PtrInt;
+  gPrintMargins: TRect;
+  gShowCaret: Boolean;
 
   { Editor }
   gEditWaitTime: Integer;
   gEditorSynEditOptions: TSynEditorOptions;
-  gEditorSynEditTabWidth: Integer;
+  gEditorSynEditTabWidth,
+  gEditorSynEditRightEdge: Integer;
 
   {SyncDirs}
   gSyncDirsSubdirs,
   gSyncDirsByContent,
   gSyncDirsAsymmetric,
   gSyncDirsIgnoreDate,
+  gSyncDirsAsymmetricSave,
   gSyncDirsShowFilterCopyRight,
   gSyncDirsShowFilterEqual,
   gSyncDirsShowFilterNotEqual,
@@ -1103,6 +1117,7 @@ begin
       AddIfNotExists(['6'],[],'cm_ShowGraphics');
       AddIfNotExists(['7'],[],'cm_ShowPlugins');
 
+      AddIfNotExists(['F6'],[],'cm_ShowCaret');
 
       AddIfNotExists(['Q'   ,'','',
                       'Esc','',''],'cm_ExitViewer');
@@ -1125,6 +1140,7 @@ begin
       //AddIfNotExists(['Up'],[],'cm_Rotate270');  // how at once add this keys only to Image control?
       //AddIfNotExists(['Down'],[],'cm_Rotate90');
 
+      AddIfNotExists(VK_P, [ssModifier], 'cm_Print');
       AddIfNotExists(VK_A, [ssModifier], 'cm_SelectAll');
       AddIfNotExists(VK_C, [ssModifier], 'cm_CopyToClipboard');
 
@@ -1596,10 +1612,18 @@ begin
   gMainMenu := True;
   gButtonBar := True;
   gToolBarFlat := True;
+  gMiddleToolBar := False;
   gToolBarButtonSize := 24;
   gToolBarIconSize := 16;
   gToolBarShowCaptions := False;
   gToolbarReportErrorWithCommands := FALSE;
+
+  gMiddleToolBarFlat := True;
+  gMiddleToolBarButtonSize := 24;
+  gMiddleToolBarIconSize := 16;
+  gMiddleToolBarShowCaptions := False;
+  gMiddleToolbarReportErrorWithCommands := FALSE;
+
   gToolbarFilenameStyle := pfsAbsolutePath;
   gToolbarPathToBeRelativeTo := EnvVarCommanderPath;
   gToolbarPathModifierElements := [];
@@ -1647,7 +1671,7 @@ begin
   gUseTrash := True;
   gSkipFileOpError := False;
   gTypeOfDuplicatedRename := drLegacyWithCopy;
-  gShowDialogOnDragDrop := False;
+  gShowDialogOnDragDrop := True;
   gDragAndDropDesiredTextFormat[DropTextRichText_Index].Name:='Richtext format';
   gDragAndDropDesiredTextFormat[DropTextRichText_Index].DesireLevel:=0;
   gDragAndDropDesiredTextFormat[DropTextHtml_Index].Name:='HTML format';
@@ -1679,6 +1703,8 @@ begin
   gOperationOptionCopyPermissions := False;
   gOperationOptionExcludeEmptyDirectories := True;
 
+  // Extract
+  gExtractOverwrite := False;
 
   { Tabs page }
   gDirTabOptions := [tb_always_visible,
@@ -1736,6 +1762,7 @@ begin
   gSpaceMovesDown := False;
   gDirBrackets := True;
   gInplaceRename := False;
+  gInplaceRenameButton := True;
   gDblClickToParent := False;
   gHotDirAddTargetOrNot := False;
   gHotDirFullExpandOrNot:=False;
@@ -1805,17 +1832,21 @@ begin
   gBookFontColor := clWhite;
   gTextPosition:= 0;
   gViewerMode:= 0;
+  gShowCaret := False;
+  gPrintMargins:= Classes.Rect(200, 200, 200, 200);
 
   { Editor }
   gEditWaitTime := 2000;
   gEditorSynEditOptions := SYNEDIT_DEFAULT_OPTIONS;
   gEditorSynEditTabWidth := 8;
+  gEditorSynEditRightEdge := 80;
 
   {SyncDirs}
   gSyncDirsSubdirs := False;
   gSyncDirsByContent := False;
   gSyncDirsAsymmetric := False;
   gSyncDirsIgnoreDate := False;
+  gSyncDirsAsymmetricSave := False;
   gSyncDirsShowFilterCopyRight := True;
   gSyncDirsShowFilterEqual := True;
   gSyncDirsShowFilterNotEqual := True;
@@ -2493,6 +2524,16 @@ begin
         gToolbarPathToBeRelativeTo := gConfig.GetValue(SubNode, 'PathToBeRelativeTo', gToolbarPathToBeRelativeTo);
         gToolbarPathModifierElements := tToolbarPathModifierElements(GetValue(SubNode, 'PathModifierElements', Integer(gToolbarPathModifierElements)));
       end;
+      SubNode := Node.FindNode('MiddleBar');
+      if Assigned(SubNode) then
+      begin
+        gMiddleToolBar := GetAttr(SubNode, 'Enabled', gMiddleToolBar);
+        gMiddleToolBarFlat := GetValue(SubNode, 'FlatIcons', gMiddleToolBarFlat);
+        gMiddleToolBarButtonSize := GetValue(SubNode, 'ButtonHeight', gMiddleToolBarButtonSize);
+        gMiddleToolBarIconSize := GetValue(SubNode, 'IconSize', gMiddleToolBarIconSize);
+        gMiddleToolBarShowCaptions := GetValue(SubNode, 'ShowCaptions', gMiddleToolBarShowCaptions);
+        gMiddleToolbarReportErrorWithCommands := GetValue(SubNode,'ReportErrorWithCommands', gMiddleToolbarReportErrorWithCommands);
+      end;
       gDriveBar1 := GetValue(Node, 'DriveBar1', gDriveBar1);
       gDriveBar2 := GetValue(Node, 'DriveBar2', gDriveBar2);
       gDriveBarFlat := GetValue(Node, 'DriveBarFlat', gDriveBarFlat);
@@ -2624,6 +2665,12 @@ begin
         gOperationOptionCopyPermissions := GetValue(SubNode, 'CopyPermissions', gOperationOptionCopyPermissions);
         gOperationOptionExcludeEmptyDirectories := GetValue(SubNode, 'ExcludeEmptyTemplateDirectories', gOperationOptionExcludeEmptyDirectories);
       end;
+      // Extract
+      SubNode := Node.FindNode('Extract');
+      if Assigned(SubNode) then
+      begin
+        gExtractOverwrite := GetValue(SubNode, 'Overwrite', gExtractOverwrite);
+      end;
     end;
 
     { Tabs page }
@@ -2708,6 +2755,7 @@ begin
       gSpaceMovesDown := GetValue(Node, 'SpaceMovesDown', gSpaceMovesDown);
       gDirBrackets := GetValue(Node, 'DirBrackets', gDirBrackets);
       gInplaceRename := GetValue(Node, 'InplaceRename', gInplaceRename);
+      gInplaceRenameButton := GetValue(Node, 'InplaceRenameButton', gInplaceRenameButton);
       gDblClickToParent := GetValue(Node, 'DblClickToParent', gDblClickToParent);
       gHotDirAddTargetOrNot:=GetValue(Node, 'HotDirAddTargetOrNot', gHotDirAddTargetOrNot);
       gHotDirFullExpandOrNot:=GetValue(Node, 'HotDirFullExpandOrNot', gHotDirFullExpandOrNot);
@@ -2803,6 +2851,8 @@ begin
       gTabSpaces := GetValue(Node, 'TabSpaces', gTabSpaces);
       gMaxTextWidth := GetValue(Node, 'MaxTextWidth', gMaxTextWidth);
       gViewerMode  := GetValue(Node, 'ViewerMode'  , gViewerMode);
+      gPrintMargins := GetValue(Node, 'PrintMargins'  , gPrintMargins);
+      gShowCaret := GetValue(Node, 'ShowCaret'  , gShowCaret);
 
       gImagePaintColor := GetValue(Node, 'PaintColor', gImagePaintColor);
       gBookBackgroundColor := GetValue(Node, 'BackgroundColor', gBookBackgroundColor);
@@ -2821,6 +2871,7 @@ begin
       gEditWaitTime := GetValue(Node, 'EditWaitTime', gEditWaitTime);
       gEditorSynEditOptions := TSynEditorOptions(GetValue(Node, 'SynEditOptions', Integer(gEditorSynEditOptions)));
       gEditorSynEditTabWidth := GetValue(Node, 'SynEditTabWidth', gEditorSynEditTabWidth);
+      gEditorSynEditRightEdge := GetValue(Node, 'SynEditRightEdge', gEditorSynEditRightEdge);
     end;
 
     { SyncDirs }
@@ -2830,6 +2881,7 @@ begin
       gSyncDirsSubdirs := GetValue(Node, 'Subdirs', gSyncDirsSubdirs);
       gSyncDirsByContent := GetValue(Node, 'ByContent', gSyncDirsByContent);
       gSyncDirsAsymmetric := GetValue(Node, 'Asymmetric', gSyncDirsAsymmetric);
+      gSyncDirsAsymmetricSave := GetAttr(Node, 'Asymmetric/Save', gSyncDirsAsymmetricSave);
       gSyncDirsIgnoreDate := GetValue(Node, 'IgnoreDate', gSyncDirsIgnoreDate);
       gSyncDirsShowFilterCopyRight := GetValue(Node, 'FilterCopyRight', gSyncDirsShowFilterCopyRight);
       gSyncDirsShowFilterEqual := GetValue(Node, 'FilterEqual', gSyncDirsShowFilterEqual);
@@ -3130,6 +3182,14 @@ begin
     SetValue(SubNode, 'PathToBeRelativeTo', gToolbarPathToBeRelativeTo);
     SetValue(SubNode, 'PathModifierElements', Integer(gToolbarPathModifierElements));
 
+    SubNode := FindNode(Node, 'MiddleBar', True);
+    SetAttr(SubNode, 'Enabled', gMiddleToolBar);
+    SetValue(SubNode, 'FlatIcons', gMiddleToolBarFlat);
+    SetValue(SubNode, 'ButtonHeight', gMiddleToolBarButtonSize);
+    SetValue(SubNode, 'IconSize', gMiddleToolBarIconSize);
+    SetValue(SubNode, 'ShowCaptions', gMiddleToolBarShowCaptions);
+    SetValue(SubNode,'ReportErrorWithCommands', gMiddleToolbarReportErrorWithCommands);
+
     SetValue(Node, 'DriveBar1', gDriveBar1);
     SetValue(Node, 'DriveBar2', gDriveBar2);
     SetValue(Node, 'DriveBarFlat', gDriveBarFlat);
@@ -3226,6 +3286,12 @@ begin
     SetValue(SubNode, 'CopyOwnership', gOperationOptionCopyOwnership);
     SetValue(SubNode, 'CopyPermissions', gOperationOptionCopyPermissions);
     SetValue(SubNode, 'ExcludeEmptyTemplateDirectories', gOperationOptionExcludeEmptyDirectories);
+    // Extract
+    SubNode := FindNode(Node, 'Extract', True);
+    if Assigned(SubNode) then
+    begin
+      SetValue(SubNode, 'Overwrite', gExtractOverwrite);
+    end;
 
     { Tabs page }
     Node := FindNode(Root, 'Tabs', True);
@@ -3270,6 +3336,7 @@ begin
     SetValue(Node, 'SpaceMovesDown', gSpaceMovesDown);
     SetValue(Node, 'DirBrackets', gDirBrackets);
     SetValue(Node, 'InplaceRename', gInplaceRename);
+    SetValue(Node, 'InplaceRenameButton', gInplaceRenameButton);
     SetValue(Node, 'DblClickToParent', gDblClickToParent);
     SetValue(Node, 'HotDirAddTargetOrNot',gHotDirAddTargetOrNot);
     SetValue(Node, 'HotDirFullExpandOrNot', gHotDirFullExpandOrNot);
@@ -3341,6 +3408,8 @@ begin
     SetValue(Node, 'TabSpaces', gTabSpaces);
     SetValue(Node, 'MaxTextWidth', gMaxTextWidth);
     SetValue(Node, 'ViewerMode' , gViewerMode);
+    SetValue(Node, 'PrintMargins', gPrintMargins);
+    SetValue(Node, 'ShowCaret'  , gShowCaret);
 
     SetValue(Node, 'PaintColor', gImagePaintColor);
     SetValue(Node, 'BackgroundColor', gBookBackgroundColor);
@@ -3352,12 +3421,14 @@ begin
     SetValue(Node, 'EditWaitTime', gEditWaitTime);
     SetValue(Node, 'SynEditOptions', Integer(gEditorSynEditOptions));
     SetValue(Node, 'SynEditTabWidth', gEditorSynEditTabWidth);
+    SetValue(Node, 'SynEditRightEdge', gEditorSynEditRightEdge);
 
     { SyncDirs }
     Node := FindNode(Root, 'SyncDirs', True);
     SetValue(Node, 'Subdirs', gSyncDirsSubdirs);
     SetValue(Node, 'ByContent', gSyncDirsByContent);
-    SetValue(Node, 'Asymmetric', gSyncDirsAsymmetric);
+    SetValue(Node, 'Asymmetric', gSyncDirsAsymmetric and gSyncDirsAsymmetricSave);
+    SetAttr(Node, 'Asymmetric/Save', gSyncDirsAsymmetricSave);
     SetValue(Node, 'IgnoreDate', gSyncDirsIgnoreDate);
     SetValue(Node, 'FilterCopyRight', gSyncDirsShowFilterCopyRight);
     SetValue(Node, 'FilterEqual', gSyncDirsShowFilterEqual);

@@ -398,6 +398,7 @@ begin
     end;
     Drive^.DriveLabel := IdLabel;
     Drive^.FileSystem := IdType;
+    Drive^.DriveSize := StrToInt64Def(DeviceSize, 0) * 512;
 
     if DeviceIsPartition then
     begin
@@ -541,6 +542,7 @@ begin
       begin
         case DriveType of
           dtFloppy: ; // Don't retrieve, it's slow.
+          dtFlash,
           dtHardDisk:
             begin
               DriveLabel := mbGetVolumeLabel(Path, True);
@@ -550,6 +552,13 @@ begin
             DriveLabel := mbGetRemoteFileName(Path);
           else
             DriveLabel := mbGetVolumeLabel(Path, True);
+        end;
+        if DriveType in [dtFlash, dtHardDisk] then
+        begin
+          case mbDriveBusType(DriveLetter) of
+            BusTypeUsb: DriveType := dtRemovableUsb;
+            BusTypeSd, BusTypeMmc: DriveType := dtFlash;
+          end;
         end;
       end;
     end;
@@ -616,7 +625,9 @@ end;
          (StrBegins(mnt_dir, '/dev/')) or
          (StrBegins(mnt_dir, '/sys/')) or
          (StrBegins(mnt_dir, '/proc/')) or
-         (StrBegins(mnt_dir, '/snap/')) then Exit;
+         (StrBegins(mnt_dir, '/snap/')) or
+         (StrPos(mnt_dir, '/snapd/') <> nil) or
+         (StrBegins(ExtractFileName(mnt_dir), '.')) then Exit;
 
       // check file system type
       if (mnt_type = 'ignore') or
@@ -900,7 +911,7 @@ begin
                   DriveType := dtFloppy else
                 if IsPartOfString(['ZIP', 'USB', 'CAMERA'], UpperCase(FileSystem)) then
                   DriveType := dtFlash else
-                if IsPartOfString(['/MEDIA/'], UpperCase(MountPoint)) then
+                if IsPartOfString(['/MEDIA/', '/RUN/MEDIA/'], UpperCase(MountPoint)) then
                     DriveType := dtFlash else
                 if IsPartOfString(['NFS', 'SMB', 'NETW', 'CIFS'], UpperCase(FileSystem)) then
                   DriveType := dtNetwork

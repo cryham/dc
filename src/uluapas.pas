@@ -15,9 +15,8 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details.
 
-   You should have received a copy of the GNU Lesser General Public
-   License along with this library; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
+   You should have received a copy of the GNU General Public License
+   along with this program. If not, see <http://www.gnu.org/licenses/>.
 }
 
 unit uLuaPas;
@@ -27,19 +26,19 @@ unit uLuaPas;
 interface
 
 uses
-  Classes, SysUtils, Lua;
+  uDCUtils, Classes, SysUtils, Lua;
 
 procedure RegisterPackages(L : Plua_State);
 procedure SetPackagePath(L: Plua_State; const Path: String);
 function LuaPCall(L : Plua_State; nargs, nresults : Integer): Boolean;
-function ExecuteScript(const FileName: String; Args: array of String): Boolean;
+function ExecuteScript(const FileName: String; Args: array of String; var sErrorToReportIfAny:string): Boolean;
 
 implementation
 
 uses
-  Forms, Dialogs, Clipbrd, LazUTF8, LCLVersion, DCOSUtils,
+  Forms, Dialogs, Clipbrd, LazUTF8, LCLVersion, uLng, DCOSUtils,
   DCConvertEncoding, fMain, uFormCommands, uOSUtils, uGlobs, uLog,
-  uClipboard, uShowMsg, uLuaStd, uFindEx, uConvEncoding;
+  uClipboard, uShowMsg, uLuaStd, uFindEx, uConvEncoding, uFileProcs;
 
 procedure luaPushSearchRec(L : Plua_State; Rec: PSearchRecEx);
 begin
@@ -132,6 +131,12 @@ function luaDirectoryExists(L : Plua_State) : Integer; cdecl;
 begin
   Result:= 1;
   lua_pushboolean(L, mbDirectoryExists(lua_tostring(L, 1)));
+end;
+
+function luaCreateDirectory(L : Plua_State) : Integer; cdecl;
+begin
+  Result:= 1;
+  lua_pushboolean(L, mbForceDirectory(lua_tostring(L, 1)));
 end;
 
 function luaExtractFilePath(L : Plua_State) : Integer; cdecl;
@@ -388,6 +393,7 @@ begin
     luaP_register(L, 'FileGetAttr', @luaFileGetAttr);
     luaP_register(L, 'GetTickCount', @luaGetTickCount);
     luaP_register(L, 'DirectoryExists', @luaDirectoryExists);
+    luaP_register(L, 'CreateDirectory', @luaCreateDirectory);
 
     luaP_register(L, 'ExtractFileExt', @luaExtractFileExt);
     luaP_register(L, 'ExtractFileDir', @luaExtractFileDir);
@@ -464,7 +470,7 @@ begin
   Result:= (Status = 0);
 end;
 
-function ExecuteScript(const FileName: String; Args: array of String): Boolean;
+function ExecuteScript(const FileName: String; Args: array of String; var sErrorToReportIfAny:string): Boolean;
 var
   L: Plua_State;
   Index: Integer;
@@ -473,11 +479,16 @@ var
   Status: Integer;
 begin
   Result:= False;
+  sErrorToReportIfAny := '';
 
   // Load Lua library
   if not IsLuaLibLoaded then
   begin
-    if not LoadLuaLib(gLuaLib) then Exit;
+    if not LoadLuaLib(mbExpandFileName(gLuaLib)) then
+    begin
+      sErrorToReportIfAny := Format(rsMsgScriptCantFindLibrary, [gLuaLib]);
+      Exit;
+    end;
   end;
 
   // Get script file name

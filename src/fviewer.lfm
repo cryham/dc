@@ -270,7 +270,7 @@ object frmViewer: TfrmViewer
   SessionProperties = 'Height;Width;Left;Top;WindowState'
   ShowHint = True
   ShowInTaskBar = stAlways
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.3.0'
   object pnlFolder: TPanel
     Left = 179
     Height = 435
@@ -2487,12 +2487,16 @@ object frmViewer: TfrmViewer
         Action = actSaveAs
       end
       object miPrint: TMenuItem
-        Caption = 'Print...'
-        Enabled = False
-        ShortCut = 16464
+        Action = actPrint
+      end
+      object miPrintSetup: TMenuItem
+        Action = actPrintSetup
       end
       object miReload: TMenuItem
         Action = actReload
+      end
+      object miAutoReload: TMenuItem
+        Action = actAutoReload
       end
       object miSeparator: TMenuItem
         Caption = '-'
@@ -2561,12 +2565,15 @@ object frmViewer: TfrmViewer
         Action = actShowGraphics
         RadioItem = True
       end
-      object miDiv1: TMenuItem
-        Caption = '-'
-      end
       object miPlugins: TMenuItem
         Action = actShowPlugins
         RadioItem = True
+      end
+      object miDiv1: TMenuItem
+        Caption = '-'
+      end
+      object miShowCaret: TMenuItem
+        Action = actShowCaret
       end
     end
     object miEncoding: TMenuItem
@@ -2631,6 +2638,7 @@ object frmViewer: TfrmViewer
     end
   end
   object pmEditMenu: TPopupMenu
+    OnPopup = pmEditMenuPopup
     left = 152
     top = 64
     object pmiCopy: TMenuItem
@@ -2876,11 +2884,39 @@ object frmViewer: TfrmViewer
       Caption = 'Change encoding'
       OnExecute = actExecute
     end
+    object actAutoReload: TAction
+      Category = 'File'
+      Caption = 'Auto Reload'
+      OnExecute = actExecute
+    end
+    object actPrintSetup: TAction
+      Category = 'File'
+      Caption = 'Print &setup...'
+      OnExecute = actExecute
+    end
+    object actPrint: TAction
+      Category = 'File'
+      Caption = 'P&rint...'
+      Enabled = False
+      OnExecute = actExecute
+    end
+    object actShowCaret: TAction
+      Category = 'View'
+      Caption = 'Show text c&ursor'
+      OnExecute = actExecute
+    end
   end
   object TimerScreenshot: TTimer
     Enabled = False
     OnTimer = TimerScreenshotTimer
     left = 196
     top = 165
+  end
+  object TimerReload: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = TimerReloadTimer
+    left = 592
+    top = 80
   end
 end

@@ -517,6 +517,9 @@ procedure TBriefFileView.CreateDefault(AOwner: TWinControl);
 begin
   inherited CreateDefault(AOwner);
   tmMouseScroll.Interval := 350;
+
+  // Changing height of a FileView with horizontal scrolling when hiding quick search causes file jumps under mouse
+  quickSearch.LimitedAutoHide := True;
 end;
 
 function TBriefFileView.GetFileViewGridClass: TFileViewGridClass;
@@ -552,6 +555,9 @@ begin
 
   if gShowIcons <> sim_none then
     Inc(ARect.Left, gIconsSize + 2);
+
+  if gInplaceRenameButton and (ARect.Right + edtRename.ButtonWidth < dgPanel.ClientWidth) then
+    Inc(ARect.Right, edtRename.ButtonWidth);
 
   edtRename.SetBounds(ARect.Left, ARect.Top, ARect.Right - ARect.Left, ARect.Bottom - ARect.Top);
 end;

@@ -52,6 +52,10 @@ type
     procedure sbMatchBeginningClick(Sender: TObject);
     procedure sbMatchEndingClick(Sender: TObject);
     procedure tglFilterChange(Sender: TObject);
+    procedure btnMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure btnCancelMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     Options: TQuickSearchOptions;
     Mode: TQuickSearchMode;
@@ -61,6 +65,7 @@ type
     Finalizing: Boolean;
     FUpdateCount: Integer;
     FNeedsChangeSearch: Boolean;
+    FIntendedLeave: Boolean;
     procedure BeginUpdate;
     procedure CheckFilesOrDirectoriesDown;
     procedure EndUpdate;
@@ -76,13 +81,16 @@ type
     procedure CancelFilter;
     procedure ProcessParams(const SearchMode: TQuickSearchMode; const Params: array of String);
   public
+    LimitedAutoHide: Boolean;
     OnChangeSearch: TOnChangeSearch;
     OnChangeFilter: TOnChangeFilter;
     OnExecute: TOnExecute;
     OnHide: TOnHide;
     constructor Create(TheOwner: TWinControl); reintroduce;
     destructor Destroy; override;
+    procedure CloneTo(AQuickSearch: TfrmQuickSearch);
     procedure Execute(SearchMode: TQuickSearchMode; const Params: array of String; Char: TUTF8Char = #0);
+    procedure Reset;
     procedure Finalize;
     function CheckSearchOrFilter(var Key: Word): Boolean; overload;
     function CheckSearchOrFilter(var UTF8Key: TUTF8Char): Boolean; overload;
@@ -192,6 +200,33 @@ begin
   inherited Destroy;
 end;
 
+procedure TfrmQuickSearch.CloneTo(AQuickSearch: TfrmQuickSearch);
+var
+  TempEvent: TNotifyEvent;
+begin
+  AQuickSearch.Active := Self.Active;
+  AQuickSearch.Mode := Self.Mode;
+  AQuickSearch.Options := Self.Options;
+  AQuickSearch.LoadControlStates;
+  AQuickSearch.FilterOptions := Self.FilterOptions;
+  AQuickSearch.FilterText := Self.FilterText;
+  TempEvent := AQuickSearch.edtSearch.OnChange;
+  AQuickSearch.edtSearch.OnChange := nil;
+  AQuickSearch.edtSearch.Text := Self.edtSearch.Text;
+  AQuickSearch.edtSearch.SelStart := Self.edtSearch.SelStart;
+  AQuickSearch.edtSearch.SelLength := Self.edtSearch.SelLength;
+  AQuickSearch.edtSearch.OnChange := TempEvent;
+  TempEvent := AQuickSearch.tglFilter.OnChange;
+  AQuickSearch.tglFilter.OnChange := nil;
+  AQuickSearch.tglFilter.Checked := Self.tglFilter.Checked;
+  AQuickSearch.tglFilter.OnChange := TempEvent;
+  AQuickSearch.Visible := Self.Visible;
+
+  // Do not clone LimitedAutoHide but honor it instead, because it depends on the parent fileview
+  if Self.Visible and not Self.edtSearch.Focused and Self.LimitedAutoHide and not AQuickSearch.LimitedAutoHide then
+    AQuickSearch.FrameExit(nil); // do autohide if needed
+end;
+
 procedure TfrmQuickSearch.DoOnChangeSearch;
 begin
   if FUpdateCount > 0 then
@@ -230,14 +265,19 @@ begin
   ProcessParams(SearchMode, Params);
 end;
 
-procedure TfrmQuickSearch.Finalize;
+procedure TfrmQuickSearch.Reset;
 begin
   PopFilter;
-  Self.Visible := False;
 
   Options.LastSearchMode := qsNone;
   Options.Direction := qsdNone;
   Options.CancelSearchMode:=qscmNode;
+end;
+
+procedure TfrmQuickSearch.Finalize;
+begin
+  Reset;
+  Hide;
 end;
 
 { TfrmQuickSearch.ProcessParams }
@@ -529,6 +569,7 @@ end;
 
 procedure TfrmQuickSearch.edtSearchChange(Sender: TObject);
 begin
+  Options.Direction := qsdNone;
   DoOnChangeSearch;
 end;
 
@@ -603,6 +644,20 @@ begin
       end;
     end;
 
+    VK_INSERT:
+    begin
+      if Shift = [] then // no modifiers pressed, to not capture Ctrl+Insert and Shift+Insert
+      begin
+        Key := 0;
+
+        if Assigned(Self.OnChangeSearch) then
+        begin
+          Options.Direction := qsdNext;
+          Self.OnChangeSearch(Self, edtSearch.Text, Options, True);
+        end;
+      end;
+    end;
+
     VK_RETURN, VK_SELECT:
     begin
       Key := 0;
@@ -617,6 +672,7 @@ begin
     begin
       Key := 0;
 
+      FIntendedLeave := True;
       DoHide;
     end;
 
@@ -647,6 +703,8 @@ begin
 end;
 
 procedure TfrmQuickSearch.FrameExit(Sender: TObject);
+var
+  DontHide: Boolean;
 begin
 {$IF DEFINED(LCLQT) or DEFINED(LCLQT5)}
   // Workaround: QuickSearch frame lose focus on SpeedButton click
@@ -660,10 +718,18 @@ begin
 
     Self.Active := False;
 
-    if (Mode = qsFilter) and (edtSearch.Text <> EmptyStr) then
-      Self.Visible := not gQuickFilterAutoHide
+    if FIntendedLeave then
+    begin
+      FIntendedLeave := False;
+      DontHide := False;
+    end
     else
-      Finalize;
+      DontHide := LimitedAutoHide;
+
+    if (Mode = qsFilter) and (edtSearch.Text <> EmptyStr) then
+      Self.Visible := DontHide or not gQuickFilterAutoHide
+    else
+      if DontHide then Reset else Finalize;
 
     Finalizing := False;
   end;
@@ -677,6 +743,8 @@ begin
     Options.SearchCase := qscInsensitive;
 
   if gQuickFilterSaveSessionModifications then gQuickSearchOptions.SearchCase := Options.SearchCase;
+
+  Options.Direction := qsdNone;
 
   DoOnChangeSearch;
 end;
@@ -697,6 +765,8 @@ begin
 
   if gQuickFilterSaveSessionModifications then gQuickSearchOptions.Items := Options.Items;
 
+  Options.Direction := qsdNone;
+
   DoOnChangeSearch;
 end;
 
@@ -709,6 +779,8 @@ begin
 
   if gQuickFilterSaveSessionModifications then gQuickSearchOptions.Match := Options.Match;
 
+  Options.Direction := qsdNone;
+
   DoOnChangeSearch;
 end;
 
@@ -720,6 +792,8 @@ begin
     Exclude(Options.Match, qsmEnding);
 
   if gQuickFilterSaveSessionModifications then gQuickSearchOptions.Match := Options.Match;
+
+  Options.Direction := qsdNone;
 
   DoOnChangeSearch;
 end;
@@ -740,7 +814,22 @@ begin
   else if Active then
     ClearFilter;
 
+  Options.Direction := qsdNone;
+
   DoOnChangeSearch;
+end;
+
+procedure TfrmQuickSearch.btnMouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  edtSearch.SetFocus;
+end;
+
+procedure TfrmQuickSearch.btnCancelMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Self.Visible then
+    edtSearch.SetFocus;
 end;
 
 end.

@@ -800,6 +800,18 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     object miSelectDeleteRight: TMenuItem
       Action = actSelectDeleteRight
     end
+    object miSeparator3: TMenuItem
+      Caption = '-'
+    end
+    object miDeleteLeft: TMenuItem
+      Action = actDeleteLeft
+    end
+    object miDeleteRight: TMenuItem
+      Action = actDeleteRight
+    end
+    object miDeleteBoth: TMenuItem
+      Action = actDeleteBoth
+    end
   end
   object ActionList: TActionList
     left = 168
@@ -826,6 +838,18 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     end
     object actSelectDeleteRight: TAction
       Caption = 'Select for deleting -> (right)'
+      OnExecute = actExecute
+    end
+    object actDeleteLeft: TAction
+      Caption = '<- Delete left'
+      OnExecute = actExecute
+    end
+    object actDeleteRight: TAction
+      Caption = '-> Delete right'
+      OnExecute = actExecute
+    end
+    object actDeleteBoth: TAction
+      Caption = 'Delete on both sides'
       OnExecute = actExecute
     end
   end

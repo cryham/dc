@@ -1,4 +1,26 @@
 {
+   Double Commander
+   -------------------------------------------------------------------------
+   Multi rename dialog window
+
+   Copyright (C) 2007-2019 Alexander Koblov (alexx2000@mail.ru)
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+   Original comment:
+   ----------------------------
    Seksi Commander
    ----------------------------
    Licence  : GNU GPL v 2.0
@@ -123,6 +145,7 @@ type
     procedure KeyDownHandler(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edFindChange(Sender: TObject);
     procedure lsPresetsSelectionChange(Sender: TObject; User: boolean);
+    procedure edReplaceChange(Sender: TObject);
     procedure mnuEditNamesClick(Sender: TObject);
     procedure mnuLoadFromFileClick(Sender: TObject);
     procedure OnSelect(Sender: TObject);
@@ -514,8 +537,18 @@ end;
 
 procedure TfrmMultiRename.edFindChange(Sender: TObject);
 begin
-  if cbRegExp.Checked then begin
-    FRegExp.Expression:= UTF8Decode(edFind.Text);
+  if cbRegExp.Checked then
+    FRegExp.Expression:= UTF8Decode(edFind.Text)
+  else begin
+    FFindText.DelimitedText := edFind.Text;
+  end;
+  StringGridTopLeftChanged(StringGrid);
+end;
+
+procedure TfrmMultiRename.edReplaceChange(Sender: TObject);
+begin
+  if not cbRegExp.Checked then begin
+    FReplaceText.DelimitedText := edReplace.Text;
   end;
   StringGridTopLeftChanged(StringGrid);
 end;
@@ -724,7 +757,7 @@ end;
 
 procedure TfrmMultiRename.btnEditClick(Sender: TObject);
 begin
-  //DCPlaceCursorNearControlIfNecessary(btnEdit);
+  DCPlaceCursorNearControlIfNecessary(btnEdit);//
   pmEditDirect.PopUp;
 end;
 
@@ -964,7 +997,7 @@ end;
 
 function TfrmMultiRename.sReplaceXX(const sFormatStr, sOrig: string): string;
 var
-  iFrom, iTo, iDash: Integer;
+  iFrom, iTo, iDash, iDelim: Integer;
 begin
   if Length(sFormatStr) = 1 then
     Result := sOrig
@@ -979,8 +1012,25 @@ begin
     end
     else if iDash = 0 then  // not found
     begin
-      iFrom := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 1);
-      iTo   := iFrom;
+      iDelim := Pos(',', sFormatStr);
+      // Not found
+      if iDelim = 0 then
+      begin
+        iFrom := StrToIntDef(Copy(sFormatStr, 2, MaxInt), 1);
+        if iFrom < 0 then iFrom := sOrig.Length + iFrom + 1;
+        iTo   := iFrom;
+      end
+      // Range e.g. N1,3 (from 1, 3 symbols)
+      else begin
+        iFrom := StrToIntDef(Copy(sFormatStr, 2, iDelim - 2), 1);
+        iDelim := Abs(StrToIntDef(Copy(sFormatStr, iDelim + 1, MaxSmallint), MaxSmallint));
+        if iFrom >= 0 then
+          iTo := iDelim + iFrom - 1
+        else begin
+          iTo := sOrig.Length + iFrom + 1;
+          iFrom:= Max(iTo - iDelim + 1, 1);
+        end;
+      end;
     end
     else  // range e.g. N1-2
     begin
@@ -995,7 +1045,7 @@ procedure TfrmMultiRename.btnNameMenuClick(Sender: TObject);
 begin
   ppNameMenu.AutoPopup:= False;
   FillContentFieldMenu(miPlugin, @miPluginClick);
-  //DCPlaceCursorNearControlIfNecessary(btnNameMenu);
+  DCPlaceCursorNearControlIfNecessary(btnNameMenu);//
   btnNameMenu.PopupMenu.PopUp;
   ppNameMenu.Tag:= 0;
 end;
@@ -1004,7 +1054,7 @@ procedure TfrmMultiRename.btnExtMenuClick(Sender: TObject);
 begin
   ppNameMenu.AutoPopup:= False;
   FillContentFieldMenu(miPlugin, @miPluginClick);
-  //DCPlaceCursorNearControlIfNecessary(btnExtMenu);
+  DCPlaceCursorNearControlIfNecessary(btnExtMenu);//
   btnExtMenu.PopupMenu.PopUp;
   ppNameMenu.Tag:= 1;
 end;
@@ -1153,7 +1203,8 @@ begin
   // OldNames
   FOldNames.Clear;
   for I:= 0 to OldFiles.Count -1 do
-    FOldNames.Add(OldFiles[I].Name);
+    //FOldNames.Add(OldFiles[I].Name);
+    FOldNames.Add(OldFiles[I].Name, Pointer(PtrInt(I)));
 
   try
     FNewNames.Clear;
@@ -1190,7 +1241,8 @@ begin
 
       // Avoid collisions with OldNames
       J:= FOldNames.Find(AFile.Name);
-      if (J >= 0) and (J <> I) then
+      //if (J >= 0) and (J <> I) then
+      if (J >= 0) and (PtrInt(FOldNames.List[J]^.Data) <> I) then
       begin
         NewName:= AFile.Name;
         // Generate temp file name, save file index as extension
@@ -1335,7 +1387,7 @@ begin
   ClearPresetsList;
 
   ANode := AConfig.FindNode(AConfig.RootNode, sPresetsSection);
-  FLastPreset := AConfig.GetValue(ANode, 'LastPreset', '');
+  FLastPreset := AConfig.GetValue(ANode, 'LastPreset', sLast);
 
   ANode := AConfig.FindNode(ANode, 'Presets');
   if Assigned(ANode) then
@@ -1413,7 +1465,6 @@ var
 begin
   ANode := AConfig.FindNode(AConfig.RootNode, sPresetsSection, True);
   AConfig.ClearNode(ANode);
-  AConfig.SetValue(ANode, 'LastPreset', FLastPreset);
 
   ANode := AConfig.FindNode(ANode, 'Presets', True);
   for i := 0 to FPresets.Count - 1 do
@@ -1466,9 +1517,8 @@ begin
       edFile.Text := LogFile;
     end;
 
-    FLastPreset := PresetName;
-
     edFindChange(edFind);
+    edReplaceChange(edReplace);
   end;
 end;
 
@@ -1499,7 +1549,6 @@ begin
       LogFile := edFile.Text;
     end;
 
-    FLastPreset := PresetName;
     SavePresets;
   end;
 end;
@@ -1515,7 +1564,6 @@ begin
     begin
       Dispose(PMultiRenamePreset(FPresets.List[PresetIndex]^.Data));
       FPresets.Remove(PresetName);
-      FLastPreset := '';
       SavePresets;
     end;
   end;
@@ -1534,6 +1582,11 @@ begin
     if lsPresets.Items.IndexOf(PresetName) = -1 then
       lsPresets.Items.Add(PresetName);
   end;
+
+  if (FLastPreset = sLast) then
+    lsPresets.ItemIndex := 0
+  else
+    lsPresets.ItemIndex := lsPresets.Items.IndexOf(FLastPreset);
 end;
 
 procedure TfrmMultiRename.ClearPresetsList;

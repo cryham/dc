@@ -1,9 +1,9 @@
 {
     Double Commander
     -------------------------------------------------------------------------
-    Creates Total Commander fake window (some plugins don't work without it)
+    Total Commander integration functions
 
-    Copyright (C) 2009-2018 Alexander Koblov (alexx2000@mail.ru)
+    Copyright (C) 2009-2019 Alexander Koblov (alexx2000@mail.ru)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,9 +15,8 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+   You should have received a copy of the GNU General Public License
+   along with this program. If not, see <http://www.gnu.org/licenses/>.
 }
 
 {
@@ -30,8 +29,6 @@ DC = Double Commander
 unit uTotalCommander;
 
 {$MODE DELPHI}
-
-{.$DEFINE DEBUG}
 
 interface
 
@@ -60,7 +57,6 @@ const
 var
   sTotalCommanderMainbarFilename: string = TCCONFIG_MAINBAR_NOTPRESENT;
 
-procedure CreateTotalCommanderWindow({%H-}hWindow: HWND);
 function ConvertTCStringToString(TCString: ansistring): string;
 function ConvertStringToTCString(sString: string): ansistring;
 function ReplaceDCEnvVars(const sText: string): string;
@@ -76,11 +72,11 @@ implementation
 
 uses
   //Lazarus, Free-Pascal, etc.
-  Graphics, LCLVersion, Forms, JwaDbt, SysUtils, LCLProc, LazUTF8,
+  Graphics, LCLVersion, Forms, SysUtils, LCLProc, LazUTF8,
 
   //DC
   fOptionsMisc, uKASToolItemsExtended,
-  DCClassesUtf8, DCOSUtils, uDebug, DCStrUtils, uPixMapManager, uShowMsg,
+  DCClassesUtf8, DCOSUtils, DCStrUtils, uPixMapManager, uShowMsg,
   uDCUtils, uLng, uGlobs, uGlobsPaths, DCConvertEncoding, uMyWindows;
 
 type
@@ -93,7 +89,7 @@ type
   end;
 
 const
-  NUMBEROFCOMMANDS = 458;
+  NUMBEROFCOMMANDS = 459;
 
   //jcf:format=off
   COMMANDS_LIST_TC: array[1..NUMBEROFCOMMANDS] of TTCommandEquivalence =
@@ -337,6 +333,7 @@ const
     (TCCommand: 'cm_TransferLeft';              TCIcon: -1; DCCommand: 'cm_TransferLeft';           DCParameters: ''          ), //Transfer dir under cursor to left window
     (TCCommand: 'cm_TransferRight';             TCIcon: -1; DCCommand: 'cm_TransferRight';          DCParameters: ''          ), //Transfer dir under cursor to right window
     (TCCommand: 'cm_EditPath';                  TCIcon: -1; DCCommand: 'cm_EditPath';               DCParameters: ''          ), //Edit path field above file list
+    (TCCommand: 'cm_GoToFirstEntry';            TCIcon: -1; DCCommand: 'cm_GoToFirstEntry';         DCParameters: ''          ), //Place cursor on first folder or file
     (TCCommand: 'cm_GoToFirstFile';             TCIcon: -1; DCCommand: 'cm_GoToFirstFile';          DCParameters: ''          ), //Place cursor on first file in list
     (TCCommand: 'cm_GotoNextDrive';             TCIcon: -1; DCCommand: '';                          DCParameters: ''          ), //Go one drive up (C->D)
     (TCCommand: 'cm_GotoPreviousDrive';         TCIcon: -1; DCCommand: '';                          DCParameters: ''          ), //Go one drive down
@@ -605,107 +602,9 @@ const
 //cm_WorkWithDirectoryHotlist
 
 var
-  wcFakeWndClass: TWndClassEx;
-  //hMainWindow,
-  {$IFDEF DEBUG}
-  hFakeWindow: HWND;
-  {$ENDIF}
   TCIconSize: integer = 32;
   TCNumberOfInstance: integer;
   TCListOfCreatedTCIconFilename: TStringList;
-
-procedure UpdateEnvironment;
-var
-  dwSize: DWORD;
-  ASysPath: UnicodeString;
-  AUserPath: UnicodeString;
-  APath: UnicodeString = '';
-begin
-  // System environment
-  if RegReadKey(HKEY_LOCAL_MACHINE, 'System\CurrentControlSet\Control\Session Manager\Environment', 'Path', ASysPath) then
-  begin
-    APath := ASysPath;
-    if (Length(APath) > 0) and (APath[Length(APath)] <> PathSeparator) then APath += PathSeparator;
-  end;
-  // User environment
-  if RegReadKey(HKEY_CURRENT_USER, 'Environment', 'Path', AUserPath) then
-  begin
-    APath := APath + AUserPath;
-    if (Length(APath) > 0) and (APath[Length(APath)] <> PathSeparator) then APath += PathSeparator;
-  end;
-  // Update path environment variable
-  if Length(APath) > 0 then
-  begin
-    SetLength(ASysPath, MaxSmallInt + 1);
-    dwSize:= ExpandEnvironmentStringsW(PWideChar(APath), PWideChar(ASysPath), MaxSmallInt);
-    if (dwSize = 0) or (dwSize > MaxSmallInt) then
-      ASysPath:= APath
-    else begin
-      SetLength(ASysPath, dwSize - 1);
-    end;
-    SetEnvironmentVariableW('Path', PWideChar(ASysPath));
-  end;
-end;
-
-{ WindowProc }
-function WindowProc(hWnd: HWND; uiMsg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-begin
-  {
-    Resend message to DoubleCommander main window.
-
-    Disabled currently, because it may interfere with LCL, especially since the fake
-    TotalCmd window is also a main app window (WS_OVERLAPPEDWINDOW). May be enabled
-    in future if any plugins need this, but following messages should be skipped
-    because they are known to cause conflict:
-    - WM_ACTIVATEAPP
-      Confuses LCL about which main form (window) is currently active and
-      it stops calling OnExit events for controls (see TWinControl.WMKillFocus).
-  }
-  //SendMessage(hMainWindow, uiMsg, wParam, lParam);
-
-  if (uiMsg = WM_SETTINGCHANGE) and (lParam <> 0) and (StrComp('Environment', {%H-}PAnsiChar(lParam)) = 0) then
-  begin
-    UpdateEnvironment;
-    DCDebug('WM_SETTINGCHANGE:Environment');
-  end;
-
-  {$IF (lcl_fullversion >= 1020000)}
-  if (uiMsg = WM_DEVICECHANGE) and (wParam = DBT_DEVNODES_CHANGED) and (lParam = 0) then
-  begin
-    Screen.UpdateMonitors; // Refresh monitor list
-    DCDebug('WM_DEVICECHANGE:DBT_DEVNODES_CHANGED');
-  end;
-  {$ENDIF}
-
-  {$IFDEF DEBUG}
-  WriteLn(uiMsg);
-  {$ENDIF}
-  Result := DefWindowProc(hWnd, uiMsg, wParam, lParam);
-end;
-
-{ CreateTotalCommanderWindow }
-procedure CreateTotalCommanderWindow(hWindow: HWND);
-begin
-  //  hMainWindow:= hWindow;
-  FillByte(wcFakeWndClass, SizeOf(wcFakeWndClass), 0);
-  wcFakeWndClass.cbSize := SizeOf(wcFakeWndClass);
-  wcFakeWndClass.Style := CS_HREDRAW or CS_VREDRAW;
-  wcFakeWndClass.lpfnWndProc := @WindowProc;
-  wcFakeWndClass.hInstance := hInstance;
-  wcFakeWndClass.hbrBackground := Color_BtnFace + 12;
-  wcFakeWndClass.lpszMenuName := nil;
-  wcFakeWndClass.lpszClassName := 'TTOTAL_CMD';
-  RegisterClassEx(wcFakeWndClass);
-  // Create Total Commander fake window
-  {$IFDEF DEBUG}
-  hFakeWindow :=
-  {$ENDIF}
-    CreateWindowEx(0, 'TTOTAL_CMD', 'Double Commander', WS_OVERLAPPEDWINDOW, 100, 100, 300, 300, 0, 0, hInstance, nil);
-  {$IFDEF DEBUG}
-  // Show window (for debugging only)
-  ShowWindow(hFakeWindow, SW_SHOW);
-  {$ENDIF}
-end;
 
 // Test have been made with string from site http://stackoverflow.com/questions/478201/how-to-test-an-application-for-correct-encoding-e-g-utf-8
 // Note: If you ever "think" to change or modify this routine, make sure to test the following:

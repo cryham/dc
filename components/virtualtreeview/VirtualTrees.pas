@@ -14446,17 +14446,17 @@ begin
     if Source.Transparent then
     begin
       // Leave transparent area as destination unchanged (DST), copy non-transparent areas to canvas (SRCCOPY).
-      with DrawRect do
-        MaskBlt(Target.Handle, Left - Offset.X, Top - Offset.Y, (Right - Offset.X) - (Left - Offset.X),
-          (Bottom - Offset.Y) - (Top - Offset.Y), Source.Canvas.Handle, Left - PicRect.Left, DrawRect.Top - PicRect.Top,
+//      with DrawRect do
+        MaskBlt(Target.Handle, Left - Offset.X, Top - Offset.Y, (DrawRect.Right - Offset.X) - (Left - Offset.X),
+          (DrawRect.Bottom - Offset.Y) - (Top - Offset.Y), Source.Canvas.Handle, Left - PicRect.Left, DrawRect.Top - PicRect.Top,
           Source.MaskHandle, Left - PicRect.Left, Top - PicRect.Top, MakeROP4(DST, SRCCOPY));
     end
     else
     begin
       // copy image to destination
-      with DrawRect do
-        BitBlt(Target.Handle, Left - Offset.X, Top - Offset.Y, (Right - Offset.X) - (Left - Offset.X),
-          (Bottom - Offset.Y) - (Top - Offset.Y) + R.Top, Source.Canvas.Handle, Left - PicRect.Left, DrawRect.Top - PicRect.Top,
+//      with DrawRect do
+        BitBlt(Target.Handle, Left - Offset.X, Top - Offset.Y, (DrawRect.Right - Offset.X) - (Left - Offset.X),
+          (DrawRect.Bottom - Offset.Y) - (Top - Offset.Y) + R.Top, Source.Canvas.Handle, Left - PicRect.Left, DrawRect.Top - PicRect.Top,
           SRCCOPY);
     end;
   end;
@@ -30855,21 +30855,21 @@ var
 begin
   if not FStopping then
   begin
-    with R do
+//    with R do
     begin
       // Set the edit's bounds but make sure there's a minimum width and the right border does not
       // extend beyond the parent's left/right border.
-      if Left < 0 then
-        Left := 0;
-      if Right - Left < 30 then
+      if R.Left < 0 then
+        R.Left := 0;
+      if R.Right - R.Left < 30 then
       begin
         if FAlignment = taRightJustify then
-          Left := Right - 30
+          R.Left := R.Right - 30
         else
-          Right := Left + 30;
+          R.Right := R.Left + 30;
       end;
-      if Right > FTree.ClientWidth then
-        Right := FTree.ClientWidth;
+      if R.Right > FTree.ClientWidth then
+        R.Right := FTree.ClientWidth;
       FEdit.BoundsRect := R;
 
       // The selected text shall exclude the text margins and be centered vertically.

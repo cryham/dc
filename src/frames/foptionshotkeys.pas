@@ -312,7 +312,7 @@ begin
         if Cells[aCol, aRow] <> '' then
         begin
           OffsetY := (DefaultRowHeight - Canvas.TextHeight(Cells[aCol, aRow])) div 2;
-          //if not (gdSelected in aState) then Canvas.Font.Color := clRed else Canvas.Font.Color := clWhite;
+          if not (gdSelected in aState) then Canvas.Font.Color := clRed else Canvas.Font.Color := clWhite;
           Canvas.TextOut(aRect.Left + 3, aRect.Top + OffsetY, Cells[aCol, aRow]);
         end;
       end;
@@ -617,12 +617,54 @@ end;
 // Fill stgCommands with commands and descriptions
 procedure TfrmOptionsHotkeys.FillCommandList(Filter: string);
 var
+  lcFilter: string;
+  FilterParts: TStringList;
+  slCommandsForGrid, slDescriptionsForGrid, slHotKeyForGrid: TStringList;
+
+  procedure AddOrFilterOut(const Command, HotKeys, Description: string);
+
+    function CheckHotKeys: Boolean;
+    var
+      lcHotKeys: string;
+      i: integer;
+    begin
+      lcHotKeys := UTF8LowerCase(HotKeys);
+      for i := 0 to pred(FilterParts.Count) do // Get filter parts split by '+' character
+      begin
+        if FilterParts[i] = '' then
+          Continue;
+        if Length(FilterParts[i]) = 1 then // Heurstics to make filtering more handy
+        begin
+          if FilterParts[i][1] in ['c','s','a','m'] then // Ctrl Shift Alt Meta first letters
+            Result := Pos('+' + FilterParts[i] + ';', '+' + lcHotKeys + ';') <> 0
+          else // other single letters
+            Result := Pos('+' + FilterParts[i], '+' + lcHotKeys) <> 0;
+        end
+        else // plain substring search for two or more letters
+          Result := Pos(FilterParts[i], lcHotKeys) <> 0;
+        if not Result then
+          Break;
+      end;
+    end;
+
+  begin
+    if (lcFilter = '') or
+      (Pos(lcFilter, UTF8LowerCase(Command)) <> 0) or
+      (Pos(lcFilter, UTF8LowerCase(Description)) <> 0) or
+      ((HotKeys <> '') and CheckHotKeys) then
+    begin
+      slCommandsForGrid.Add(Command);
+      slHotKeyForGrid.Add(HotKeys);
+      slDescriptionsForGrid.Add(Description);
+    end;
+  end;
+
+var
   slTmp: THotkeys;
-  slAllCommands, slCommandsForGrid, slDescriptionsFroGrid, slHotKeyForGrid: TStringList;
-  lstr: string;
+  slAllCommands: TStringList;
   i, j: integer;
   HMForm: THMForm;
-  sForm,sHotKeys: string;
+  sForm: string;
   CommandsFormClass: TComponentClass;
   CommandsForm: TComponent = nil;
   CommandsFormCreated: boolean = False;
@@ -655,37 +697,19 @@ begin
 
   slAllCommands := TStringList.Create;
   slCommandsForGrid := TStringList.Create;
-  slDescriptionsFroGrid := TStringList.Create;
   slHotKeyForGrid := TStringList.Create;
+  slDescriptionsForGrid := TStringList.Create;
   slTmp := THotkeys.Create(False);
   HMForm := HotMan.Forms.Find(sForm);
 
   // 1. Get all the "cm_" commands and store them in our list "slAllCommands".
   CommandsIntf.GetCommandsList(slAllCommands);
 
-  // 2. Remove from our list what doesn't match our filter (if we have filter).
-  if Filter <> '' then
-  begin
-    lstr := UTF8LowerCase(Filter);
-    for i := pred(slAllCommands.Count) downto 0 do //Remove from our list the commands that does not meet our filter...
-    begin
-      // hotkeys string
-      sHotKeys:='';
-      if Assigned(HMForm) then
-      begin
-        slTmp.Clear;
-        GetHotKeyList(HMForm, slAllCommands.Strings[i], slTmp);
-        if (slTmp.Count > 0) then
-          for j := 0 to pred(slTmp.Count) do
-            sHotKeys:= sHotKeys + ShortcutsToText(slTmp[j].Shortcuts) + ';';
-      end;
-
-      if (UTF8Pos(lstr, UTF8LowerCase(sHotKeys)) = 0) and
-         (UTF8Pos(lstr, UTF8LowerCase(slAllCommands.Strings[i])) = 0) and
-         (UTF8Pos(lstr, UTF8LowerCase(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong))) = 0) then
-        slAllCommands.Delete(i);
-    end;
-  end;
+  // 2. Prepare filter to use in the next step.
+  lcFilter := UTF8LowerCase(Filter);
+  FilterParts := TStringList.Create;
+  FilterParts.Delimiter := '+';
+  FilterParts.DelimitedText := lcFilter;
 
   // 3. Based on all the commands we got, populate "equally" our three string list of commands, hotkeys and descrition used to fill our grid.
   for i := 0 to pred(slAllCommands.Count) do
@@ -698,30 +722,33 @@ begin
       begin
         for j := 0 to pred(slTmp.Count) do
         begin
-          slCommandsForGrid.Add(slAllCommands.Strings[i]);
-          slHotKeyForGrid.Add(ShortcutsToText(slTmp[j].Shortcuts));
-          slDescriptionsFroGrid.Add(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
+          AddOrFilterOut(
+            slAllCommands.Strings[i],
+            ShortcutsToText(slTmp[j].Shortcuts),
+            CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
         end;
       end
       else
       begin
-        slCommandsForGrid.Add(slAllCommands.Strings[i]);
-        slHotKeyForGrid.Add(HotkeysToString(slTmp));
-        slDescriptionsFroGrid.Add(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
+        AddOrFilterOut(
+          slAllCommands.Strings[i],
+          HotkeysToString(slTmp),
+          CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
       end;
     end
     else
     begin
-      slCommandsForGrid.Add(slAllCommands.Strings[i]);
-      slHotKeyForGrid.Add('');
-      slDescriptionsFroGrid.Add(CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
+      AddOrFilterOut(
+        slAllCommands.Strings[i],
+        '',
+        CommandsIntf.GetCommandCaption(slAllCommands.Strings[i], cctLong));
     end;
   end;
 
   // 4. Add to list NAMES of columns.
   slCommandsForGrid.Insert(0, rsOptHotkeysCommand);
   slHotKeyForGrid.Insert(0, rsOptHotkeysHotkeys);
-  slDescriptionsFroGrid.Insert(0, rsOptHotkeysDescription);
+  slDescriptionsForGrid.Insert(0, rsOptHotkeysDescription);
 
   // 5. Set stringgrid rows count.
   stgCommands.RowCount := slCommandsForGrid.Count;
@@ -731,7 +758,7 @@ begin
   stgCommands.Clean;
   stgCommands.Cols[stgCmdCommandIndex].Assign(slCommandsForGrid);
   stgCommands.Cols[stgCmdHotkeysIndex].Assign(slHotKeyForGrid);
-  stgCommands.Cols[stgCmdDescriptionIndex].Assign(slDescriptionsFroGrid);
+  stgCommands.Cols[stgCmdDescriptionIndex].Assign(slDescriptionsForGrid);
 
   // 7. Sort our grid according to our wish
   case THotKeySortOrder(cbCommandSortOrder.ItemIndex) of
@@ -750,8 +777,9 @@ begin
   slAllCommands.Free;
   slCommandsForGrid.Free;
   slHotKeyForGrid.Free;
-  slDescriptionsFroGrid.Free;
+  slDescriptionsForGrid.Free;
   slTmp.Free;
+  FilterParts.Free;
 
   if CommandsFormCreated then
     CommandsForm.Free;

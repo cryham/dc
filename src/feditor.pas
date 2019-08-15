@@ -37,7 +37,7 @@ interface
 uses
   SysUtils, Classes, Controls, Forms, ActnList, Menus, SynEdit,
   ComCtrls, SynEditSearch, SynEditHighlighter, uDebug, uOSForms, uShowForm, types, Graphics,
-  uFormCommands, uHotkeyManager;
+  uFormCommands, uHotkeyManager, LCLVersion, SynPluginMultiCaret;
 
 const
   HotkeysCategory = 'Editor';
@@ -164,6 +164,7 @@ type
     sOriginalText: String;
     FWaitData: TWaitData;
     FCommands: TFormCommands;
+    FMultiCaret: TSynPluginMultiCaret;
 
     property Commands: TFormCommands read FCommands implements IFormCommands;
 
@@ -253,8 +254,11 @@ begin
     if not Editor.OpenFile(sFileName) then
       Exit;
   end;
-
-  Editor.ShowOnTop;
+  if (WaitData = nil) then
+    Editor.ShowOnTop
+  else begin
+    WaitData.ShowOnTop(Editor);
+  end;
   LastEditorUsedForConfiguration := Editor;
 end;
 
@@ -321,6 +325,8 @@ begin
   HMEditor := HotMan.Register(Self, HotkeysCategory);
   HMEditor.RegisterActionList(ActListEdit);
   FCommands := TFormCommands.Create(Self, ActListEdit);
+
+  FMultiCaret := TSynPluginMultiCaret.Create(Editor);
 end;
 
 procedure TfrmEditor.LoadGlobalOptions;
@@ -328,6 +334,7 @@ begin
   Editor.Options:= gEditorSynEditOptions;
   FontOptionsToFont(gFonts[dcfEditor], Editor.Font);
   Editor.TabWidth := gEditorSynEditTabWidth;
+  Editor.RightEdge := gEditorSynEditRightEdge;
 end;
 
 procedure TfrmEditor.actExecute(Sender: TObject);
@@ -400,7 +407,7 @@ begin
     // Try to guess line break style
     with Editor.Lines do
     begin
-      if (sEncodingIn <> EncodingUCS2LE) and (sEncodingIn <> EncodingUCS2BE) then
+      if (sEncodingIn <> EncodingUTF16LE) and (sEncodingIn <> EncodingUTF16BE) then
         TextLineBreakStyle := GuessLineBreakStyle(Buffer)
       else begin
         sOriginalText := Copy(sOriginalText, 3, MaxInt); // Skip BOM
@@ -475,16 +482,16 @@ begin
       begin
         if (Encoding = EncodingUTF8BOM) then
           Writer.WriteBuffer(UTF8BOM, SizeOf(UTF8BOM))
-        else if (Encoding = EncodingUCS2LE) then
+        else if (Encoding = EncodingUTF16LE) then
           Writer.WriteBuffer(UTF16LEBOM, SizeOf(UTF16LEBOM))
-        else if (Encoding = EncodingUCS2BE) then
+        else if (Encoding = EncodingUTF16BE) then
           Writer.WriteBuffer(UTF16BEBOM, SizeOf(UTF16BEBOM));
       end
       else begin
         TextOut := EmptyStr;
-        if (Encoding = EncodingUCS2LE) then
+        if (Encoding = EncodingUTF16LE) then
           TextOut := UTF16LEBOM
-        else if (Encoding = EncodingUCS2BE) then begin
+        else if (Encoding = EncodingUTF16BE) then begin
           TextOut := UTF16BEBOM
         end;
         TextOut += ConvertEncoding(Editor.Lines[0], EncodingUTF8, sEncodingOut);
@@ -882,13 +889,19 @@ end;
 procedure TfrmEditor.cm_EditCopy(const Params:array of string);
 begin
   editor.CopyToClipboard;
+{$IF DEFINED(LCLGTK2) and (LCL_FULLVERSION < 1100000)}
+  // Workaround for Lazarus bug #0021453
   ClipboardSetText(Clipboard.AsText);
+{$ENDIF}
 end;
 
 procedure TfrmEditor.cm_EditCut(const Params:array of string);
 begin
   Editor.CutToClipboard;
+{$IF DEFINED(LCLGTK2) and (LCL_FULLVERSION < 1100000)}
+  // Workaround for Lazarus bug #0021453
   ClipboardSetText(Clipboard.AsText);
+{$ENDIF}
 end;
 
 procedure TfrmEditor.cm_EditPaste(const Params:array of string);

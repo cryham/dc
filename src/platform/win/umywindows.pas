@@ -3,7 +3,7 @@
     -------------------------------------------------------------------------
     This unit contains specific WINDOWS functions.
 
-    Copyright (C) 2006-2018 Alexander Koblov (alexx2000@mail.ru)
+    Copyright (C) 2006-2019 Alexander Koblov (alexx2000@mail.ru)
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -27,6 +27,13 @@ interface
 
 uses
   Graphics, Classes, SysUtils, JwaWinBase, Windows;
+
+const
+  // STORAGE_BUS_TYPE
+  BusTypeUnknown = $00;
+  BusTypeUsb     = $07;
+  BusTypeSd      = $0C;
+  BusTypeMmc     = $0D;
 
 procedure ShowWindowEx(hWnd: HWND);
 function FindMainWindow(ProcessId: DWORD): HWND;
@@ -76,6 +83,7 @@ procedure mbWaitLabelChange(const sDrv: String; const sCurLabel: String);
    @param(sDrv  String specifying the root directory of a drive)
 }
 procedure mbCloseCD(const sDrv: String);
+function mbDriveBusType(Drive: AnsiChar): UInt32;
 procedure mbDriveUnlock(const sDrv: String);
 {en
    Get remote file name by local file name
@@ -144,6 +152,8 @@ procedure CreateShortcut(const Target, Shortcut: String);
 function ExtractFileAttributes(const FindData: TWin32FindDataW): DWORD;
 
 procedure InitErrorMode;
+
+procedure UpdateEnvironment;
 
 procedure FixCommandLineToUTF8;
 
@@ -413,6 +423,62 @@ begin
   mciSendCommandA(0, MCI_OPEN, MCI_OPEN_TYPE or MCI_OPEN_ELEMENT, DWORD_PTR(@OpenParms));
   mciSendCommandA(OpenParms.wDeviceID, MCI_SET, MCI_SET_DOOR_CLOSED, 0);
   mciSendCommandA(OpenParms.wDeviceID, MCI_CLOSE, MCI_OPEN_TYPE or MCI_OPEN_ELEMENT, DWORD_PTR(@OpenParms));
+end;
+
+type
+  STORAGE_PROPERTY_QUERY = record
+    PropertyId: DWORD;
+    QueryType: DWORD;
+    AdditionalParameters: array[0..0] of Byte;
+  end;
+
+  STORAGE_DEVICE_DESCRIPTOR = record
+    Version: DWORD;
+    Size: DWORD;
+    DeviceType: Byte;
+    DeviceTypeModifier: Byte;
+    RemovableMedia: Boolean;
+    CommandQueueing: Boolean;
+    VendorIdOffset: DWORD;
+    ProductIdOffset: DWORD;
+    ProductRevisionOffset: DWORD;
+    SerialNumberOffset: DWORD;
+    BusType: DWORD;
+    RawPropertiesLength: DWORD;
+    RawDeviceProperties: array[0..0] of Byte;
+  end;
+
+function mbDriveBusType(Drive: AnsiChar): UInt32;
+const
+  IOCTL_STORAGE_QUERY_PROPERTY = $2D1400;
+var
+  Dummy: DWORD;
+  Handle: THandle;
+  Query: STORAGE_PROPERTY_QUERY;
+  Descr: STORAGE_DEVICE_DESCRIPTOR;
+  VolumePath: UnicodeString = '\\.\X:';
+begin
+  Result := BusTypeUnknown;
+  VolumePath[5] := WideChar(Drive);
+
+  Handle := CreateFileW(PWideChar(VolumePath), 0,
+    FILE_SHARE_READ or FILE_SHARE_WRITE,
+    nil, OPEN_EXISTING, 0, 0);
+
+  if (Handle <> INVALID_HANDLE_VALUE) then
+  begin
+    ZeroMemory(@Query, SizeOf(STORAGE_PROPERTY_QUERY));
+
+    if (DeviceIoControl(Handle, IOCTL_STORAGE_QUERY_PROPERTY,
+                        @Query, SizeOf(STORAGE_PROPERTY_QUERY),
+                        @Descr, SizeOf(STORAGE_DEVICE_DESCRIPTOR),
+                        @Dummy, nil)) then
+    begin
+      Result := Descr.BusType;
+    end;
+
+    CloseHandle(Handle);
+  end;
 end;
 
 function IsWow64: BOOL;
@@ -874,6 +940,39 @@ end;
 procedure InitErrorMode;
 begin
   SetErrorMode(SEM_FAILCRITICALERRORS or SEM_NOOPENFILEERRORBOX);
+end;
+
+procedure UpdateEnvironment;
+var
+  dwSize: DWORD;
+  ASysPath: UnicodeString;
+  AUserPath: UnicodeString;
+  APath: UnicodeString = '';
+begin
+  // System environment
+  if RegReadKey(HKEY_LOCAL_MACHINE, 'System\CurrentControlSet\Control\Session Manager\Environment', 'Path', ASysPath) then
+  begin
+    APath := ASysPath;
+    if (Length(APath) > 0) and (APath[Length(APath)] <> PathSeparator) then APath += PathSeparator;
+  end;
+  // User environment
+  if RegReadKey(HKEY_CURRENT_USER, 'Environment', 'Path', AUserPath) then
+  begin
+    APath := APath + AUserPath;
+    if (Length(APath) > 0) and (APath[Length(APath)] <> PathSeparator) then APath += PathSeparator;
+  end;
+  // Update path environment variable
+  if Length(APath) > 0 then
+  begin
+    SetLength(ASysPath, MaxSmallInt + 1);
+    dwSize:= ExpandEnvironmentStringsW(PWideChar(APath), PWideChar(ASysPath), MaxSmallInt);
+    if (dwSize = 0) or (dwSize > MaxSmallInt) then
+      ASysPath:= APath
+    else begin
+      SetLength(ASysPath, dwSize - 1);
+    end;
+    SetEnvironmentVariableW('Path', PWideChar(ASysPath));
+  end;
 end;
 
 procedure FixCommandLineToUTF8;

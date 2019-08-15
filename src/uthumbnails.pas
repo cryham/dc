@@ -41,8 +41,9 @@ type
     function RemovePreview(const FullPathToFile: String): Boolean;
   public
     class procedure CompactCache;
-    class procedure RegisterProvider(Provider: TCreatePreviewHandler);
+    class function RegisterProvider(Provider: TCreatePreviewHandler): Integer;
     class function GetPreviewScaleSize(aWidth, aHeight: Integer): TSize;
+    class function GetPreviewFromProvider(const aFileName: String; aSize: TSize; aSkip: Integer): TBitmap;
   end;
 
 implementation
@@ -90,6 +91,7 @@ var
   Y: Int32;
   sStr: String;
   tFile: THandle;
+  LastLine: Boolean;
 begin
   FBitmap:= TBitmap.Create;
   with FBitmap do
@@ -103,12 +105,11 @@ begin
     if (tFile <> feInvalidHandle) then
     begin
       Y:= 0;
-      while (Y < gThumbSize.cy) do
-      begin
-        if not FileReadLn(tFile, sStr) then Break;
+      repeat
+        LastLine := not FileReadLn(tFile, sStr);
         Canvas.TextOut(0, Y, sStr);
         Y += Canvas.TextHeight(sStr) + 2;
-      end;
+      until (Y >= gThumbSize.cy) or LastLine;
       FileClose(tFile);
     end;
   end;
@@ -300,13 +301,14 @@ begin
             DCDebug(['Cannot save thumbnail to file "', sThumbFileName, '": ', e.Message]);
         end;
       end;
-      if not Assigned(Result) then Raise Exception.Create(EmptyStr);
     finally
       FreeAndNil(Picture);
     end;
   except
-    Result:= PixMapManager.LoadBitmapEnhanced(sFullPathToFile, gIconsSize, True, FBackColor);
+    Result:= nil;
   end;
+  if not Assigned(Result) then
+    Result:= PixMapManager.LoadBitmapEnhanced(sFullPathToFile, gIconsSize, True, FBackColor);
 end;
 
 function TThumbnailManager.CreatePreview(const FullPathToFile: String): TBitmap;
@@ -338,10 +340,11 @@ begin
   aFileList.Free;
 end;
 
-class procedure TThumbnailManager.RegisterProvider(Provider: TCreatePreviewHandler);
+class function TThumbnailManager.RegisterProvider(Provider: TCreatePreviewHandler): Integer;
 begin
   SetLength(FProviderList, Length(FProviderList) + 1);
   FProviderList[High(FProviderList)]:= Provider;
+  Result:= High(FProviderList);
 end;
 
 class function TThumbnailManager.GetPreviewScaleSize(aWidth, aHeight: Integer): TSize;
@@ -361,6 +364,21 @@ begin
       Result.cy:= gThumbSize.cy;
       Result.cx:= Result.cy * aWidth div aHeight;
     end;
+end;
+
+class function TThumbnailManager.GetPreviewFromProvider(const aFileName: String; aSize: TSize; aSkip: Integer): TBitmap;
+var
+  Index: Integer;
+begin
+  for Index:= Low(FProviderList) to High(FProviderList) do
+  begin
+    if (Index <> aSkip) then
+    begin
+      Result:= FProviderList[Index](aFileName, aSize);
+      if Assigned(Result) then Exit;
+    end;
+  end;
+  Result:= nil;
 end;
 
 end.

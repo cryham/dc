@@ -110,6 +110,7 @@ resourcestring
   rsFilterDirectoryHotListFiles = 'Directory Hotlist files';
   rsFilterArchiverConfigFiles = 'Archiver config files';
   rsFilterPluginFiles = 'Plugin files';
+  rsFilterLibraries = 'Library files';
 
   // Archiver section.
   rsMsgArchiverCustomParams = 'Additional parameters for archiver command-line:';
@@ -633,6 +634,7 @@ resourcestring
   rsSplitMsgManyParts = 'The number of parts is more than 100! Continue?';
   rsSplitPreDefinedSizes = 'Automatic;1457664B - 3.5" High Density 1.44M;1213952B - 5.25" High Density 1.2M;730112B - 3.5" Double Density 720K;362496B - 5.25" Double Density 360K;98078KB - ZIP 100MB;650MB - CD 650MB;700MB - CD 700MB;4482MB - DVD+R';
   // MultiRename dialog
+  rsMulRenLastPreset = '[The last used]';
   rsMulRenWarningDuplicate = 'Warning, duplicate names!';
   rsMulRenAutoRename = 'Do auto-rename to "name (1).ext", "name (2).ext" etc.?';
   rsMulRenWrongLinesNumber = 'File contains wrong number of lines: %d, should be %d!';
@@ -699,6 +701,7 @@ resourcestring
   rsOptionsEditorTerminal = 'Terminal';
   rsOptionsEditorToolbar = 'Toolbar';
   rsOptionsEditorToolbarExtra = 'Toolbar Extra';
+  rsOptionsEditorToolbarMiddle = 'Toolbar Middle';
   rsOptionsEditorTools = 'Tools';
   rsOptionsEditorTooltips = 'Tooltips';
   rsOptionsEditorFileAssoc = 'File associations';
@@ -992,6 +995,10 @@ resourcestring
   msgTryToLocateCRCFile = 'This file cannot be found and could help to validate final combination of files:'+#$0A+'%s'+#$0A+#$0A+'Could you make it available and press "OK" when ready,'+#$0A+'or press "CANCEL" to continue without it?';
 
   rsMsgInvalidHexNumber = 'Invalid hexadecimal number: "%s"';
+
+  //LUA and script related messages
+  rsMsgScriptCantFindLibrary = 'ERROR: Problem loading Lua library file "%s"';
+  rsMsgWantToConfigureLibraryLocation = 'Do you want to configure Lua library location?';
 
   // Unhandled error.
   rsUnhandledExceptionMessage =

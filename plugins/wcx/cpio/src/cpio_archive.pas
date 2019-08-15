@@ -58,7 +58,7 @@ function  CanYouHandleThisFile(FileName: PAnsiChar): Boolean; dcpcall;
 implementation
 
 uses
-  SysUtils, DCDateTimeUtils, DCBasicTypes, DCFileAttributes;
+  SysUtils, DCDateTimeUtils, DCBasicTypes, DCFileAttributes, DCOSUtils;
 
 function GetPackerCaps: Integer;
 begin
@@ -281,10 +281,13 @@ begin
             end else
               if not AlignFilePointer(arec^.handle_file, 4) then Result := E_EREAD;
           end;
-          FileSetDate(tfilerec(cpio_file).handle, UnixFileTimeToWcxTime(TUnixFileTime(head.mtime)));
           CloseFile(cpio_file);
-          if result<>0 then
-            Erase(cpio_file);
+          if Result <> 0 then
+            Erase(cpio_file)
+          else begin
+            mbFileSetAttr(cpio_name, UnixToWcxFileAttr(head.mode));
+            FileSetDate(cpio_name, UnixFileTimeToWcxTime(TUnixFileTime(head.mtime)));
+          end;
           FreeMem(buf, 65536);
         end;
       end

@@ -1204,7 +1204,8 @@ begin
   Node := tvOperations.Items.GetFirstNode;
   while Assigned(Node) do
   begin
-    TViewBaseItem(Node.Data).UpdateView(tvOperations.Canvas);
+    if Assigned(Node.Data) then
+      TViewBaseItem(Node.Data).UpdateView(tvOperations.Canvas);
     Node := Node.GetNext;
   end;
 end;

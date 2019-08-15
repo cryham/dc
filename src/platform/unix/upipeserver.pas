@@ -3,7 +3,7 @@
    -------------------------------------------------------------------------
    Unix implementation of one-way IPC between 2 processes
 
-   Copyright (C) 2015 Alexander Koblov (alexx2000@mail.ru)
+   Copyright (C) 2015-2019 Alexander Koblov (alexx2000@mail.ru)
 
    Based on simpleipc.inc from Free Component Library.
    Copyright (c) 2005 by Michael Van Canneyt, member of
@@ -24,7 +24,22 @@ unit uPipeServer;
 interface
 
 uses
-  Classes, SysUtils, SimpleIPC, BaseUnix;
+  Classes, SysUtils;
+
+function GetPipeFileName(const FileName: String; Global : Boolean): String;
+
+implementation
+
+uses
+  SimpleIPC, BaseUnix, uPollThread
+{$IF DEFINED(LINUX)}
+  , uXdg
+{$ENDIF}
+  ;
+
+ResourceString
+  SErrFailedToCreatePipe = 'Failed to create named pipe: %s';
+  SErrFailedToRemovePipe = 'Failed to remove named pipe: %s';
 
 Type
 
@@ -47,37 +62,52 @@ Type
     Property Stream : TFileStream Read FStream;
   end;
 
-implementation
+function GetPipeFileName(const FileName: String; Global : Boolean): String;
+begin
+{$IF DEFINED(LINUX)}
+  Result:= IncludeTrailingBackslash(GetUserRuntimeDir) + FileName;
+{$ELSE}
+  Result:= GetTempDir(Global) + ApplicationName + '-' + IntToStr(fpGetUID) + PathDelim + FileName;
+{$ENDIF}
+  Result:= Result + '.pipe'
+end;
 
-uses
-  uPollThread;
-
-ResourceString
-  SErrFailedToCreatePipe = 'Failed to create named pipe: %s';
-  SErrFailedToRemovePipe = 'Failed to remove named pipe: %s';
-
-type
-  TUnixIPCServer = class(TSimpleIPCServer);
+{ TPipeServerComm }
 
 procedure TPipeServerComm.Handler(Sender: TObject);
 begin
-  TThread.Synchronize(nil, @TUnixIPCServer(Owner).ReadMessage);
+  TThread.Synchronize(nil, @Owner.ReadMessage);
 end;
 
 constructor TPipeServerComm.Create(AOWner: TSimpleIPCServer);
-
-Var
-  D : String;
-
+{$IF NOT DEFINED(LINUX)}
+var
+  Info: TStat;
+  Directory: String;
+{$ENDIF}
 begin
   inherited Create(AOWner);
-  FFileName:=Owner.ServerID;
-  If Not Owner.Global then
-    FFileName:=FFileName+'-'+IntToStr(fpGetPID);
-  D:='/tmp/'; // Change to something better later
-  FFileName:=D+FFileName;
+  FFileName:= Owner.ServerID;
+  if not Owner.Global then
+    FFileName:= FFileName + '-' + IntToStr(fpGetPID);
+  if FFileName[1] <> '/' then
+    FFileName:= GetPipeFileName(FFileName, Owner.Global);
+{$IF NOT DEFINED(LINUX)}
+  // Verify directory owner
+  Directory:= ExtractFileDir(FFileName);
+  if not DirectoryExists(Directory) then
+  begin
+    if fpMkDir(Directory, &700) <> 0 then
+      raise EIPCError.Create(SysErrorMessage(GetLastOSError));
+  end
+  else begin
+    if fpStat(Directory, Info) <> 0 then
+      raise EIPCError.Create(SysErrorMessage(GetLastOSError));
+    if (Info.st_uid <> fpGetUID) or (Info.st_gid <> fpGetGID) then
+      DoError(SErrFailedToCreatePipe, [FFileName]);
+  end;
+{$ENDIF}
 end;
-
 
 procedure TPipeServerComm.StartServer;
 
@@ -88,7 +118,7 @@ const
 
 begin
   If not FileExists(FFileName) then
-    If (fpmkFifo(FFileName,438)<>0) then
+    If (fpmkFifo(FFileName, &600)<>0) then
       DoError(SErrFailedToCreatePipe,[FFileName]);
   FStream:=TFileStream.Create(FFileName,fmOpenReadWrite+fmShareDenyNone,Rights[Owner.Global]);
   AddPoll(FStream.Handle, POLLIN, @Handler, False);
@@ -115,27 +145,10 @@ end;
 
 procedure TPipeServerComm.ReadMessage;
 var
-{$IF (FPC_FULLVERSION < 030001)}
-  M : TStream;
-  Count : Integer;
-{$ENDIF}
   Hdr : TMsgHeader;
 begin
   FStream.ReadBuffer(Hdr,SizeOf(Hdr));
-{$IF (FPC_FULLVERSION >= 030001)}
   PushMessage(Hdr,FStream);
-{$ELSE}
-  SetMsgType(Hdr.MsgType);
-  Count:=Hdr.MsgLen;
-  M:=MsgData;
-  if count > 0 then
-    begin
-    M.Seek(0,soFrombeginning);
-    M.CopyFrom(FStream,Count);
-    end
-  else
-    M.Size := 0;
-{$ENDIF}
 end;
 
 function TPipeServerComm.GetInstanceID: String;

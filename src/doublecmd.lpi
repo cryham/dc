@@ -291,7 +291,7 @@ end;"/>
         <MinVersion Minor="3" Valid="True"/>
       </Item12>
     </RequiredPackages>
-    <Units Count="255">
+    <Units Count="260">
       <Unit0>
         <Filename Value="doublecmd.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -1853,6 +1853,40 @@ end;"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="fConfirmCommandLine"/>
       </Unit254>
+      <Unit255>
+        <Filename Value="uwdxmodule.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uWDXModule"/>
+      </Unit255>
+      <Unit256>
+        <Filename Value="uluapas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uLuaPas"/>
+      </Unit256>
+      <Unit257>
+        <Filename Value="fprintsetup.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmPrintSetup"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="fPrintSetup"/>
+      </Unit257>
+      <Unit258>
+        <Filename Value="frames\foptionstoolbarbase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmOptionsToolbarBase"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="fOptionsToolbarBase"/>
+      </Unit258>
+      <Unit259>
+        <Filename Value="frames\foptionstoolbarmiddle.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmOptionsToolbarMiddle"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="fOptionsToolbarMiddle"/>
+      </Unit259>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

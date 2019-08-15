@@ -37,7 +37,6 @@ type
   TfrmOptionsLayout = class(TOptionsEditor)
     cbFlatDiskPanel: TCheckBox;
     cbFlatInterface: TCheckBox;
-    cbFlatToolBar: TCheckBox;
     cbFreespaceInd: TCheckBox;
     cbLogWindow: TCheckBox;
     cbPanelOfOperations: TCheckBox;
@@ -56,10 +55,10 @@ type
     cbTermWindow: TCheckBox;
     cbTwoDiskPanels: TCheckBox;
     cbShowShortDriveFreeSpace: TCheckBox;
+    chkShowMiddleToolBar: TCheckBox;
     gbScreenLayout: TGroupBox;
     procedure cbShowDiskPanelChange(Sender: TObject);
     procedure cbShowDriveFreeSpaceChange(Sender: TObject);
-    procedure cbShowMainToolBarChange(Sender: TObject);
   protected
     procedure Load; override;
     function Save: TOptionsEditorSaveFlags; override;
@@ -89,11 +88,6 @@ begin
   if not(cbShowDriveFreeSpace.Checked) then cbShowShortDriveFreeSpace.Checked:= false;
 end;
 
-procedure TfrmOptionsLayout.cbShowMainToolBarChange(Sender: TObject);
-begin
-  cbFlatToolBar.Enabled := cbShowMainToolBar.Checked;
-end;
-
 class function TfrmOptionsLayout.GetIconIndex: Integer;
 begin
   Result := 7;
@@ -108,7 +102,7 @@ procedure TfrmOptionsLayout.Load;
 begin
   cbShowMainMenu.Checked := gMainMenu;
   cbShowMainToolBar.Checked := gButtonBar;
-  cbFlatToolBar.Checked := gToolBarFlat;
+  chkShowMiddleToolBar.Checked := gMiddleToolBar;
   cbShowDiskPanel.Checked := gDriveBar1;
   cbTwoDiskPanels.Checked := gDriveBar2;
   cbFlatDiskPanel.Checked := gDriveBarFlat;
@@ -135,7 +129,7 @@ begin
 
   gMainMenu := cbShowMainMenu.Checked;
   gButtonBar := cbShowMainToolBar.Checked;
-  gToolBarFlat := cbFlatToolBar.Checked;
+  gMiddleToolBar := chkShowMiddleToolBar.Checked;
   gDriveBar1 := cbShowDiskPanel.Checked;
   gDriveBar2 := cbTwoDiskPanels.Checked;
   gDriveBarFlat := cbFlatDiskPanel.Checked;
