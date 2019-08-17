@@ -1675,11 +1675,11 @@ msgid "Lo&g"
 msgstr ""
 
 #: tfrmmultirename.cbregexp.caption
-msgid "Regular e&xpressions"
+msgid "Reg. e&xpr."
 msgstr ""
 
 #: tfrmmultirename.cbusesubs.caption
-msgid "&Use substitution"
+msgid "S&ubstitute"
 msgstr ""
 
 #: tfrmmultirename.edinterval.text
@@ -1851,6 +1851,10 @@ msgstr ""
 
 #: tfrmmultirename.stringgrid.columns[2].title.caption
 msgid "File Path"
+msgstr ""
+
+#: tfrmmultirename.stringgrid.columns[3].title.caption
+msgid "Color"
 msgstr ""
 
 #: tfrmoptionseditor.chkautoindent.caption

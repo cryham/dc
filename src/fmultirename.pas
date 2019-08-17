@@ -43,7 +43,7 @@ uses
   LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus,
   Controls, LCLType, DCClassesUtf8, uClassesEx, uFile, uFileSource,
   StringHashList, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
-  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation;
+  uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation, Types;
 
 type
 
@@ -90,6 +90,7 @@ type
     miHour1: TMenuItem;
     miMinute1: TMenuItem;
     miSecond1: TMenuItem;
+    pnlPresets: TPanel;
     pnlOptions: TPanel;
     pmEditDirect: TPopupMenu;
     StringGrid: TStringGrid;
@@ -155,6 +156,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure StringGridMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure StringGridPrepareCanvas(sender: TObject; aCol, aRow: Integer;
+      aState: TGridDrawState);
     procedure StringGridSelection(Sender: TObject; aCol, aRow: Integer);
     procedure StringGridTopLeftChanged(Sender: TObject);
     procedure edPocChange(Sender: TObject);
@@ -307,7 +310,15 @@ begin
   aFiles := nil;
   FSourceRow := -1;
   FMoveRow := False;
+
   inherited Create(TheOwner);
+
+  with StringGrid.Font do begin
+    Name:= gFonts[dcfMain].Name;
+    Size:= gFonts[dcfMain].Size;
+    Style:= gFonts[dcfMain].Style;
+  end;
+  StringGrid.DefaultRowHeight:= StringGrid.Canvas.GetTextHeight('Wg');
 end;
 
 destructor TfrmMultiRename.Destroy;
@@ -707,6 +718,20 @@ begin
   end;
 end;
 
+procedure TfrmMultiRename.StringGridPrepareCanvas(sender: TObject; aCol,
+  aRow: Integer; aState: TGridDrawState);
+var
+  c: string;
+begin
+  if aState = [] then
+    StringGrid.Canvas.Brush.Color:=clBlack
+  else
+    StringGrid.canvas.Brush.Color:=TColor($403020);
+
+  c := StringGrid.Cells[3, aRow];
+  StringGrid.Canvas.Font.Color:= StringToColorDef(c, clWhite);
+end;
+
 procedure TfrmMultiRename.StringGridSelection(Sender: TObject; aCol,
   aRow: Integer);
 var
@@ -726,6 +751,7 @@ end;
 procedure TfrmMultiRename.StringGridTopLeftChanged(Sender: TObject);
 var
   I, iRowCount: Integer;
+  C: TColor;
 begin
   iRowCount:= StringGrid.TopRow + StringGrid.VisibleRowCount;
   if iRowCount > FFiles.Count then iRowCount:= FFiles.Count;
@@ -734,6 +760,10 @@ begin
     StringGrid.Cells[0, I]:= FFiles[I - 1].Name;
     StringGrid.Cells[1, I]:= FreshText(I - 1);
     StringGrid.Cells[2, I]:= FFiles[I - 1].Path;
+
+    C := gColorExt.GetColorBy(FFiles[I - 1]);
+    if C = clDefault then  C:= gForeColor;
+    StringGrid.Cells[3, I]:= ColorToString(C);
   end;
 end;
 
