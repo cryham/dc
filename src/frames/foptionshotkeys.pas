@@ -312,7 +312,7 @@ begin
         if Cells[aCol, aRow] <> '' then
         begin
           OffsetY := (DefaultRowHeight - Canvas.TextHeight(Cells[aCol, aRow])) div 2;
-          if not (gdSelected in aState) then Canvas.Font.Color := clRed else Canvas.Font.Color := clWhite;
+          //if not (gdSelected in aState) then Canvas.Font.Color := clRed else Canvas.Font.Color := clWhite;
           Canvas.TextOut(aRect.Left + 3, aRect.Top + OffsetY, Cells[aCol, aRow]);
         end;
       end;

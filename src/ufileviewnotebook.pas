@@ -507,7 +507,8 @@ begin
     SetLength(FClosedPages, Length(FClosedPages) + 1);  // push
     FClosedPages[High(FClosedPages)]:= APage;
   end;
-  Pages[Index].Free;
+  Pages[Index].TabVisible:=false;
+  //Pages[Index].Free;
   //APage.Free;
 end;
 
@@ -541,7 +542,7 @@ begin
   end;
 {$ENDIF}
 
-  Page[Index].Free;
+  DeletePage(Index);
 
   ShowTabs:= ((PageCount > 1) or (tb_always_visible in gDirTabOptions)) and gDirectoryTabs;
 
