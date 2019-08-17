@@ -256,7 +256,11 @@ begin
            WrapTextSimple(TargetName, 100) + LineEnding;
   if mbFileGetAttr(TargetName, TargetInfo) then
   begin
-    TargetTime:= FileDateToDateTime(TargetInfo.Time);
+    try
+      TargetTime:= FileDateToDateTime(TargetInfo.Time);
+    except
+      TargetTime:=0;
+    end;
     Result:= Result + Format(rsMsgFileExistsFileInfo, [Numb2USA(IntToStr(TargetInfo.Size)),
                              DateTimeToStr(TargetTime)]) + LineEnding;
   end;
