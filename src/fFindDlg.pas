@@ -810,7 +810,7 @@ begin
   if gInitiallyClearFileMask then
     cmbFindFileMask.Text := ''
   else if glsMaskHistory.Count > 0 then begin
-    cmbFindFileMask.Text:= glsMaskHistory[0];
+    //cmbFindFileMask.Text:= glsMaskHistory[0];
   end;
 
   // If we already search text then use last searched text
