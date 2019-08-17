@@ -581,19 +581,47 @@ begin
 end;
 
 procedure TFileViewNotebook.ActivatePrevTab;
+var
+   i, st: integer;
 begin
-  if PageIndex = 0 then
+  i := PageIndex;
+  st := i;
+  repeat
+    Dec(i);
+    if i < 0 then
+       i := PageCount - 1;
+    if Page[i].TabVisible then
+    begin
+       Page[i].MakeActive;
+       Exit;
+    end;
+  until i = st;
+  {if PageIndex = 0 then
     Page[PageCount - 1].MakeActive
   else
-    Page[PageIndex - 1].MakeActive;
+    Page[PageIndex - 1].MakeActive;}
 end;
 
 procedure TFileViewNotebook.ActivateNextTab;
+var
+   i, st: integer;
 begin
-  if PageIndex = PageCount - 1 then
+  i := PageIndex;
+  st := i;
+  repeat
+    Inc(i);
+    if i = PageCount then
+       i := 0;
+    if Page[i].TabVisible then
+    begin
+       Page[i].MakeActive;
+       Exit;
+    end;
+  until i = st;
+  {if PageIndex = PageCount - 1 then
     Page[0].MakeActive
   else
-    Page[PageIndex + 1].MakeActive;
+    Page[PageIndex + 1].MakeActive;}
 end;
 
 procedure TFileViewNotebook.ActivateTabByIndex(Index: Integer);
