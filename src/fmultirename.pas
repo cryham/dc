@@ -42,7 +42,7 @@ interface
 uses
   LazUtf8, SysUtils, Classes, Graphics, Forms, StdCtrls, Menus,
   Controls, LCLType, DCClassesUtf8, uClassesEx, uFile, uFileSource,
-  StringHashList, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
+  DCStringHashListUtf8, Grids, ExtCtrls, Buttons, DCXmlConfig, uOSForms,
   uRegExprW, uFileProperty, uFileSourceSetFilePropertyOperation, Types;
 
 type
@@ -200,9 +200,9 @@ type
     FLastPreset: String;
     FFileSource: IFileSource;
     FFiles: TFiles;
-    FPresets: TStringHashList; // of PMultiRenamePreset
-    FNewNames: TStringHashList;
-    FOldNames: TStringHashList;
+    FPresets: TStringHashListUtf8; // of PMultiRenamePreset
+    FNewNames: TStringHashListUtf8;
+    FOldNames: TStringHashListUtf8;
     FSourceRow: Integer;
     FMoveRow : Boolean;
     FNames: TStringList;
@@ -277,7 +277,7 @@ uses
 
 const
   sPresetsSection = 'MultiRenamePresets';
-  sLast = '[Last]';
+  sLastPreset = '[Last]';
 
 function ShowMultiRenameForm(aFileSource: IFileSource; var aFiles: TFiles):Boolean;
 begin
@@ -302,9 +302,9 @@ begin
   FReplaceText:= TStringList.Create;
   FReplaceText.StrictDelimiter := True;
   FReplaceText.Delimiter := '|';
-  FPresets := TStringHashList.Create(False);
-  FNewNames:= TStringHashList.Create(FileNameCaseSensitive);
-  FOldNames:= TStringHashList.Create(FileNameCaseSensitive);
+  FPresets := TStringHashListUtf8.Create(False);
+  FNewNames:= TStringHashListUtf8.Create(FileNameCaseSensitive);
+  FOldNames:= TStringHashListUtf8.Create(FileNameCaseSensitive);
   FFileSource := aFileSource;
   FFiles := aFiles;
   aFiles := nil;
@@ -359,7 +359,7 @@ begin
   // Initialize presets.
   LoadPresets;
   FillPresetsList;
-  LoadPreset(sLast);
+  LoadPreset(sLastPreset);
 end;
 
 procedure TfrmMultiRename.RestoreProperties(Sender: TObject);
@@ -374,7 +374,7 @@ end;
 
 procedure TfrmMultiRename.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  SavePreset(sLast);
+  SavePreset(sLastPreset);
 
   CloseAction:= caFree;
   with StringGrid.Columns do
@@ -724,7 +724,7 @@ var
   c: string;
 begin
   if aState = [] then
-    StringGrid.Canvas.Brush.Color:=clBlack
+    StringGrid.Canvas.Brush.Color:=gBackColor
   else
     StringGrid.canvas.Brush.Color:=TColor($403020);
 
@@ -1213,7 +1213,7 @@ var
   I, J, K, L: Integer;
   TempFiles: TStringList;
   OldFiles, NewFiles: TFiles;
-  OldNames: TStringHashList;
+  OldNames: TStringHashListUtf8;
   AutoRename: Boolean = False;
   Operation: TFileSourceOperation;
   theNewProperties: TFileProperties;
@@ -1417,7 +1417,7 @@ begin
   ClearPresetsList;
 
   ANode := AConfig.FindNode(AConfig.RootNode, sPresetsSection);
-  FLastPreset := AConfig.GetValue(ANode, 'LastPreset', sLast);
+  FLastPreset := AConfig.GetValue(ANode, 'LastPreset', sLastPreset);
 
   ANode := AConfig.FindNode(ANode, 'Presets');
   if Assigned(ANode) then
@@ -1462,9 +1462,9 @@ var
 begin
   // save last
   begin
-    I := FPresets.Find(sLast);
+    I := FPresets.Find(sLastPreset);
     if I = -1 then
-      I := FPresets.Add(sLast, New(PMultiRenamePreset));
+      I := FPresets.Add(sLastPreset, New(PMultiRenamePreset));
 
     with PMultiRenamePreset(FPresets.List[I]^.Data)^ do
     begin
@@ -1613,7 +1613,7 @@ begin
       lsPresets.Items.Add(PresetName);
   end;
 
-  if (FLastPreset = sLast) then
+  if (FLastPreset = sLastPreset) then
     lsPresets.ItemIndex := 0
   else
     lsPresets.ItemIndex := lsPresets.Items.IndexOf(FLastPreset);

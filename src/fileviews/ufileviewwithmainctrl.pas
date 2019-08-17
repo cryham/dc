@@ -1559,7 +1559,7 @@ begin
   end else
   begin
     FRenameFile := aFile;
-    edtRename.Color := clBlack;
+    edtRename.Color := gBackColor;
     C := gColorExt.GetColorBy(aFile);
     if C = clDefault then  C:= gForeColor;
     edtRename.Font.Color:= C;
