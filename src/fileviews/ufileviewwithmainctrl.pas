@@ -252,7 +252,7 @@ end;
 
 function TEditButtonEx.CalcButtonVisible: Boolean;
 begin
-  Result:= (inherited CalcButtonVisible) and gInplaceRenameButton;
+  Result:= false;  //(inherited CalcButtonVisible) and gInplaceRenameButton;
 end;
 
 { TFileViewWithMainCtrl }
@@ -1510,6 +1510,7 @@ end;
 procedure TFileViewWithMainCtrl.ShowRenameFileEdit(var AFile: TFile);
 var
   S: String;
+  C: TColor;
 begin
   S:= AFile.Name;
   FRenFile.LenFul := UTF8Length(S);
@@ -1558,6 +1559,10 @@ begin
   end else
   begin
     FRenameFile := aFile;
+    edtRename.Color := clBlack;
+    C := gColorExt.GetColorBy(aFile);
+    if C = clDefault then  C:= gForeColor;
+    edtRename.Font.Color:= C;
     edtRename.Hint := aFile.FullPath;
     edtRename.Text := aFile.Name;
     edtRename.Visible := True;
