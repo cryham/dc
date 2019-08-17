@@ -15,7 +15,7 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
   Position = poScreenCenter
   SessionProperties = 'Height;Left;Top;Width;WindowState'
   ShowInTaskBar = stAlways
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.4.0'
   object edPath1: TEdit
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -471,16 +471,16 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
     AnchorSideTop.Control = Owner
     AnchorSideTop.Side = asrCenter
     AnchorSideRight.Side = asrBottom
-    Left = 225
-    Height = 83
-    Top = 178
-    Width = 240
-    AutoSize = True
+    Left = 4
+    Height = 142
+    Top = 148
+    Width = 683
+    BorderStyle = bsSingle
     ChildSizing.LeftRightSpacing = 8
     ChildSizing.TopBottomSpacing = 8
     ChildSizing.VerticalSpacing = 8
-    ClientHeight = 83
-    ClientWidth = 240
+    ClientHeight = 138
+    ClientWidth = 679
     Constraints.MinWidth = 240
     TabOrder = 9
     Visible = False
@@ -489,41 +489,34 @@ object frmSyncDirsDlg: TfrmSyncDirsDlg
       AnchorSideTop.Control = pnlProgress
       AnchorSideRight.Control = pnlProgress
       AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = btnAbort
       Left = 9
-      Height = 1
+      Height = 86
       Top = 9
-      Width = 222
-      Alignment = taCenter
-      Anchors = [akTop, akLeft, akRight]
+      Width = 661
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      Font.Style = [fsBold]
       ParentColor = False
-    end
-    object ProgressBar: TProgressBar
-      AnchorSideLeft.Control = pnlProgress
-      AnchorSideTop.Control = lblProgress
-      AnchorSideTop.Side = asrBottom
-      AnchorSideRight.Control = pnlProgress
-      AnchorSideRight.Side = asrBottom
-      Left = 9
-      Height = 22
-      Top = 18
-      Width = 222
-      TabOrder = 0
+      ParentFont = False
     end
     object btnAbort: TBitBtn
-      AnchorSideLeft.Control = ProgressBar
+      AnchorSideLeft.Control = pnlProgress
       AnchorSideLeft.Side = asrCenter
-      AnchorSideTop.Control = ProgressBar
       AnchorSideTop.Side = asrBottom
-      Left = 82
+      AnchorSideBottom.Control = pnlProgress
+      AnchorSideBottom.Side = asrBottom
+      Left = 301
       Height = 26
-      Top = 48
+      Top = 103
       Width = 77
+      Anchors = [akLeft, akBottom]
       AutoSize = True
+      BorderSpacing.CellAlignHorizontal = ccaCenter
       DefaultCaption = True
       Kind = bkAbort
       ModalResult = 3
       OnClick = btnAbortClick
-      TabOrder = 1
+      TabOrder = 0
     end
   end
   object ImageList1: TImageList

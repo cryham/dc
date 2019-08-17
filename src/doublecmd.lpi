@@ -1516,7 +1516,9 @@ end;"/>
       <Unit205>
         <Filename Value="fsyncdirsperformdlg.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSyncDirsPerformDlg"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <UnitName Value="fSyncDirsPerformDlg"/>
       </Unit205>
       <Unit206>

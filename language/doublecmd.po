@@ -16,19 +16,19 @@ msgid "Comparing... %d%% (ESC to cancel)"
 msgstr ""
 
 #: fsyncdirsdlg.rsdeleteright
-msgid "Right: Delete %d file(s)"
+msgid "Right:   Delete %d files"
 msgstr ""
 
 #: fsyncdirsdlg.rsfilesfound
-msgid "Files found: %d  (Identical: %d, Different: %d, Unique left: %d, Unique right: %d)"
+msgid "Files found: %d   Identical: %d  Different: %d   Unique Left: %d  Right: %d"
 msgstr ""
 
 #: fsyncdirsdlg.rslefttorightcopy
-msgid "Left to Right: Copy %d files, total size: %d bytes"
+msgid "-> Left to Right:   Copy %d files   Size: %s B"
 msgstr ""
 
 #: fsyncdirsdlg.rsrighttoleftcopy
-msgid "Right to Left: Copy %d files, total size: %d bytes"
+msgid "<- Right to Left:   Copy %d files   Size: %s B"
 msgstr ""
 
 #: tfilesystemcopymoveoperationoptionsui.btnsearchtemplate.hint
@@ -2549,14 +2549,9 @@ msgstr ""
 msgid "Select for deleting -> (right)"
 msgstr ""
 
-#: tfrmsyncdirsdlg.btnclose.caption
-msgctxt "TFRMSYNCDIRSDLG.BTNCLOSE.CAPTION"
-msgid "Close"
-msgstr ""
-
 #: tfrmsyncdirsdlg.btncompare.caption
 msgctxt "tfrmsyncdirsdlg.btncompare.caption"
-msgid "Compare"
+msgid "&Compare"
 msgstr ""
 
 #: tfrmsyncdirsdlg.btnseldir1.caption
@@ -2570,7 +2565,7 @@ msgid ">>"
 msgstr ""
 
 #: tfrmsyncdirsdlg.btnsynchronize.caption
-msgid "Synchronize"
+msgid "&Synchronize"
 msgstr ""
 
 #: tfrmsyncdirsdlg.caption
@@ -2583,15 +2578,15 @@ msgid "*.*"
 msgstr ""
 
 #: tfrmsyncdirsdlg.chkasymmetric.caption
-msgid "asymmetric"
+msgid "&asymmetric"
 msgstr ""
 
 #: tfrmsyncdirsdlg.chkbycontent.caption
-msgid "by content"
+msgid "&by content"
 msgstr ""
 
 #: tfrmsyncdirsdlg.chkignoredate.caption
-msgid "ignore date"
+msgid "ignore &date"
 msgstr ""
 
 #: tfrmsyncdirsdlg.chkonlyselected.caption
@@ -2600,10 +2595,6 @@ msgstr ""
 
 #: tfrmsyncdirsdlg.chksubdirs.caption
 msgid "Subdirs"
-msgstr ""
-
-#: tfrmsyncdirsdlg.groupbox1.caption
-msgid "Show:"
 msgstr ""
 
 #: tfrmsyncdirsdlg.headerdg.columns[0].title.caption
@@ -2687,6 +2678,14 @@ msgstr ""
 
 #: tfrmsyncdirsdlg.statusbar1.panels[0].text
 msgid "Please press \"Compare\" to start"
+msgstr ""
+
+#: tfrmsyncdirsperformdlg.caption
+msgid "Synchronize"
+msgstr ""
+
+#: tfrmsyncdirsperformdlg.chkconfirmoverwrites.caption
+msgid "Confirm overwrites"
 msgstr ""
 
 #: tfrmviewer.actabout.caption

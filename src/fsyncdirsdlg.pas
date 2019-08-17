@@ -99,7 +99,6 @@ type
     MenuItemViewLeft: TMenuItem;
     pnlProgress: TPanel;
     pmGridMenu: TPopupMenu;
-    ProgressBar: TProgressBar;
     sbCopyRight: TSpeedButton;
     sbEqual: TSpeedButton;
     sbNotEqual: TSpeedButton;
@@ -196,11 +195,11 @@ type
 
 resourcestring
   rsComparingPercent = 'Comparing... %d%% (ESC to cancel)';
-  rsLeftToRightCopy = 'Left to Right: Copy %d files, total size: %d bytes';
-  rsRightToLeftCopy = 'Right to Left: Copy %d files, total size: %d bytes';
-  rsDeleteRight = 'Right: Delete %d file(s)';
-  rsFilesFound = 'Files found: %d  (Identical: %d, Different: %d, '
-    + 'Unique left: %d, Unique right: %d)';
+  rsLeftToRightCopy = '-> Left to Right:   Copy %d files   Size: %s B';
+  rsRightToLeftCopy = '<- Right to Left:   Copy %d files   Size: %s B';
+  rsDeleteRight = 'Right:   Delete %d files';
+  rsFilesFound = 'Files found: %d   Identical: %d  Different: %d   '
+    + 'Unique Left: %d  Right: %d';
 
 procedure ShowSyncDirsDlg(FileView1, FileView2: TFileView);
 
@@ -209,8 +208,8 @@ implementation
 uses
   fMain, uDebug, fDiffer, fSyncDirsPerformDlg, uGlobs, LCLType, LazUTF8, LazFileUtils,
   DCClassesUtf8, uFileSystemFileSource, uFileSourceOperationOptions, DCDateTimeUtils,
-  uDCUtils, uFileSourceUtil, uFileSourceOperationTypes, uShowForm,
-  uFileSourceDeleteOperation, uOSUtils, uLng, uMasks, Math;
+  uDCUtils, uFileSourceUtil, uFileSourceOperationTypes, uShowForm, uTypes,
+  uFileSourceDeleteOperation, uOSUtils, uLng, uMasks, Math, uOperationsManager;
 
 {$R *.lfm}
 
@@ -487,6 +486,11 @@ var
       Fs.Path:= fs[0].Path;
       // Create destination directory
       Dst.CreateDirectory(Dest);
+      lblProgress.Caption := //src.GetFiles();
+            'Copy:  '+IntToStr(Fs.Count) + ' files' + #13#10 +
+            'From:  ' + Fs.Path + #13#10 +
+            '    To:  ' + Dest;
+
       // Determine operation type
       case OperationType of
         fsoCopy:
@@ -520,8 +524,10 @@ var
       end;
       TFileSourceCopyOperation(FOperation).FileExistsOption := FileExistsOption;
       FOperation.AddUserInterface(FFileSourceOperationMessageBoxesUI);
+      //FOperation.GetDescription();
       try
         FOperation.Execute;
+        //OperationsManager.AddOperation(FOperation, FreeOperationsQueueId, False);
         Result := FOperation.Result = fsorFinished;
         FileExistsOption := TFileSourceCopyOperation(FOperation).FileExistsOption;
       finally
@@ -588,9 +594,9 @@ begin
     chkDeleteRight.Checked := chkDeleteRight.Enabled;
     chkDeleteRight.Caption := Format(rsDeleteRight, [DeleteRightCount]);
     chkLeftToRight.Caption :=
-      Format(rsLeftToRightCopy, [CopyRightCount, CopyRightSize]);
+      Format(rsLeftToRightCopy, [CopyRightCount, cnvFormatFileSize(CopyRightSize, fsfByte, 0)]);
     chkRightToLeft.Caption :=
-      Format(rsRightToLeftCopy, [CopyLeftCount, CopyLeftSize]);
+      Format(rsRightToLeftCopy, [CopyLeftCount, cnvFormatFileSize(CopyLeftSize, fsfByte, 0)]);
     if ShowModal = mrOk then
     begin
       EnableControls(False);
@@ -610,6 +616,7 @@ begin
         DeleteRightFiles := TFiles.Create('');
         if FVisibleItems.Objects[i] <> nil then
           repeat
+            lblProgress.Caption := IntToStr(i) + ' / ' + IntToStr(FVisibleItems.Count);
             fsr := TFileSyncRec(FVisibleItems.Objects[i]);
             Dest := fsr.FRelPath;
             case fsr.FAction of
@@ -623,6 +630,8 @@ begin
             i := i + 1;
           until (i = FVisibleItems.Count) or (FVisibleItems.Objects[i] = nil);
         i := i + 1;
+        lblProgress.Caption := IntToStr(i) + ' / ' + IntToStr(FVisibleItems.Count);
+
         if CopyLeftFiles.Count > 0 then
         begin
           if not CopyFiles(FCmpFileSourceR, FCmpFileSourceL, CopyLeftFiles,
@@ -711,7 +720,6 @@ end;
 
 procedure TfrmSyncDirsDlg.FormResize(Sender: TObject);
 begin
-  ProgressBar.Width:= ClientWidth div 3;
 end;
 
 procedure TfrmSyncDirsDlg.MainDrawGridDblClick(Sender: TObject);
