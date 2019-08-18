@@ -4668,12 +4668,15 @@ begin
 
   for I:= 0 to ANoteBook.PageCount - 1 do
     begin
-      TabNode := AConfig.AddNode(RootNode, 'Tab');
-      ViewNode := AConfig.AddNode(TabNode, 'FileView');
-
       Page := ANoteBook.Page[I];
-      Page.SaveConfiguration(AConfig, TabNode);
-      Page.FileView.SaveConfiguration(AConfig, ViewNode, ASaveHistory);
+      if Page.TabVisible then
+      begin
+        TabNode := AConfig.AddNode(RootNode, 'Tab');
+        ViewNode := AConfig.AddNode(TabNode, 'FileView');
+
+        Page.SaveConfiguration(AConfig, TabNode);
+        Page.FileView.SaveConfiguration(AConfig, ViewNode, ASaveHistory);
+      end;
     end;
 end;
 

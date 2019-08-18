@@ -494,8 +494,15 @@ end;
 procedure TFileViewNotebook.DeletePage(Index: Integer);
 var
   APage: TFileViewPage;
-  I: Integer;
+  I,vis: Integer;
 begin
+  vis := 0;
+  for i:=0 to PageCount - 1 do
+    if Pages[i].TabVisible then
+      Inc(vis);
+  if vis <= 1 then
+    Exit;
+
   APage:= GetPage(Index);
   if Length(FClosedPages) >= 20 then  // max undo pages count
   begin
