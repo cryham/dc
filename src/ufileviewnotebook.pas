@@ -175,7 +175,7 @@ uses
   LCLIntf,
   LazUTF8,
   DCStrUtils,
-  uGlobs,
+  uGlobs, Dialogs,
   uColumnsFileView,
   uArchiveFileSource
   {$IF DEFINED(LCLGTK2)}
@@ -497,20 +497,23 @@ var
   I,vis: Integer;
 begin
   vis := 0;
+  //MessageDlg('pgs', IntToStr(PageCount), mtWarning, [mbOK], 0);
   for i:=0 to PageCount - 1 do
     if Pages[i].TabVisible then
       Inc(vis);
+  //MessageDlg('vis', IntToStr(vis), mtWarning, [mbOK], 0);
   if vis <= 1 then
     Exit;
 
   APage:= GetPage(Index);
-  if Length(FClosedPages) >= 20 then  // max undo pages count
+  {MessageDlg('len clos', IntToStr(Length(FClosedPages)), mtWarning, [mbOK], 0);
+  if Length(FClosedPages) >= 2 then  // max undo pages count
   begin
     FClosedPages[0].Free;  // pop first
     for I:= 0 to Length(FClosedPages) - 2 do  // move all left
       FClosedPages[I]:= FClosedPages[I+1];
     FClosedPages[High(FClosedPages)]:= APage;  // put last
-  end else begin
+  end else} begin
     SetLength(FClosedPages, Length(FClosedPages) + 1);  // push
     FClosedPages[High(FClosedPages)]:= APage;
   end;
