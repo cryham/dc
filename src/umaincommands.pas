@@ -29,7 +29,11 @@ interface
 uses
   Classes, SysUtils, ActnList, uFileView, uFileViewNotebook, uFileSourceOperation, uTypes,
   uGlobs, uFileFunctions, uFormCommands, uFileSorting,
-  uShellContextMenu, Menus, ufavoritetabs, ufile, uMyWindows;
+  uShellContextMenu, Menus, ufavoritetabs, ufile
+  {$IFDEF MSWINDOWS}
+  , uMyWindows
+  {$ENDIF}
+  ;
 
 type
 
@@ -393,7 +397,10 @@ uses fOptionsPluginsBase, fOptionsPluginsDSX, fOptionsPluginsWCX,
      DCOSUtils, DCStrUtils, DCBasicTypes, uFileSourceCopyOperation, fSyncDirsDlg,
      uHotDir, DCXmlConfig, dmCommonData, fOptionsFrame, foptionsDirectoryHotlist,
      fMainCommandsDlg, uConnectionManager, fOptionsFavoriteTabs, fTreeViewMenu,
-     uArchiveFileSource, fOptionsHotKeys, fBenchmark, uShlObjAdditional
+     uArchiveFileSource, fOptionsHotKeys, fBenchmark
+     {$IFDEF MSWINDOWS}
+     , uShlObjAdditional
+     {$ENDIF}
      {$IFDEF COLUMNSFILEVIEW_VTV}
      , uColumnsFileViewVtv
      {$ELSE}
@@ -837,6 +844,7 @@ begin
       begin
         // Change file source, if the file under cursor can be opened as another file source.
         try
+          {$IFDEF MSWINDOWS}
           if LowerCase(aFile.Extension) = 'lnk' then
           begin
             SHFileLinkTarget(aFile.FullPath, NewPath);
@@ -849,6 +857,7 @@ begin
             end;
           end
           else
+          {$ENDIF}
           begin
             if not ChooseFileSource(TargetPage.FileView, SourcePage.FileView.FileSource, aFile) then
               TargetPage.FileView.AddFileSource(SourcePage.FileView.FileSource,
@@ -1190,6 +1199,7 @@ begin
     else if FileIsArchive(aFile.FullPath) then
       NewPage := OpenArchive(aFile)
     else
+    {$IFDEF MSWINDOWS}
     if LowerCase(aFile.Extension) = 'lnk' then
     begin
       SHFileLinkTarget(aFile.FullPath, NewPath);
@@ -1201,6 +1211,7 @@ begin
         NewPage.FileView.SetActiveFile(NewPath);
       end;
     end else
+    {$ENDIF}
       NewPage := OpenTab(aFile.Path);
   finally
     FreeAndNil(aFile);
@@ -3364,7 +3375,11 @@ begin
 
         sLinkToCreate := sLinkToCreate + SelectedFiles[0].Name;
         try
+          {$IFDEF MSWINDOWS}
           CreateShortcut(sExistingFile, sLinkToCreate);
+          {$ELSE}
+          //..?
+          {$ENDIF}
         finally
           ActiveFrame.Reload;
         end;
