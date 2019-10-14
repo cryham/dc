@@ -155,6 +155,7 @@ begin
   // Workaround: "Layout and line"
   // http://doublecmd.sourceforge.net/mantisbt/view.php?id=573
   pnlFooter.Visible := False;
+  pnlFooter.Height := 2 * pnlFooter.Canvas.TextHeight('Wg') +5;
   {$ELSE}
   pnlFooter.Height := 2 * pnlFooter.Canvas.TextHeight('Wg');
   {$ENDIF}
