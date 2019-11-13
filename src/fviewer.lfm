@@ -354,6 +354,7 @@ object frmViewer: TfrmViewer
     ClientWidth = 472
     TabOrder = 3
     Visible = False
+    BorderStyle = bsNone
     OnResize = pnlImageResize
     object sboxImage: TScrollBox
       Left = 0
@@ -365,9 +366,10 @@ object frmViewer: TfrmViewer
       Align = alClient
       ClientHeight = 381
       ClientWidth = 451
-      Color = clWhite
+      Color = clBlack
       ParentColor = False
       TabOrder = 0
+      BorderStyle = bsNone
       OnMouseEnter = sboxImageMouseEnter
       OnMouseLeave = sboxImageMouseLeave
       OnMouseMove = sboxImageMouseMove
@@ -412,6 +414,7 @@ object frmViewer: TfrmViewer
       ClientHeight = 50
       ClientWidth = 472
       TabOrder = 1
+      Visible = False
       object gboxHightlight: TGroupBox
         Left = 435
         Height = 47
