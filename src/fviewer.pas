@@ -677,7 +677,11 @@ begin
         memFolder.Lines.Add('');
       end
     else if CheckGraphics(aFileName) and LoadGraphics(aFileName) then
-      ActivatePanel(pnlImage)
+    begin
+      ActivatePanel(pnlImage);
+      if not miFullScreen.Checked then
+        cm_Fullscreen(['']);
+    end
     else
       begin
         ViewerControl.FileName := aFileName;
@@ -1819,6 +1823,7 @@ begin
   Image.Stretch:= True;
   Image.AutoSize:= False;
   Image.Proportional:= False;
+  Image.AntialiasingMode:= amOn;  //+
   Image.SetBounds(0, 0, sboxImage.ClientWidth, sboxImage.ClientHeight);
 
   FThumbSize := gThumbSize;
@@ -1887,6 +1892,14 @@ begin
         begin
           cm_ShowPlugins(['']);
           Key := #0;
+        end;
+      'A':
+        begin
+
+        end;
+      'S':
+        begin
+
         end;
     end;
 end;
