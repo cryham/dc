@@ -469,6 +469,7 @@ var
     IconID := AFile.Tag;
 
     if (AFile.FSFile.IsNameValid) and (IconID >= 0) and
+       (not AFile.FSFile.IsDirectory) and
        (IconID < FThumbView.FBitmapList.Count) then
       begin
         Bitmap:= FThumbView.FBitmapList[IconID];
